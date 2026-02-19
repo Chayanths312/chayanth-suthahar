@@ -76,14 +76,19 @@
       padding: 120px 2rem 4rem;
     }
 
+    /* HERO */
     .hero {
       margin-bottom: 5rem;
       animation: fadeUp 0.8s ease both;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
     }
 
-    .hero h1 {
+    .hero-text h1 {
       font-family: var(--mono);
-      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-size: clamp(2rem, 6vw, 3.2rem);
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.04em;
@@ -100,17 +105,17 @@
 
     .hero-sub {
       font-family: var(--mono);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--accent2);
       letter-spacing: 0.04em;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
     }
 
     .hero-bio {
       color: var(--fg2);
-      font-size: 1rem;
-      max-width: 480px;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      max-width: 420px;
+      line-height: 1.75;
     }
 
     .hero-bio strong { color: var(--fg); font-weight: 500; }
@@ -118,20 +123,49 @@
     .hero-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1.2rem;
+      gap: 0.4rem;
+      margin-top: 1.1rem;
     }
 
     .tag {
       font-family: var(--mono);
-      font-size: 0.7rem;
-      padding: 0.25rem 0.6rem;
+      font-size: 0.67rem;
+      padding: 0.2rem 0.55rem;
       border: 1px solid var(--border);
       border-radius: 2px;
       color: var(--fg2);
       letter-spacing: 0.06em;
     }
 
+    /* PROFILE PHOTO */
+    .hero-photo {
+      width: 160px;
+      flex-shrink: 0;
+    }
+
+    .hero-photo img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      filter: grayscale(15%);
+      transition: filter 0.3s;
+      display: block;
+    }
+
+    .hero-photo img:hover { filter: grayscale(0%); }
+
+    .photo-caption {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: #444;
+      margin-top: 0.5rem;
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    /* SECTIONS */
     section {
       margin-bottom: 4rem;
       animation: fadeUp 0.8s ease both;
@@ -174,14 +208,14 @@
 
     .exp-company {
       font-family: var(--mono);
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--accent2);
       margin-top: 0.1rem;
     }
 
     .exp-desc {
       grid-column: 1;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--fg2);
       margin-top: 0.4rem;
       line-height: 1.6;
@@ -189,7 +223,7 @@
 
     .exp-date {
       font-family: var(--mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--fg2);
       white-space: nowrap;
       text-align: right;
@@ -213,7 +247,7 @@
 
     .project-title {
       font-family: var(--mono);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--fg);
       margin-bottom: 0.4rem;
       display: flex;
@@ -223,12 +257,12 @@
     }
 
     .project-badge {
-      font-size: 0.65rem;
+      font-size: 0.63rem;
       padding: 0.1rem 0.4rem;
-      background: rgba(100, 181, 246, 0.12);
+      background: rgba(100, 181, 246, 0.1);
       color: var(--accent);
       border-radius: 2px;
-      border: 1px solid rgba(100, 181, 246, 0.3);
+      border: 1px solid rgba(100, 181, 246, 0.28);
     }
 
     .project-desc { font-size: 0.83rem; color: var(--fg2); line-height: 1.6; }
@@ -239,17 +273,9 @@
     }
 
     .edu-block:first-of-type { border-top: 1px solid var(--border); }
-
     .edu-school { font-weight: 500; color: var(--fg); font-size: 0.92rem; }
-
     .edu-degree { font-size: 0.83rem; color: var(--fg2); margin-top: 0.15rem; }
-
-    .edu-date {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent2);
-      margin-top: 0.2rem;
-    }
+    .edu-date { font-family: var(--mono); font-size: 0.7rem; color: var(--accent2); margin-top: 0.2rem; }
 
     .skills-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
@@ -292,22 +318,17 @@
     }
 
     .footer-links a:hover { color: var(--accent); }
-
     .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: #444; }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 600px) {
       nav { padding: 1rem; }
       main { padding: 100px 1rem 3rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-photo { display: flex; flex-direction: column; align-items: flex-start; }
+      .hero-photo img { width: 120px; height: 120px; }
       .exp-item { grid-template-columns: 1fr; }
       .exp-date { text-align: left; }
       footer { flex-direction: column; }
@@ -317,11 +338,11 @@
 <body>
 
   <nav>
-    <a href="#" class="nav-logo">CHAYANTH</a>
+    <a href="index.html" class="nav-logo">CHAYANTH_</a>
     <ul class="nav-links">
       <li><a href="#experience">exp</a></li>
       <li><a href="#projects">projects</a></li>
-      <li><a href="#skills">skills</a></li>
+      <li><a href="gallery.html">gallery</a></li>
       <li><a href="mailto:chayanthsuthahar@gmail.com">contact</a></li>
     </ul>
   </nav>
@@ -329,17 +350,28 @@
   <main>
 
     <div class="hero">
-      <h1><span id="typewriter"></span><span class="blink">|</span></h1>
-      <p class="hero-sub">mechanical engineer / builder / community organizer</p>
-      <p class="hero-bio">
-        Hey! I'm Chayanth — a <strong>Mechanical Engineering student</strong> at TMU with a love for building things, leading teams, and making stuff that matters. From robots winning world championships to organizing hackathons, I'm always willing to put in the work.
-      </p>
-      <div class="hero-tags">
-        <span class="tag">CAD/SolidWorks</span>
-        <span class="tag">FRC Robotics</span>
-        <span class="tag">Hackathons</span>
-        <span class="tag">Community</span>
-        <span class="tag">Mechanical Design</span>
+      <div class="hero-text">
+        <h1><span id="typewriter"></span><span class="blink">|</span></h1>
+        <p class="hero-sub">mechanical engineer / builder / community organizer</p>
+        <p class="hero-bio">
+          Hey! I'm Chayanth &mdash; a <strong>Mechanical Engineering student</strong> at TMU with a love for building things, leading teams, and making stuff that matters. From robots winning world championships to organizing hackathons, I'm always in the thick of it.
+        </p>
+        <div class="hero-tags">
+          <span class="tag">CAD/SolidWorks</span>
+          <span class="tag">FRC Robotics</span>
+          <span class="tag">Hackathons</span>
+          <span class="tag">Community</span>
+          <span class="tag">Mechanical Design</span>
+        </div>
+      </div>
+
+      <div class="hero-photo">
+        <img
+          src="https://media.licdn.com/dms/image/v2/D4E03AQFsXIGp1EXDhw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1732832262115?e=1773273600&v=beta&t=a5bumuWjulBGOUTBygiLgY_KGzBmnL5CgwKqd1CYG9Y"
+          alt="Chayanth Suthahar"
+          onerror="this.style.display='none'"
+        />
+        <p class="photo-caption">chayanth.jpg</p>
       </div>
     </div>
 
@@ -352,16 +384,16 @@
           <div class="exp-company">My Mulan Fantasy Dance Drama</div>
           <div class="exp-desc">Developed marketing campaigns, expanded brand presence through social media and community outreach, and coordinated promotional activities and partnerships.</div>
         </div>
-        <div class="exp-date">Jun – Aug 2025</div>
+        <div class="exp-date">Jun &ndash; Aug 2025</div>
       </div>
 
       <div class="exp-item">
         <div>
           <div class="exp-role">Strategy Representative &amp; Design Member</div>
           <div class="exp-company">FIRST Robotics Team 2056</div>
-          <div class="exp-desc">Strategized with 120+ teams on match tactics. Designed 10+ major robot components in SolidWorks. Co-led a 60+ member team to 1st in Canada (2022–2025) and 1st in the World (2025).</div>
+          <div class="exp-desc">Strategized with 120+ teams on match tactics. Designed 10+ major robot components in SolidWorks. Co-led a 60+ member team to 1st in Canada (2022&ndash;2025) and 1st in the World (2025).</div>
         </div>
-        <div class="exp-date">Sep 2022 – Apr 2025</div>
+        <div class="exp-date">Sep 2022 &ndash; Apr 2025</div>
       </div>
 
       <div class="exp-item">
@@ -370,7 +402,7 @@
           <div class="exp-company">Stoney Creek Youth Council</div>
           <div class="exp-desc">Represented 1000+ youth in meetings with city officials. Led planning and promotion of local projects addressing community development in Stoney Creek.</div>
         </div>
-        <div class="exp-date">Sep 2022 – Jun 2025</div>
+        <div class="exp-date">Sep 2022 &ndash; Jun 2025</div>
       </div>
 
       <div class="exp-item">
@@ -379,7 +411,7 @@
           <div class="exp-company">Hammer Hacks</div>
           <div class="exp-desc">Coordinated logistics for 140+ hackers across 17 high schools. Raised $12,000 from 15 sponsors including McMaster Engineering and Hack Club as a 501(c)(3) nonprofit.</div>
         </div>
-        <div class="exp-date">Jul 2023 – Nov 2024</div>
+        <div class="exp-date">Jul 2023 &ndash; Nov 2024</div>
       </div>
     </section>
 
@@ -388,15 +420,14 @@
 
       <div class="project-card">
         <div class="project-title">
-          2025 FRC Robot &mdash; "Lighting"
+          2025 FRC Robot &mdash; &ldquo;Lighting&rdquo;
           <span class="project-badge">&#127942; Ontario District Champions</span>
-          <span class="project-badge">&#127942; Einstein semi-finalist</span>
         </div>
-        <p class="project-desc">Engineered the robot chassis with precision CAD modelling. Oversaw in-house manufacturing of all mechanical subsystems and optimized drive performance and autonomous sequences — leading Team 2056 to Ontario District Champions.</p>
+        <p class="project-desc">Engineered the robot chassis using precision CAD modelling. Oversaw in-house manufacturing of all mechanical subsystems and optimized drive performance and autonomous sequences &mdash; leading Team 2056 to Ontario District Champions.</p>
       </div>
 
       <div class="project-card">
-        <div class="project-title">"Keep'on Cooking" &mdash; Pomodoro Productivity Device</div>
+        <div class="project-title">&ldquo;Keep&rsquo;on Cooking&rdquo; &mdash; Pomodoro Productivity Device</div>
         <p class="project-desc">Built a desk-based Pomodoro device combining a focus timer with a motivational game. Designed 3D models and animations for the prototype. Delivered a functional demo at McMaster Designathon under strict time constraints.</p>
       </div>
     </section>
@@ -433,6 +464,7 @@
   <footer>
     <div class="footer-links">
       <a href="https://linkedin.com/in/chayanth" target="_blank">LinkedIn</a>
+      <a href="gallery.html">Gallery</a>
       <a href="mailto:chayanthsuthahar@gmail.com">Email</a>
     </div>
     <p class="footer-copy">chayanth suthahar &mdash; 2025</p>
