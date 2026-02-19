@@ -46,14 +46,20 @@
     .nav-left { display: flex; align-items: center; gap: 1.2rem; }
     .nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
     
-    /* Spotify Styles */
+    /* Spotify Styles Updated with Album Art */
     .nav-spotify { 
-      display: none; /* Hidden until JS detects music */
+      display: none; 
       align-items: center; 
-      gap: 8px; 
+      gap: 10px; 
       padding-left: 1.2rem; 
       border-left: 1px solid var(--border);
       text-decoration: none;
+    }
+    #spot-album {
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
     }
     .spot-dot { 
       width: 6px; height: 6px; background: var(--spotify); border-radius: 50%; 
@@ -62,13 +68,25 @@
     #spot-text { 
       font-family: var(--mono); font-size: 0.65rem; color: var(--fg2); 
       text-transform: uppercase; letter-spacing: 0.05em; 
-      max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     @keyframes spotPulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
     .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--fg2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover { color: var(--accent); }
+    
+    /* Highlighted Resume Link */
+    .resume-link {
+        border: 1px solid var(--border);
+        padding: 0.3rem 0.6rem;
+        border-radius: 3px;
+        transition: all 0.2s !important;
+    }
+    .resume-link:hover {
+        background: rgba(100, 181, 246, 0.1);
+        border-color: var(--accent) !important;
+    }
 
     main { max-width: 720px; margin: 0 auto; padding: 120px 2rem 4rem; }
 
@@ -121,9 +139,10 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       nav { padding: 1rem; }
-      .nav-spotify { display: none !important; } /* Hide spotify on very small screens */
+      .nav-spotify { display: none !important; }
+      .nav-links { gap: 1rem; }
       main { padding: 100px 1rem 3rem; }
       .hero { grid-template-columns: 1fr; }
       .hero-photo img { width: 120px; height: 120px; }
@@ -141,6 +160,7 @@
     <div class="nav-left">
       <a href="index.html" class="nav-logo">CHAYANTH</a>
       <a id="spotify-status" class="nav-spotify" target="_blank">
+        <img id="spot-album" src="" alt="">
         <span class="spot-dot"></span>
         <span id="spot-text">Loading...</span>
       </a>
@@ -148,7 +168,7 @@
     <ul class="nav-links">
       <li><a href="#experience">exp</a></li>
       <li><a href="#projects">projects</a></li>
-      <li><a href="gallery.html">gallery</a></li>
+      <li><a href="resume.pdf" class="resume-link" target="_blank">resume</a></li>
       <li><a href="mailto:chayanthsuthahar@gmail.com">contact</a></li>
     </ul>
   </nav>
@@ -257,7 +277,7 @@
   <footer>
     <div class="footer-links">
       <a href="https://linkedin.com/in/chayanth" target="_blank">LinkedIn</a>
-      <a href="gallery.html">Gallery</a>
+      <a href="resume.pdf" target="_blank">Resume</a>
       <a href="mailto:chayanthsuthahar@gmail.com">Email</a>
     </div>
     <p class="footer-copy">chayanth suthahar &mdash; 2025</p>
@@ -268,6 +288,7 @@
     const DISCORD_ID = "865742067342508063";
     const spotContainer = document.getElementById('spotify-status');
     const spotText = document.getElementById('spot-text');
+    const spotAlbum = document.getElementById('spot-album');
 
     async function updateSpotify() {
       try {
@@ -276,11 +297,8 @@
         
         if (data.listening_to_spotify) {
           const s = data.spotify;
-          // CHANGED: s.song instead of s.track_name
-          const trackName = s.song; 
-          const artistName = s.artist.split(';')[0]; // Gets the first artist if there are many
-          
-          spotText.innerText = `${trackName} — ${artistName}`;
+          spotText.innerText = `${s.song} — ${s.artist.split(';')[0]}`;
+          spotAlbum.src = s.album_art_url;
           spotContainer.href = `https://open.spotify.com/track/${s.track_id}`;
           spotContainer.style.display = 'flex';
         } else {
@@ -292,6 +310,7 @@
     }
     setInterval(updateSpotify, 10000);
     updateSpotify();
+
     // TYPEWRITER
     const el = document.getElementById('typewriter');
     const text = 'CHAYANTH_';
