@@ -4,17 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>chayanth_</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --bg2: #111111;
+      --bg: #05070f;
+      --bg2: #0d1020;
       --fg: #e8e2d9;
       --fg2: #888;
       --accent: #64b5f6;
       --accent2: #90caf9;
-      --border: #222;
+      --border: #1e2235;
       --mono: 'Space Mono', monospace;
       --sans: 'DM Sans', sans-serif;
     }
@@ -29,7 +30,19 @@
       font-size: 15px;
       line-height: 1.6;
       min-height: 100vh;
+      overflow-x: hidden;
     }
+
+    /* STAR CANVAS */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* All content sits above stars */
+    nav, main, footer { position: relative; z-index: 1; }
 
     nav {
       position: fixed;
@@ -40,8 +53,8 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      background: rgba(10,10,10,0.88);
-      backdrop-filter: blur(12px);
+      background: rgba(5,7,15,0.85);
+      backdrop-filter: blur(14px);
     }
 
     .nav-logo {
@@ -137,11 +150,7 @@
       letter-spacing: 0.06em;
     }
 
-    /* PROFILE PHOTO */
-    .hero-photo {
-      width: 160px;
-      flex-shrink: 0;
-    }
+    .hero-photo { width: 160px; flex-shrink: 0; }
 
     .hero-photo img {
       width: 160px;
@@ -165,7 +174,6 @@
       letter-spacing: 0.06em;
     }
 
-    /* SECTIONS */
     section {
       margin-bottom: 4rem;
       animation: fadeUp 0.8s ease both;
@@ -203,7 +211,6 @@
     }
 
     .exp-item:first-of-type { border-top: 1px solid var(--border); }
-
     .exp-role { font-weight: 500; color: var(--fg); font-size: 0.92rem; }
 
     .exp-company {
@@ -236,7 +243,8 @@
       border: 1px solid var(--border);
       border-radius: 4px;
       margin-bottom: 0.75rem;
-      background: var(--bg2);
+      background: rgba(13,16,32,0.7);
+      backdrop-filter: blur(4px);
       transition: border-color 0.2s, transform 0.2s;
     }
 
@@ -283,7 +291,7 @@
       font-family: var(--mono);
       font-size: 0.7rem;
       padding: 0.3rem 0.7rem;
-      background: var(--bg2);
+      background: rgba(13,16,32,0.7);
       border: 1px solid var(--border);
       border-radius: 2px;
       color: var(--fg2);
@@ -327,7 +335,6 @@
       nav { padding: 1rem; }
       main { padding: 100px 1rem 3rem; }
       .hero { grid-template-columns: 1fr; }
-      .hero-photo { display: flex; flex-direction: column; align-items: flex-start; }
       .hero-photo img { width: 120px; height: 120px; }
       .exp-item { grid-template-columns: 1fr; }
       .exp-date { text-align: left; }
@@ -336,6 +343,8 @@
   </style>
 </head>
 <body>
+
+  <canvas id="stars"></canvas>
 
   <nav>
     <a href="index.html" class="nav-logo">CHAYANTH_</a>
@@ -471,16 +480,95 @@
   </footer>
 
   <script>
+    // TYPEWRITER
     const el = document.getElementById('typewriter');
     const text = 'CHAYANTH_';
     let i = 0;
     function type() {
-      if (i < text.length) {
-        el.textContent += text[i++];
-        setTimeout(type, 110);
-      }
+      if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 110); }
     }
     setTimeout(type, 500);
+
+    // STARFIELD
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 4000);
+      for (let s = 0; s < count; s++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          alpha: Math.random() * 0.7 + 0.2,
+          twinkleSpeed: Math.random() * 0.008 + 0.002,
+          twinkleOffset: Math.random() * Math.PI * 2,
+          // rare bigger stars
+          big: Math.random() < 0.04
+        });
+      }
+    }
+
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // subtle deep space gradient
+      const grad = ctx.createRadialGradient(
+        canvas.width * 0.5, canvas.height * 0.3, 0,
+        canvas.width * 0.5, canvas.height * 0.3, canvas.width * 0.8
+      );
+      grad.addColorStop(0, 'rgba(20,30,70,0.18)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(s => {
+        const flicker = s.alpha + Math.sin(t * s.twinkleSpeed + s.twinkleOffset) * 0.25;
+        const alpha = Math.max(0.05, Math.min(1, flicker));
+        const radius = s.big ? s.r * 2 : s.r;
+
+        if (s.big) {
+          // draw a tiny 4-point sparkle for big stars
+          ctx.save();
+          ctx.translate(s.x, s.y);
+          ctx.strokeStyle = `rgba(180,210,255,${alpha * 0.6})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(-radius * 3, 0); ctx.lineTo(radius * 3, 0);
+          ctx.moveTo(0, -radius * 3); ctx.lineTo(0, radius * 3);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+        // slight blue tint for some, white for others
+        const hue = s.big ? '200,220,255' : '220,230,255';
+        ctx.fillStyle = `rgba(${hue},${alpha})`;
+        ctx.fill();
+      });
+    }
+
+    let frame = 0;
+    function animate() {
+      frame++;
+      drawStars(frame);
+      requestAnimationFrame(animate);
+    }
+
+    resize();
+    initStars();
+    animate();
+
+    window.addEventListener('resize', () => { resize(); initStars(); });
   </script>
 
 </body>
