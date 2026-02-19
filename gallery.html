@@ -19,245 +19,51 @@
       --mono: 'Space Mono', monospace;
       --sans: 'DM Sans', sans-serif;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    #stars {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
+    body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
     nav, main, footer { position: relative; z-index: 1; }
 
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      background: rgba(5,7,15,0.85);
-      backdrop-filter: blur(14px);
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(5,7,15,0.85); backdrop-filter: blur(14px); }
+    .nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--fg2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 1rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
+    main { max-width: 960px; margin: 0 auto; padding: 110px 2rem 5rem; }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+    .page-header { margin-bottom: 3rem; animation: fadeUp 0.7s ease both; }
+    .page-header h1 { font-family: var(--mono); font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700; color: var(--accent); letter-spacing: -0.04em; margin-bottom: 0.4rem; }
+    .page-header p { font-family: var(--mono); font-size: 0.78rem; color: var(--fg2); letter-spacing: 0.06em; }
 
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--fg2);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--accent); }
-
-    main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 110px 2rem 5rem;
-    }
-
-    .page-header {
-      margin-bottom: 3rem;
-      animation: fadeUp 0.7s ease both;
-    }
-
-    .page-header h1 {
-      font-family: var(--mono);
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: -0.04em;
-      margin-bottom: 0.4rem;
-    }
-
-    .page-header p {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--fg2);
-      letter-spacing: 0.06em;
-    }
-
-    .gallery-grid {
-      columns: 3;
-      column-gap: 0.75rem;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-
-    .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 0.75rem;
-      position: relative;
-      overflow: hidden;
-      border-radius: 3px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      background: var(--bg2);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      display: block;
-      transition: transform 0.4s ease, filter 0.3s ease;
-      filter: grayscale(10%);
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.04);
-      filter: grayscale(0%);
-    }
-
-    .gallery-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.3s;
-      display: flex;
-      align-items: flex-end;
-      padding: 1rem;
-    }
-
+    .gallery-grid { columns: 3; column-gap: 0.75rem; animation: fadeUp 0.8s 0.1s ease both; }
+    .gallery-item { break-inside: avoid; margin-bottom: 0.75rem; position: relative; overflow: hidden; border-radius: 3px; border: 1px solid var(--border); cursor: pointer; background: var(--bg2); }
+    .gallery-item img { width: 100%; display: block; transition: transform 0.4s ease, filter 0.3s ease; filter: grayscale(10%); }
+    .gallery-item:hover img { transform: scale(1.04); filter: grayscale(0%); }
+    .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 55%); opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; padding: 1rem; }
     .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-caption { font-family: var(--mono); font-size: 0.68rem; color: var(--fg); letter-spacing: 0.06em; line-height: 1.4; }
+    .gallery-caption span { display: block; color: var(--accent2); font-size: 0.6rem; margin-top: 0.1rem; }
 
-    .gallery-caption {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--fg);
-      letter-spacing: 0.06em;
-      line-height: 1.4;
-    }
-
-    .gallery-caption span {
-      display: block;
-      color: var(--accent2);
-      font-size: 0.6rem;
-      margin-top: 0.1rem;
-    }
-
-    /* LIGHTBOX */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(0,0,0,0.93);
-      backdrop-filter: blur(10px);
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      cursor: zoom-out;
-    }
-
+    .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.93); backdrop-filter: blur(10px); justify-content: center; align-items: center; padding: 2rem; cursor: zoom-out; }
     .lightbox.open { display: flex; }
-
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 3px;
-      border: 1px solid var(--border);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.9);
-      animation: zoomIn 0.25s ease;
-    }
-
-    .lightbox-caption {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--fg2);
-      letter-spacing: 0.08em;
-      text-align: center;
-    }
-
-    .lightbox-close {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      font-family: var(--mono);
-      font-size: 1.4rem;
-      color: var(--fg2);
-      cursor: pointer;
-      background: none;
-      border: none;
-      line-height: 1;
-      transition: color 0.2s;
-    }
-
+    .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 3px; border: 1px solid var(--border); box-shadow: 0 40px 80px rgba(0,0,0,0.9); animation: zoomIn 0.25s ease; }
+    .lightbox-caption { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 0.72rem; color: var(--fg2); letter-spacing: 0.08em; text-align: center; }
+    .lightbox-close { position: fixed; top: 1.5rem; right: 1.5rem; font-family: var(--mono); font-size: 1.4rem; color: var(--fg2); cursor: pointer; background: none; border: none; line-height: 1; transition: color 0.2s; }
     .lightbox-close:hover { color: var(--accent); }
 
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem;
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
+    footer { border-top: 1px solid var(--border); padding: 2rem; max-width: 960px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .footer-links { display: flex; gap: 1.5rem; }
-
-    .footer-links a {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--fg2);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      transition: color 0.2s;
-    }
-
+    .footer-links a { font-family: var(--mono); font-size: 0.72rem; color: var(--fg2); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
     .footer-links a:hover { color: var(--accent); }
     .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: #444; }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes zoomIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
 
-    @media (max-width: 700px) {
-      nav { padding: 1rem; }
-      .gallery-grid { columns: 2; }
-    }
-
-    @media (max-width: 450px) {
-      .gallery-grid { columns: 1; }
-    }
+    @media (max-width: 700px) { nav { padding: 1rem; } .gallery-grid { columns: 2; } }
+    @media (max-width: 450px) { .gallery-grid { columns: 1; } }
   </style>
 </head>
 <body>
@@ -281,57 +87,26 @@
     </div>
 
     <div class="gallery-grid">
-
       <div class="gallery-item" onclick="openLightbox(this)">
         <img src="Award.jpg" alt="FRC Award" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            FRC District Award
-            <span>FIRST Robotics Competition</span>
-          </div>
-        </div>
+        <div class="gallery-overlay"><div class="gallery-caption">FRC District Award<span>FIRST Robotics Competition</span></div></div>
       </div>
-
       <div class="gallery-item" onclick="openLightbox(this)">
         <img src="DSC_1734.jpeg" alt="FRC World Championship" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            FRC World Championship
-            <span>Team 2056 in the stands</span>
-          </div>
-        </div>
+        <div class="gallery-overlay"><div class="gallery-caption">FRC World Championship<span>Team 2056 in the stands</span></div></div>
       </div>
-
       <div class="gallery-item" onclick="openLightbox(this)">
         <img src="image.png" alt="Strategy Session" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            Alliance Strategy
-            <span>FRC Competition Floor</span>
-          </div>
-        </div>
+        <div class="gallery-overlay"><div class="gallery-caption">Alliance Strategy<span>FRC Competition Floor</span></div></div>
       </div>
-
       <div class="gallery-item" onclick="openLightbox(this)">
         <img src="IMG_4619.jpg" alt="Team 2056 Pit" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            Team 2056 Pit
-            <span>Orchard Park Secondary School</span>
-          </div>
-        </div>
+        <div class="gallery-overlay"><div class="gallery-caption">Team 2056 Pit<span>Orchard Park Secondary School</span></div></div>
       </div>
-
       <div class="gallery-item" onclick="openLightbox(this)">
         <img src="IMG_7084.jpg" alt="Hammer Hacks" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            Hammer Hacks
-            <span>Event Operations</span>
-          </div>
-        </div>
+        <div class="gallery-overlay"><div class="gallery-caption">Hammer Hacks<span>Event Operations</span></div></div>
       </div>
-
     </div>
   </main>
 
@@ -351,87 +126,79 @@
   </div>
 
   <script>
-    // LIGHTBOX
     function openLightbox(el) {
       const img = el.querySelector('img');
       const cap = el.querySelector('.gallery-caption');
       document.getElementById('lightbox-img').src = img.src;
-      document.getElementById('lightbox-img').alt = img.alt;
       document.getElementById('lightbox-caption').textContent = cap ? cap.childNodes[0].textContent.trim() : '';
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-
     function closeLightbox() {
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
-
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-    // STARFIELD
+    // ── STARFIELD ──────────────────────────────────────────────
     const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
+    const ctx    = canvas.getContext('2d');
+    let stars    = [];
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
     function initStars() {
       stars = [];
-      const count = Math.floor((canvas.width * canvas.height) / 4000);
+      const count = Math.floor((canvas.width * canvas.height) / 3500);
       for (let s = 0; s < count; s++) {
+        const big = Math.random() < 0.05;
         stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 1.2 + 0.2,
-          alpha: Math.random() * 0.7 + 0.2,
-          twinkleSpeed: Math.random() * 0.008 + 0.002,
-          twinkleOffset: Math.random() * Math.PI * 2,
-          big: Math.random() < 0.04
+          x:     Math.random() * canvas.width,
+          y:     Math.random() * canvas.height,
+          r:     big ? Math.random() * 1.4 + 0.8 : Math.random() * 0.9 + 0.2,
+          base:  Math.random() * 0.5 + 0.15,
+          freq:  (Math.random() * 1.5 + 0.5) * 0.001,
+          phase: Math.random() * Math.PI * 2,
+          amp:   Math.random() * 0.45 + 0.2,
+          big
         });
       }
     }
 
-    function drawStars(t) {
+    function draw(now) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const grad = ctx.createRadialGradient(canvas.width*0.5, canvas.height*0.3, 0, canvas.width*0.5, canvas.height*0.3, canvas.width*0.8);
-      grad.addColorStop(0, 'rgba(20,30,70,0.18)');
+      const grad = ctx.createRadialGradient(canvas.width*0.5, canvas.height*0.25, 0, canvas.width*0.5, canvas.height*0.25, canvas.width*0.7);
+      grad.addColorStop(0, 'rgba(15,25,65,0.2)');
       grad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      stars.forEach(s => {
-        const flicker = s.alpha + Math.sin(t * s.twinkleSpeed + s.twinkleOffset) * 0.25;
-        const alpha = Math.max(0.05, Math.min(1, flicker));
-        const radius = s.big ? s.r * 2 : s.r;
-
+      for (const s of stars) {
+        const alpha = Math.max(0.02, Math.min(1, s.base + Math.sin(now * s.freq + s.phase) * s.amp));
         if (s.big) {
           ctx.save();
           ctx.translate(s.x, s.y);
-          ctx.strokeStyle = `rgba(180,210,255,${alpha * 0.6})`;
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `rgba(190,215,255,${alpha * 0.55})`;
+          ctx.lineWidth = 0.6;
+          const arm = s.r * 3.5;
           ctx.beginPath();
-          ctx.moveTo(-radius*3, 0); ctx.lineTo(radius*3, 0);
-          ctx.moveTo(0, -radius*3); ctx.lineTo(0, radius*3);
+          ctx.moveTo(-arm, 0); ctx.lineTo(arm, 0);
+          ctx.moveTo(0, -arm); ctx.lineTo(0, arm);
           ctx.stroke();
           ctx.restore();
         }
-
         ctx.beginPath();
-        ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
-        const hue = s.big ? '200,220,255' : '220,230,255';
-        ctx.fillStyle = `rgba(${hue},${alpha})`;
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        const r = 200 + Math.round(s.phase * 5) % 30;
+        const g = 215 + Math.round(s.phase * 3) % 20;
+        ctx.fillStyle = `rgba(${r},${g},255,${alpha})`;
         ctx.fill();
-      });
+      }
     }
 
-    let frame = 0;
-    function animate() { frame++; drawStars(frame); requestAnimationFrame(animate); }
+    function animate(now) { draw(now); requestAnimationFrame(animate); }
 
-    resize(); initStars(); animate();
+    resize(); initStars(); requestAnimationFrame(animate);
     window.addEventListener('resize', () => { resize(); initStars(); });
   </script>
 
