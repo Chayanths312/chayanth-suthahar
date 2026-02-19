@@ -276,7 +276,11 @@
         
         if (data.listening_to_spotify) {
           const s = data.spotify;
-          spotText.innerText = `${s.track_name} — ${s.artist.split(';')[0]}`;
+          // CHANGED: s.song instead of s.track_name
+          const trackName = s.song; 
+          const artistName = s.artist.split(';')[0]; // Gets the first artist if there are many
+          
+          spotText.innerText = `${trackName} — ${artistName}`;
           spotContainer.href = `https://open.spotify.com/track/${s.track_id}`;
           spotContainer.style.display = 'flex';
         } else {
@@ -288,7 +292,6 @@
     }
     setInterval(updateSpotify, 10000);
     updateSpotify();
-
     // TYPEWRITER
     const el = document.getElementById('typewriter');
     const text = 'CHAYANTH_';
