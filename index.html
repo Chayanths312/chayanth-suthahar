@@ -31,8 +31,13 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    nav, main, footer { position: relative; z-index: 1; }
+
+    /* Canvases */
+    #stars  { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    #warp-l { position: fixed; left: 0; top: 0; width: 220px; height: 100vh; z-index: 2; pointer-events: none; }
+    #warp-r { position: fixed; right: 0; top: 0; width: 220px; height: 100vh; z-index: 2; pointer-events: none; }
+
+    nav, main, footer { position: relative; z-index: 3; }
 
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -42,32 +47,25 @@
       background: rgba(5,7,15,0.85);
       backdrop-filter: blur(14px);
     }
-    
     .nav-left { display: flex; align-items: center; gap: 1.2rem; }
     .nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
-    
-    /* Spotify Styles Updated with Album Art */
-    .nav-spotify { 
-      display: none; 
-      align-items: center; 
-      gap: 10px; 
-      padding-left: 1.2rem; 
+
+    .nav-spotify {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding-left: 1.2rem;
       border-left: 1px solid var(--border);
       text-decoration: none;
     }
-    #spot-album {
-      width: 20px;
-      height: 20px;
-      border-radius: 2px;
-      border: 1px solid var(--border);
-    }
-    .spot-dot { 
-      width: 6px; height: 6px; background: var(--spotify); border-radius: 50%; 
+    #spot-album { width: 20px; height: 20px; border-radius: 2px; border: 1px solid var(--border); }
+    .spot-dot {
+      width: 6px; height: 6px; background: var(--spotify); border-radius: 50%;
       box-shadow: 0 0 8px var(--spotify); animation: spotPulse 2s infinite;
     }
-    #spot-text { 
-      font-family: var(--mono); font-size: 0.65rem; color: var(--fg2); 
-      text-transform: uppercase; letter-spacing: 0.05em; 
+    #spot-text {
+      font-family: var(--mono); font-size: 0.65rem; color: var(--fg2);
+      text-transform: uppercase; letter-spacing: 0.05em;
       max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     @keyframes spotPulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
@@ -75,23 +73,13 @@
     .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
     .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--fg2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover { color: var(--accent); }
-    
-    /* Highlighted Resume Link */
-    .resume-link {
-        border: 1px solid var(--border);
-        padding: 0.3rem 0.6rem;
-        border-radius: 3px;
-        transition: all 0.2s !important;
-    }
-    .resume-link:hover {
-        background: rgba(100, 181, 246, 0.1);
-        border-color: var(--accent) !important;
-    }
+    .resume-link { border: 1px solid var(--border); padding: 0.3rem 0.6rem; border-radius: 3px; transition: all 0.2s !important; }
+    .resume-link:hover { background: rgba(100,181,246,0.1); border-color: var(--accent) !important; }
 
     main { max-width: 720px; margin: 0 auto; padding: 120px 2rem 4rem; }
 
     .hero { margin-bottom: 5rem; animation: fadeUp 0.8s ease both; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
-    .hero-text h1 { font-family: var(--mono); font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 0.5rem; color: var(--accent); min-height: 1.2em; }
+    .hero-text h1 { font-family: var(--mono); font-size: clamp(2rem,6vw,3.2rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 0.5rem; color: var(--accent); min-height: 1.2em; }
     .blink { display: inline-block; animation: blink 1.1s step-end infinite; color: var(--accent); }
     .hero-sub { font-family: var(--mono); font-size: 0.8rem; color: var(--accent2); letter-spacing: 0.04em; margin-bottom: 1.2rem; }
     .hero-bio { color: var(--fg2); font-size: 0.95rem; max-width: 420px; line-height: 1.75; }
@@ -136,12 +124,13 @@
     .footer-links a:hover { color: var(--accent); }
     .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: #444; }
 
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
     @media (max-width: 700px) {
       nav { padding: 1rem; }
       .nav-spotify { display: none !important; }
+      #warp-l, #warp-r { display: none; }
       .nav-links { gap: 1rem; }
       main { padding: 100px 1rem 3rem; }
       .hero { grid-template-columns: 1fr; }
@@ -155,6 +144,8 @@
 <body>
 
   <canvas id="stars"></canvas>
+  <canvas id="warp-l"></canvas>
+  <canvas id="warp-r"></canvas>
 
   <nav>
     <div class="nav-left">
@@ -196,7 +187,7 @@
     </div>
 
     <section id="experience">
-      <p class="section-label">my experience </p>
+      <p class="section-label">my experience</p>
       <div class="exp-item">
         <div>
           <div class="exp-role">Marketing Assistant</div>
@@ -284,98 +275,270 @@
   </footer>
 
   <script>
-    // ── SPOTIFY STATUS (LANYARD) ───────────────────────────────
-    const DISCORD_ID = "865742067342508063";
-    const spotContainer = document.getElementById('spotify-status');
-    const spotText = document.getElementById('spot-text');
-    const spotAlbum = document.getElementById('spot-album');
+  // ── SPOTIFY (LANYARD) ────────────────────────────────────────
+  const DISCORD_ID = "865742067342508063";
+  const spotContainer = document.getElementById('spotify-status');
+  const spotText      = document.getElementById('spot-text');
+  const spotAlbum     = document.getElementById('spot-album');
 
-    async function updateSpotify() {
-      try {
-        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-        const { data } = await res.json();
-        
-        if (data.listening_to_spotify) {
-          const s = data.spotify;
-          spotText.innerText = `${s.song} — ${s.artist.split(';')[0]}`;
-          spotAlbum.src = s.album_art_url;
-          spotContainer.href = `https://open.spotify.com/track/${s.track_id}`;
-          spotContainer.style.display = 'flex';
-        } else {
-          spotContainer.style.display = 'none';
-        }
-      } catch (e) {
+  async function updateSpotify() {
+    try {
+      const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+      const { data } = await res.json();
+      if (data.listening_to_spotify) {
+        const s = data.spotify;
+        spotText.innerText = `${s.song} — ${s.artist.split(';')[0]}`;
+        spotAlbum.src = s.album_art_url;
+        spotContainer.href = `https://open.spotify.com/track/${s.track_id}`;
+        spotContainer.style.display = 'flex';
+      } else {
         spotContainer.style.display = 'none';
       }
+    } catch(e) { spotContainer.style.display = 'none'; }
+  }
+  setInterval(updateSpotify, 10000);
+  updateSpotify();
+
+  // ── TYPEWRITER ───────────────────────────────────────────────
+  const el = document.getElementById('typewriter');
+  const text = 'CHAYANTH_';
+  let i = 0;
+  function type() { if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 110); } }
+  setTimeout(type, 500);
+
+  // ── STARFIELD ────────────────────────────────────────────────
+  const starCanvas = document.getElementById('stars');
+  const sctx = starCanvas.getContext('2d');
+  let stars = [];
+
+  function resizeStars() {
+    starCanvas.width  = window.innerWidth;
+    starCanvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((starCanvas.width * starCanvas.height) / 3500);
+    for (let s = 0; s < count; s++) {
+      const big = Math.random() < 0.05;
+      stars.push({
+        x: Math.random() * starCanvas.width,
+        y: Math.random() * starCanvas.height,
+        r: big ? Math.random()*1.4+0.8 : Math.random()*0.9+0.2,
+        base: Math.random()*0.5+0.15,
+        freq: (Math.random()*1.5+0.5)*0.001,
+        phase: Math.random()*Math.PI*2,
+        amp: Math.random()*0.45+0.2,
+        big
+      });
     }
-    setInterval(updateSpotify, 10000);
-    updateSpotify();
+  }
 
-    // TYPEWRITER
-    const el = document.getElementById('typewriter');
-    const text = 'CHAYANTH_';
-    let i = 0;
-    function type() { if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 110); } }
-    setTimeout(type, 500);
-
-    // ── STARFIELD ──────────────────────────────────────────────
-    const canvas = document.getElementById('stars');
-    const ctx    = canvas.getContext('2d');
-    let stars    = [];
-
-    function resize() {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
+  function drawStars(now) {
+    sctx.clearRect(0,0,starCanvas.width,starCanvas.height);
+    for (const s of stars) {
+      const alpha = Math.max(0.02, Math.min(1, s.base + Math.sin(now*s.freq+s.phase)*s.amp));
+      if (s.big) {
+        sctx.save(); sctx.translate(s.x,s.y);
+        sctx.strokeStyle=`rgba(190,215,255,${alpha*0.55})`; sctx.lineWidth=0.6;
+        const arm=s.r*3.5;
+        sctx.beginPath(); sctx.moveTo(-arm,0); sctx.lineTo(arm,0); sctx.moveTo(0,-arm); sctx.lineTo(0,arm); sctx.stroke();
+        sctx.restore();
+      }
+      sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      const r=200+Math.round(s.phase*5)%30, g=215+Math.round(s.phase*3)%20;
+      sctx.fillStyle=`rgba(${r},${g},255,${alpha})`; sctx.fill();
     }
+  }
 
-    function initStars() {
-      stars = [];
-      const count = Math.floor((canvas.width * canvas.height) / 3500);
-      for (let s = 0; s < count; s++) {
-        const big = Math.random() < 0.05;
-        stars.push({
-          x:      Math.random() * canvas.width,
-          y:      Math.random() * canvas.height,
-          r:      big ? Math.random() * 1.4 + 0.8 : Math.random() * 0.9 + 0.2,
-          base:   Math.random() * 0.5 + 0.15,
-          freq:   (Math.random() * 1.5 + 0.5) * 0.001,
-          phase:  Math.random() * Math.PI * 2,
-          amp:    Math.random() * 0.45 + 0.2,
-          big
+  // ── WARP / BLACK HOLE EFFECT ─────────────────────────────────
+  const warpL = document.getElementById('warp-l');
+  const warpR = document.getElementById('warp-r');
+  const wctxL = warpL.getContext('2d');
+  const wctxR = warpR.getContext('2d');
+  const WARP_W = 220;
+
+  function resizeWarp() {
+    warpL.width  = WARP_W; warpL.height = window.innerHeight;
+    warpR.width  = WARP_W; warpR.height = window.innerHeight;
+  }
+
+  // Mouse tracking — separate for left and right panels
+  let mouseL = { x: WARP_W/2, y: window.innerHeight/2, active: false, strength: 0 };
+  let mouseR = { x: WARP_W/2, y: window.innerHeight/2, active: false, strength: 0 };
+
+  document.addEventListener('mousemove', e => {
+    const mx = e.clientX, my = e.clientY, w = window.innerWidth;
+    if (mx < WARP_W) {
+      mouseL.x = mx; mouseL.y = my; mouseL.active = true;
+    } else { mouseL.active = false; }
+    if (mx > w - WARP_W) {
+      mouseR.x = mx - (w - WARP_W); mouseR.y = my; mouseR.active = true;
+    } else { mouseR.active = false; }
+  });
+
+  // Particle grid for warp panels
+  const COLS = 18, ROWS = 40;
+  function makeGrid(side) {
+    const pts = [];
+    for (let row = 0; row <= ROWS; row++) {
+      for (let col = 0; col <= COLS; col++) {
+        pts.push({
+          ox: (col / COLS) * WARP_W,
+          oy: (row / ROWS) * window.innerHeight,
+          x:  (col / COLS) * WARP_W,
+          y:  (row / ROWS) * window.innerHeight,
         });
       }
     }
+    return pts;
+  }
 
-    function draw(now) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const s of stars) {
-        const alpha = Math.max(0.02, Math.min(1, s.base + Math.sin(now * s.freq + s.phase) * s.amp));
-        if (s.big) {
-          ctx.save();
-          ctx.translate(s.x, s.y);
-          ctx.strokeStyle = `rgba(190,215,255,${alpha * 0.55})`;
-          ctx.lineWidth = 0.6;
-          const arm = s.r * 3.5;
-          ctx.beginPath();
-          ctx.moveTo(-arm, 0); ctx.lineTo(arm, 0);
-          ctx.moveTo(0, -arm); ctx.lineTo(0, arm);
-          ctx.stroke();
-          ctx.restore();
-        }
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        const r = 200 + Math.round(s.phase * 5) % 30;
-        const g = 215 + Math.round(s.phase * 3) % 20;
-        ctx.fillStyle = `rgba(${r},${g},255,${alpha})`;
-        ctx.fill();
+  let gridL = makeGrid('l');
+  let gridR = makeGrid('r');
+
+  function reinitGrids() {
+    gridL = makeGrid('l');
+    gridR = makeGrid('r');
+  }
+
+  function updateGrid(grid, mouse, w, h) {
+    const strength = mouse.active ? 1 : 0;
+    const mx = mouse.x, my = mouse.y;
+    const PULL_RADIUS = 180;
+    const MAX_PULL = 55;
+
+    for (const pt of grid) {
+      const dx = pt.ox - mx;
+      const dy = pt.oy - my;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (dist < PULL_RADIUS && strength > 0) {
+        // Gravitational pull — closer = more pull
+        const force = (1 - dist / PULL_RADIUS);
+        const pull = force * force * MAX_PULL * strength;
+        // Pull toward cursor (black hole sucks in)
+        pt.x = pt.ox - (dx / dist) * pull;
+        pt.y = pt.oy - (dy / dist) * pull;
+      } else {
+        // Ease back to original position
+        pt.x += (pt.ox - pt.x) * 0.08;
+        pt.y += (pt.oy - pt.y) * 0.08;
       }
     }
+  }
 
-    function animate(now) { draw(now); requestAnimationFrame(animate); }
-    resize();
+  function drawWarp(ctx, grid, mouse, side) {
+    ctx.clearRect(0, 0, WARP_W, window.innerHeight);
+
+    const mx = mouse.x, my = mouse.y;
+
+    // Draw warped grid lines
+    ctx.lineWidth = 0.5;
+
+    // Horizontal lines
+    for (let row = 0; row <= ROWS; row++) {
+      ctx.beginPath();
+      for (let col = 0; col <= COLS; col++) {
+        const pt = grid[row * (COLS+1) + col];
+        const dx = pt.ox - mx, dy = pt.oy - my;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        const closeness = Math.max(0, 1 - dist/180);
+        const alpha = 0.08 + closeness * 0.35;
+        const r = Math.round(100 + closeness * 100);
+        const g = Math.round(181 + closeness * 40);
+        ctx.strokeStyle = `rgba(${r},${g},246,${alpha})`;
+        if (col === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.stroke();
+    }
+
+    // Vertical lines
+    for (let col = 0; col <= COLS; col++) {
+      ctx.beginPath();
+      for (let row = 0; row <= ROWS; row++) {
+        const pt = grid[row * (COLS+1) + col];
+        const dx = pt.ox - mx, dy = pt.oy - my;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        const closeness = Math.max(0, 1 - dist/180);
+        const alpha = 0.08 + closeness * 0.35;
+        const r = Math.round(100 + closeness * 100);
+        const g = Math.round(181 + closeness * 40);
+        ctx.strokeStyle = `rgba(${r},${g},246,${alpha})`;
+        if (row === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.stroke();
+    }
+
+    // Black hole core glow when active
+    if (mouse.active) {
+      // Outer glow
+      const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 80);
+      grad.addColorStop(0, 'rgba(0,0,0,0.85)');
+      grad.addColorStop(0.3, 'rgba(30,60,120,0.3)');
+      grad.addColorStop(0.7, 'rgba(100,181,246,0.06)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(mx, my, 80, 0, Math.PI*2);
+      ctx.fill();
+
+      // Event horizon ring
+      ctx.beginPath();
+      ctx.arc(mx, my, 12, 0, Math.PI*2);
+      const ringGrad = ctx.createRadialGradient(mx, my, 0, mx, my, 12);
+      ringGrad.addColorStop(0, 'rgba(0,0,0,1)');
+      ringGrad.addColorStop(0.7, 'rgba(0,10,30,1)');
+      ringGrad.addColorStop(1, 'rgba(100,181,246,0.8)');
+      ctx.fillStyle = ringGrad;
+      ctx.fill();
+
+      // Bright accent ring
+      ctx.beginPath();
+      ctx.arc(mx, my, 13, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(144,202,249,0.6)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Edge fade — blend into background
+    const fadeDir = side === 'l' ? 'l' : 'r';
+    const edgeFade = ctx.createLinearGradient(
+      fadeDir === 'l' ? 0 : WARP_W, 0,
+      fadeDir === 'l' ? WARP_W : 0, 0
+    );
+    edgeFade.addColorStop(0, 'rgba(5,7,15,0.95)');
+    edgeFade.addColorStop(0.4, 'rgba(5,7,15,0.3)');
+    edgeFade.addColorStop(1, 'rgba(5,7,15,0)');
+    ctx.fillStyle = edgeFade;
+    ctx.fillRect(0, 0, WARP_W, window.innerHeight);
+  }
+
+  // ── MAIN LOOP ────────────────────────────────────────────────
+  function loop(now) {
+    drawStars(now);
+
+    updateGrid(gridL, mouseL, WARP_W, window.innerHeight);
+    updateGrid(gridR, mouseR, WARP_W, window.innerHeight);
+    drawWarp(wctxL, gridL, mouseL, 'l');
+    drawWarp(wctxR, gridR, mouseR, 'r');
+
+    requestAnimationFrame(loop);
+  }
+
+  function resizeAll() {
+    starCanvas.width  = window.innerWidth;
+    starCanvas.height = window.innerHeight;
+    resizeWarp();
+    reinitGrids();
     initStars();
-    requestAnimationFrame(animate);
-    window.addEventListener('resize', () => { resize(); initStars(); });
+  }
+
+  resizeAll();
+  requestAnimationFrame(loop);
+  window.addEventListener('resize', resizeAll);
   </script>
 
 </body>
