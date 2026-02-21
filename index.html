@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,7 +148,7 @@
       <li><a href="#experience">exp</a></li>
       <li><a href="#projects">projects</a></li>
       <li><a href="Chayanths.pdf" class="resume-link" target="_blank">resume</a></li>
-      <li><a href="/cdn-cgi/l/email-protection#2b48434a524a455f43585e5f434a434a596b4c464a424705484446">contact</a></li>
+      <li><a href="mailto:chayanthsuthahar@gmail.com">contact</a></li>
     </ul>
   </nav>
 
@@ -256,12 +257,12 @@
     <div class="footer-links">
       <a href="https://linkedin.com/in/chayanth" target="_blank">LinkedIn</a>
       <a href="Chayanths.pdf" target="_blank">Resume</a>
-      <a href="/cdn-cgi/l/email-protection#dbb8b3baa2bab5afb3a8aeafb3bab3baa99bbcb6bab2b7f5b8b4b6">Email</a>
+      <a href="mailto:chayanthsuthahar@gmail.com">Email</a>
     </div>
     <p class="footer-copy">chayanth suthahar &mdash; 2025</p>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
   // ─────────────────────────────────────────────────────────────
   //  SPOTIFY
   // ─────────────────────────────────────────────────────────────
@@ -370,7 +371,7 @@
         ox: x, oy: y,
         x, y,
         r:     Math.random() * 1.3 + 0.3,
-        alpha: Math.random() * 0.08 + 0.02,
+        alpha: Math.random() * 0.18 + 0.04,
         speed: Math.random() * 0.06 + 0.03
       });
     }
@@ -409,7 +410,7 @@
       const r = Math.round(100 * (1-heat) + 255 * heat);
       const g = Math.round(181 * (1-heat) + 210 * heat);
       const b = Math.round(246 * (1-heat) +  20 * heat);
-      const a = p.alpha + heat * 0.18;
+      const a = p.alpha + heat * 0.38;
 
       wctx.beginPath();
       wctx.arc(p.x, p.y, p.r + heat * 1.5, 0, Math.PI * 2);
@@ -430,27 +431,27 @@
   const cursorCanvas = document.getElementById('cursor-canvas');
   const cctx = cursorCanvas.getContext('2d');
 
-  // Accretion disk stream particles — kept tight and subtle
-  const STREAM_COUNT = 80;
+  // Accretion disk stream particles
+  const STREAM_COUNT = 150;
   const diskStreams = Array.from({ length: STREAM_COUNT }, (_, i) => ({
     angle:  (i / STREAM_COUNT) * Math.PI * 2,
     speed:  0.020 + Math.random() * 0.015,
-    orbitA: 10 + Math.random() * 6,   // tight semi-major
-    orbitB: 2  + Math.random() * 2,   // very flat semi-minor
-    size:   Math.random() * 1.0 + 0.2,
-    heat:   Math.random(),
-    alpha:  Math.random() * 0.35 + 0.1,
+    orbitA: 14 + Math.random() * 18,  // → 14 + Math.random() * 10
+    orbitB: 2  + Math.random() * 5,   // → 2  + Math.random() * 3
+    size:   Math.random() * 1.7 + 0.3,
+    heat:   Math.random(),             // inner=hot, outer=cooler
+    alpha:  Math.random() * 0.6 + 0.25,
   }));
 
-  // Lensed light — minimal arc, very faint
-  const LENS_COUNT = 30;
+  // Lensed light arcing over the top of the event horizon
+  const LENS_COUNT = 80;
   const lensArcs = Array.from({ length: LENS_COUNT }, () => ({
     angle:  Math.random() * Math.PI,
     speed:  0.007 + Math.random() * 0.006,
-    orbitA: 8 + Math.random() * 4,
-    orbitB: 2 + Math.random() * 2,
-    size:   Math.random() * 0.8 + 0.2,
-    alpha:  Math.random() * 0.25 + 0.08,
+    orbitA: 12 + Math.random() * 8,
+    orbitB: 3  + Math.random() * 4,
+    size:   Math.random() * 1.2 + 0.2,
+    alpha:  Math.random() * 0.55 + 0.2,
   }));
 
   function drawCursor() {
@@ -461,13 +462,13 @@
     const mx = smoothX, my = smoothY;
 
     // ── 1. FAINT AMBIENT GLOW — barely visible, won't hide text ─
-    const ambient = cctx.createRadialGradient(mx, my, 12, mx, my, 40);
+    const ambient = cctx.createRadialGradient(mx, my, 12, mx, my, 58);
     ambient.addColorStop(0,    'rgba(255,195,0,0)');
-    ambient.addColorStop(0.3,  'rgba(255,175,0,0.015)');
-    ambient.addColorStop(0.65, 'rgba(200,110,0,0.008)');
+    ambient.addColorStop(0.3,  'rgba(255,175,0,0.055)');
+    ambient.addColorStop(0.65, 'rgba(200,110,0,0.025)');
     ambient.addColorStop(1,    'rgba(0,0,0,0)');
     cctx.fillStyle = ambient;
-    cctx.beginPath(); cctx.arc(mx, my, 40, 0, Math.PI*2); cctx.fill();
+    cctx.beginPath(); cctx.arc(mx, my, 58, 0, Math.PI*2); cctx.fill();
 
     // ── 2. ACCRETION DISK — back half (will be hidden by void) ──
     cctx.save();
@@ -484,7 +485,7 @@
       const b = Math.round(  0 + h *  25);
       cctx.beginPath();
       cctx.arc(x, y, s.size, 0, Math.PI*2);
-      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha * 0.12})`;
+      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha * 0.38})`;
       cctx.fill();
     }
     cctx.restore();
@@ -495,18 +496,18 @@
     void0.addColorStop(0.85, 'rgba(0,0,0,1)');
     void0.addColorStop(1,    'rgba(0,0,0,0.75)');
     cctx.fillStyle = void0;
-    cctx.beginPath(); cctx.arc(mx, my, 13, 0, Math.PI*2); cctx.fill();
+    cctx.beginPath(); cctx.arc(mx, my, 8, 0, Math.PI*2); cctx.fill();
 
     // ── 4. PHOTON RING — bright gold ────────────────────────────
     cctx.beginPath();
-    cctx.arc(mx, my, 14.5, 0, Math.PI*2);
+    cctx.arc(mx, my, 9.5, 0, Math.PI*2);
     cctx.strokeStyle = 'rgba(255,218,0,0.92)';
     cctx.lineWidth = 2.2;
     cctx.stroke();
 
     // Soft second ring
     cctx.beginPath();
-    cctx.arc(mx, my, 18.5, 0, Math.PI*2);
+    cctx.arc(mx, my, 13.5, 0, Math.PI*2);
     cctx.strokeStyle = 'rgba(255,185,0,0.18)';
     cctx.lineWidth = 2.8;
     cctx.stroke();
@@ -525,7 +526,7 @@
       const b = Math.round(  0 + h *  25);
       cctx.beginPath();
       cctx.arc(x, y, s.size, 0, Math.PI*2);
-      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha * 0.18})`;
+      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha})`;
       cctx.fill();
     }
     cctx.restore();
@@ -539,27 +540,27 @@
       const y = -Math.abs(Math.sin(arc.angle) * arc.orbitB) - 14;
       cctx.beginPath();
       cctx.arc(x, y, arc.size, 0, Math.PI*2);
-      cctx.fillStyle = `rgba(255,205,40,${arc.alpha * 0.15})`;
+      cctx.fillStyle = `rgba(255,205,40,${arc.alpha * 0.5})`;
       cctx.fill();
     }
     cctx.restore();
 
     // ── 7. TIGHT INNER GLOW around the ring (low alpha) ─────────
-    const inner = cctx.createRadialGradient(mx, my, 10, mx, my, 20);
+    const inner = cctx.createRadialGradient(mx, my, 10, mx, my, 22);
     inner.addColorStop(0,   'rgba(0,0,0,0)');
-    inner.addColorStop(0.4, 'rgba(255,155,0,0.05)');
-    inner.addColorStop(0.8, 'rgba(255,90,0,0.02)');
+    inner.addColorStop(0.4, 'rgba(255,155,0,0.10)');
+    inner.addColorStop(0.8, 'rgba(255,90,0,0.03)');
     inner.addColorStop(1,   'rgba(0,0,0,0)');
     cctx.fillStyle = inner;
-    cctx.beginPath(); cctx.arc(mx, my, 20, 0, Math.PI*2); cctx.fill();
+    cctx.beginPath(); cctx.arc(mx, my, 17, 0, Math.PI*2); cctx.fill();
   }
 
   // ─────────────────────────────────────────────────────────────
   //  MAIN LOOP
   // ─────────────────────────────────────────────────────────────
   function loop(now) {
-    smoothX += (mouse.x - smoothX) * 0.1;
-    smoothY += (mouse.y - smoothY) * 0.1;
+    smoothX += (mouse.x - smoothX) * 0.25;
+    smoothY += (mouse.y - smoothY) * 0.25;
 
     drawStars(now);
     drawWarp();
@@ -571,4 +572,14 @@
     const W = window.innerWidth, H = window.innerHeight;
     starCanvas.width    = W; starCanvas.height    = H;
     warpCanvas.width    = W; warpCanvas.height    = H;
-    cursorCanvas.
+    cursorCanvas.width  = W; cursorCanvas.height  = H;
+    initStars(W, H);
+    initWarp(W, H);
+  }
+
+  resizeAll();
+  requestAnimationFrame(loop);
+  window.addEventListener('resize', resizeAll);
+  </script>
+</body>
+</html>
