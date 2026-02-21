@@ -435,8 +435,8 @@
   const diskStreams = Array.from({ length: STREAM_COUNT }, (_, i) => ({
     angle:  (i / STREAM_COUNT) * Math.PI * 2,
     speed:  0.020 + Math.random() * 0.015,
-    orbitA: 24 + Math.random() * 18,   // wide semi-major
-    orbitB: 4  + Math.random() * 5,    // flat semi-minor
+    orbitA: 24 + Math.random() * 18,  // → 14 + Math.random() * 10
+    orbitB: 4  + Math.random() * 5,   // → 2  + Math.random() * 3
     size:   Math.random() * 1.7 + 0.3,
     heat:   Math.random(),             // inner=hot, outer=cooler
     alpha:  Math.random() * 0.6 + 0.25,
@@ -495,18 +495,18 @@
     void0.addColorStop(0.85, 'rgba(0,0,0,1)');
     void0.addColorStop(1,    'rgba(0,0,0,0.75)');
     cctx.fillStyle = void0;
-    cctx.beginPath(); cctx.arc(mx, my, 13, 0, Math.PI*2); cctx.fill();
+    cctx.beginPath(); cctx.arc(mx, my, 8, 0, Math.PI*2); cctx.fill();
 
     // ── 4. PHOTON RING — bright gold ────────────────────────────
     cctx.beginPath();
-    cctx.arc(mx, my, 14.5, 0, Math.PI*2);
+    cctx.arc(mx, my, 9.5, 0, Math.PI*2);
     cctx.strokeStyle = 'rgba(255,218,0,0.92)';
     cctx.lineWidth = 2.2;
     cctx.stroke();
 
     // Soft second ring
     cctx.beginPath();
-    cctx.arc(mx, my, 18.5, 0, Math.PI*2);
+    cctx.arc(mx, my, 13.5, 0, Math.PI*2);
     cctx.strokeStyle = 'rgba(255,185,0,0.18)';
     cctx.lineWidth = 2.8;
     cctx.stroke();
@@ -551,15 +551,15 @@
     inner.addColorStop(0.8, 'rgba(255,90,0,0.03)');
     inner.addColorStop(1,   'rgba(0,0,0,0)');
     cctx.fillStyle = inner;
-    cctx.beginPath(); cctx.arc(mx, my, 22, 0, Math.PI*2); cctx.fill();
+    cctx.beginPath(); cctx.arc(mx, my, 17, 0, Math.PI*2); cctx.fill();
   }
 
   // ─────────────────────────────────────────────────────────────
   //  MAIN LOOP
   // ─────────────────────────────────────────────────────────────
   function loop(now) {
-    smoothX += (mouse.x - smoothX) * 0.1;
-    smoothY += (mouse.y - smoothY) * 0.1;
+    smoothX += (mouse.x - smoothX) * 0.25;
+    smoothY += (mouse.y - smoothY) * 0.25;
 
     drawStars(now);
     drawWarp();
