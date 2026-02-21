@@ -22,6 +22,8 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+    * { cursor: none !important; }
+
     body {
       background: var(--bg);
       color: var(--fg);
@@ -32,10 +34,9 @@
       overflow-x: hidden;
     }
 
-    /* Canvases */
-    #stars  { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    #warp-l { position: fixed; left: 0; top: 0; width: 220px; height: 100vh; z-index: 2; pointer-events: none; }
-    #warp-r { position: fixed; right: 0; top: 0; width: 220px; height: 100vh; z-index: 2; pointer-events: none; }
+    #stars         { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    #warp          { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    #cursor-canvas { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
 
     nav, main, footer { position: relative; z-index: 3; }
 
@@ -49,26 +50,11 @@
     }
     .nav-left { display: flex; align-items: center; gap: 1.2rem; }
     .nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
-
-    .nav-spotify {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      padding-left: 1.2rem;
-      border-left: 1px solid var(--border);
-      text-decoration: none;
-    }
+    .nav-spotify { display: none; align-items: center; gap: 10px; padding-left: 1.2rem; border-left: 1px solid var(--border); text-decoration: none; }
     #spot-album { width: 20px; height: 20px; border-radius: 2px; border: 1px solid var(--border); }
-    .spot-dot {
-      width: 6px; height: 6px; background: var(--spotify); border-radius: 50%;
-      box-shadow: 0 0 8px var(--spotify); animation: spotPulse 2s infinite;
-    }
-    #spot-text {
-      font-family: var(--mono); font-size: 0.65rem; color: var(--fg2);
-      text-transform: uppercase; letter-spacing: 0.05em;
-      max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    @keyframes spotPulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+    .spot-dot { width: 6px; height: 6px; background: var(--spotify); border-radius: 50%; box-shadow: 0 0 8px var(--spotify); animation: spotPulse 2s infinite; }
+    #spot-text { font-family: var(--mono); font-size: 0.65rem; color: var(--fg2); text-transform: uppercase; letter-spacing: 0.05em; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @keyframes spotPulse { 0%{opacity:.5}50%{opacity:1}100%{opacity:.5} }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
     .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--fg2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
@@ -124,13 +110,14 @@
     .footer-links a:hover { color: var(--accent); }
     .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: #444; }
 
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
 
     @media (max-width: 700px) {
+      * { cursor: auto !important; }
+      #cursor-canvas { display: none; }
       nav { padding: 1rem; }
       .nav-spotify { display: none !important; }
-      #warp-l, #warp-r { display: none; }
       .nav-links { gap: 1rem; }
       main { padding: 100px 1rem 3rem; }
       .hero { grid-template-columns: 1fr; }
@@ -144,8 +131,8 @@
 <body>
 
   <canvas id="stars"></canvas>
-  <canvas id="warp-l"></canvas>
-  <canvas id="warp-r"></canvas>
+  <canvas id="warp"></canvas>
+  <canvas id="cursor-canvas"></canvas>
 
   <nav>
     <div class="nav-left">
@@ -275,12 +262,13 @@
   </footer>
 
   <script>
-  // ── SPOTIFY (LANYARD) ────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  //  SPOTIFY
+  // ─────────────────────────────────────────────────────────────
   const DISCORD_ID = "865742067342508063";
   const spotContainer = document.getElementById('spotify-status');
   const spotText      = document.getElementById('spot-text');
   const spotAlbum     = document.getElementById('spot-album');
-
   async function updateSpotify() {
     try {
       const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
@@ -291,255 +279,306 @@
         spotAlbum.src = s.album_art_url;
         spotContainer.href = `https://open.spotify.com/track/${s.track_id}`;
         spotContainer.style.display = 'flex';
-      } else {
-        spotContainer.style.display = 'none';
-      }
+      } else { spotContainer.style.display = 'none'; }
     } catch(e) { spotContainer.style.display = 'none'; }
   }
   setInterval(updateSpotify, 10000);
   updateSpotify();
 
-  // ── TYPEWRITER ───────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  //  TYPEWRITER
+  // ─────────────────────────────────────────────────────────────
   const el = document.getElementById('typewriter');
-  const text = 'CHAYANTH_';
-  let i = 0;
-  function type() { if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 110); } }
+  const tw = 'CHAYANTH_';
+  let ti = 0;
+  function type() { if (ti < tw.length) { el.textContent += tw[ti++]; setTimeout(type, 110); } }
   setTimeout(type, 500);
 
-  // ── STARFIELD ────────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  //  SHARED MOUSE STATE
+  // ─────────────────────────────────────────────────────────────
+  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let smoothX = mouse.x, smoothY = mouse.y;
+  let hasEntered = false;
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    hasEntered = true;
+  });
+
+  // ─────────────────────────────────────────────────────────────
+  //  STARFIELD
+  // ─────────────────────────────────────────────────────────────
   const starCanvas = document.getElementById('stars');
   const sctx = starCanvas.getContext('2d');
   let stars = [];
 
-  function resizeStars() {
-    starCanvas.width  = window.innerWidth;
-    starCanvas.height = window.innerHeight;
-  }
-
-  function initStars() {
+  function initStars(W, H) {
     stars = [];
-    const count = Math.floor((starCanvas.width * starCanvas.height) / 3500);
-    for (let s = 0; s < count; s++) {
+    const count = Math.floor((W * H) / 3500);
+    for (let i = 0; i < count; i++) {
       const big = Math.random() < 0.05;
       stars.push({
-        x: Math.random() * starCanvas.width,
-        y: Math.random() * starCanvas.height,
+        x: Math.random() * W, y: Math.random() * H,
         r: big ? Math.random()*1.4+0.8 : Math.random()*0.9+0.2,
         base: Math.random()*0.5+0.15,
         freq: (Math.random()*1.5+0.5)*0.001,
         phase: Math.random()*Math.PI*2,
-        amp: Math.random()*0.45+0.2,
-        big
+        amp: Math.random()*0.45+0.2, big
       });
     }
   }
 
   function drawStars(now) {
-    sctx.clearRect(0,0,starCanvas.width,starCanvas.height);
+    sctx.clearRect(0, 0, starCanvas.width, starCanvas.height);
     for (const s of stars) {
       const alpha = Math.max(0.02, Math.min(1, s.base + Math.sin(now*s.freq+s.phase)*s.amp));
       if (s.big) {
-        sctx.save(); sctx.translate(s.x,s.y);
-        sctx.strokeStyle=`rgba(190,215,255,${alpha*0.55})`; sctx.lineWidth=0.6;
-        const arm=s.r*3.5;
-        sctx.beginPath(); sctx.moveTo(-arm,0); sctx.lineTo(arm,0); sctx.moveTo(0,-arm); sctx.lineTo(0,arm); sctx.stroke();
+        sctx.save(); sctx.translate(s.x, s.y);
+        sctx.strokeStyle = `rgba(190,215,255,${alpha*0.55})`; sctx.lineWidth = 0.6;
+        const arm = s.r * 3.5;
+        sctx.beginPath(); sctx.moveTo(-arm,0); sctx.lineTo(arm,0);
+        sctx.moveTo(0,-arm); sctx.lineTo(0,arm); sctx.stroke();
         sctx.restore();
       }
-      sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      const r=200+Math.round(s.phase*5)%30, g=215+Math.round(s.phase*3)%20;
-      sctx.fillStyle=`rgba(${r},${g},255,${alpha})`; sctx.fill();
+      sctx.beginPath(); sctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      const rc = 200+Math.round(s.phase*5)%30, gc = 215+Math.round(s.phase*3)%20;
+      sctx.fillStyle = `rgba(${rc},${gc},255,${alpha})`; sctx.fill();
     }
   }
 
-  // ── WARP / BLACK HOLE EFFECT ─────────────────────────────────
-  const warpL = document.getElementById('warp-l');
-  const warpR = document.getElementById('warp-r');
-  const wctxL = warpL.getContext('2d');
-  const wctxR = warpR.getContext('2d');
-  const WARP_W = 220;
+  // ─────────────────────────────────────────────────────────────
+  //  FULL-PAGE WARP PARTICLES
+  //  Scattered dots across the whole viewport — no grid lines.
+  //  Resting = faint blue. Pulled toward cursor = bright gold.
+  //  Canvas sits at z-index 1, BELOW all content (z-index 3+),
+  //  so particles never sit on top of text.
+  // ─────────────────────────────────────────────────────────────
+  const warpCanvas = document.getElementById('warp');
+  const wctx = warpCanvas.getContext('2d');
 
-  function resizeWarp() {
-    warpL.width  = WARP_W; warpL.height = window.innerHeight;
-    warpR.width  = WARP_W; warpR.height = window.innerHeight;
-  }
+  const WARP_COUNT = 480;
+  let warpPts = [];
 
-  // Mouse tracking — separate for left and right panels
-  let mouseL = { x: WARP_W/2, y: window.innerHeight/2, active: false, strength: 0 };
-  let mouseR = { x: WARP_W/2, y: window.innerHeight/2, active: false, strength: 0 };
-
-  document.addEventListener('mousemove', e => {
-    const mx = e.clientX, my = e.clientY, w = window.innerWidth;
-    if (mx < WARP_W) {
-      mouseL.x = mx; mouseL.y = my; mouseL.active = true;
-    } else { mouseL.active = false; }
-    if (mx > w - WARP_W) {
-      mouseR.x = mx - (w - WARP_W); mouseR.y = my; mouseR.active = true;
-    } else { mouseR.active = false; }
-  });
-
-  // Particle grid for warp panels
-  const COLS = 18, ROWS = 40;
-  function makeGrid(side) {
-    const pts = [];
-    for (let row = 0; row <= ROWS; row++) {
-      for (let col = 0; col <= COLS; col++) {
-        pts.push({
-          ox: (col / COLS) * WARP_W,
-          oy: (row / ROWS) * window.innerHeight,
-          x:  (col / COLS) * WARP_W,
-          y:  (row / ROWS) * window.innerHeight,
-        });
-      }
+  function initWarp(W, H) {
+    warpPts = [];
+    for (let i = 0; i < WARP_COUNT; i++) {
+      const x = Math.random() * W;
+      const y = Math.random() * H;
+      warpPts.push({
+        ox: x, oy: y,
+        x, y,
+        r:     Math.random() * 1.3 + 0.3,
+        alpha: Math.random() * 0.18 + 0.04,
+        speed: Math.random() * 0.06 + 0.03
+      });
     }
-    return pts;
   }
 
-  let gridL = makeGrid('l');
-  let gridR = makeGrid('r');
+  function drawWarp() {
+    const W = warpCanvas.width, H = warpCanvas.height;
+    wctx.clearRect(0, 0, W, H);
+    if (!hasEntered) return;
 
-  function reinitGrids() {
-    gridL = makeGrid('l');
-    gridR = makeGrid('r');
-  }
+    const mx = smoothX, my = smoothY;
+    const PULL_R   = 290;
+    const MAX_PULL = 120;
 
-  function updateGrid(grid, mouse, w, h) {
-    const strength = mouse.active ? 1 : 0;
-    const mx = mouse.x, my = mouse.y;
-    const PULL_RADIUS = 180;
-    const MAX_PULL = 55;
-
-    for (const pt of grid) {
-      const dx = pt.ox - mx;
-      const dy = pt.oy - my;
+    for (const p of warpPts) {
+      const dx = p.ox - mx, dy = p.oy - my;
       const dist = Math.sqrt(dx*dx + dy*dy);
 
-      if (dist < PULL_RADIUS && strength > 0) {
-        // Gravitational pull — closer = more pull
-        const force = (1 - dist / PULL_RADIUS);
-        const pull = force * force * MAX_PULL * strength;
-        // Pull toward cursor (black hole sucks in)
-        pt.x = pt.ox - (dx / dist) * pull;
-        pt.y = pt.oy - (dy / dist) * pull;
+      let tx, ty;
+      if (dist < PULL_R) {
+        const force = Math.pow(1 - dist / PULL_R, 1.9);
+        const pull  = force * MAX_PULL;
+        tx = p.ox - (dx / (dist || 1)) * pull;
+        ty = p.oy - (dy / (dist || 1)) * pull;
       } else {
-        // Ease back to original position
-        pt.x += (pt.ox - pt.x) * 0.08;
-        pt.y += (pt.oy - pt.y) * 0.08;
+        tx = p.ox; ty = p.oy;
       }
+      p.x += (tx - p.x) * p.speed;
+      p.y += (ty - p.y) * p.speed;
+
+      const dispX = p.x - p.ox, dispY = p.y - p.oy;
+      const disp  = Math.sqrt(dispX*dispX + dispY*dispY);
+      // heat 0 = resting cool blue, 1 = fully pulled golden yellow
+      const heat  = Math.min(1, disp / 65);
+
+      const r = Math.round(100 * (1-heat) + 255 * heat);
+      const g = Math.round(181 * (1-heat) + 210 * heat);
+      const b = Math.round(246 * (1-heat) +  20 * heat);
+      const a = p.alpha + heat * 0.38;
+
+      wctx.beginPath();
+      wctx.arc(p.x, p.y, p.r + heat * 1.5, 0, Math.PI * 2);
+      wctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+      wctx.fill();
     }
   }
 
-  function drawWarp(ctx, grid, mouse, side) {
-    ctx.clearRect(0, 0, WARP_W, window.innerHeight);
+  // ─────────────────────────────────────────────────────────────
+  //  CURSOR CANVAS — Black hole with yellow accretion disk
+  //
+  //  Key design choices to avoid blocking text:
+  //  • NO dark radial void drawn across the page
+  //  • Only the event horizon itself (13px radius) is solid black
+  //  • All glows use very low alpha so underlying text shows through
+  //  • Canvas is pointer-events: none so all clicks/hovers work
+  // ─────────────────────────────────────────────────────────────
+  const cursorCanvas = document.getElementById('cursor-canvas');
+  const cctx = cursorCanvas.getContext('2d');
 
-    const mx = mouse.x, my = mouse.y;
+  // Accretion disk stream particles
+  const STREAM_COUNT = 150;
+  const diskStreams = Array.from({ length: STREAM_COUNT }, (_, i) => ({
+    angle:  (i / STREAM_COUNT) * Math.PI * 2,
+    speed:  0.020 + Math.random() * 0.015,
+    orbitA: 24 + Math.random() * 18,   // wide semi-major
+    orbitB: 4  + Math.random() * 5,    // flat semi-minor
+    size:   Math.random() * 1.7 + 0.3,
+    heat:   Math.random(),             // inner=hot, outer=cooler
+    alpha:  Math.random() * 0.6 + 0.25,
+  }));
 
-    // Draw warped grid lines
-    ctx.lineWidth = 0.5;
+  // Lensed light arcing over the top of the event horizon
+  const LENS_COUNT = 80;
+  const lensArcs = Array.from({ length: LENS_COUNT }, () => ({
+    angle:  Math.random() * Math.PI,
+    speed:  0.007 + Math.random() * 0.006,
+    orbitA: 12 + Math.random() * 8,
+    orbitB: 3  + Math.random() * 4,
+    size:   Math.random() * 1.2 + 0.2,
+    alpha:  Math.random() * 0.55 + 0.2,
+  }));
 
-    // Horizontal lines
-    for (let row = 0; row <= ROWS; row++) {
-      ctx.beginPath();
-      for (let col = 0; col <= COLS; col++) {
-        const pt = grid[row * (COLS+1) + col];
-        const dx = pt.ox - mx, dy = pt.oy - my;
-        const dist = Math.sqrt(dx*dx+dy*dy);
-        const closeness = Math.max(0, 1 - dist/180);
-        const alpha = 0.08 + closeness * 0.35;
-        const r = Math.round(100 + closeness * 100);
-        const g = Math.round(181 + closeness * 40);
-        ctx.strokeStyle = `rgba(${r},${g},246,${alpha})`;
-        if (col === 0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
-      }
-      ctx.stroke();
+  function drawCursor() {
+    const W = cursorCanvas.width, H = cursorCanvas.height;
+    cctx.clearRect(0, 0, W, H);
+    if (!hasEntered) return;
+
+    const mx = smoothX, my = smoothY;
+
+    // ── 1. FAINT AMBIENT GLOW — barely visible, won't hide text ─
+    const ambient = cctx.createRadialGradient(mx, my, 12, mx, my, 58);
+    ambient.addColorStop(0,    'rgba(255,195,0,0)');
+    ambient.addColorStop(0.3,  'rgba(255,175,0,0.055)');
+    ambient.addColorStop(0.65, 'rgba(200,110,0,0.025)');
+    ambient.addColorStop(1,    'rgba(0,0,0,0)');
+    cctx.fillStyle = ambient;
+    cctx.beginPath(); cctx.arc(mx, my, 58, 0, Math.PI*2); cctx.fill();
+
+    // ── 2. ACCRETION DISK — back half (will be hidden by void) ──
+    cctx.save();
+    cctx.translate(mx, my);
+    for (const s of diskStreams) {
+      s.angle += s.speed;
+      const x = Math.cos(s.angle) * s.orbitA;
+      const y = Math.sin(s.angle) * s.orbitB;
+      if (Math.sin(s.angle) < 0) continue;
+
+      const h = s.heat;
+      const r = Math.round(195 + h * 60);
+      const g = Math.round(110 + h * 120);
+      const b = Math.round(  0 + h *  25);
+      cctx.beginPath();
+      cctx.arc(x, y, s.size, 0, Math.PI*2);
+      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha * 0.38})`;
+      cctx.fill();
     }
+    cctx.restore();
 
-    // Vertical lines
-    for (let col = 0; col <= COLS; col++) {
-      ctx.beginPath();
-      for (let row = 0; row <= ROWS; row++) {
-        const pt = grid[row * (COLS+1) + col];
-        const dx = pt.ox - mx, dy = pt.oy - my;
-        const dist = Math.sqrt(dx*dx+dy*dy);
-        const closeness = Math.max(0, 1 - dist/180);
-        const alpha = 0.08 + closeness * 0.35;
-        const r = Math.round(100 + closeness * 100);
-        const g = Math.round(181 + closeness * 40);
-        ctx.strokeStyle = `rgba(${r},${g},246,${alpha})`;
-        if (row === 0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
-      }
-      ctx.stroke();
+    // ── 3. EVENT HORIZON — solid black, tiny ────────────────────
+    const void0 = cctx.createRadialGradient(mx, my, 0, mx, my, 13);
+    void0.addColorStop(0,    'rgba(0,0,0,1)');
+    void0.addColorStop(0.85, 'rgba(0,0,0,1)');
+    void0.addColorStop(1,    'rgba(0,0,0,0.75)');
+    cctx.fillStyle = void0;
+    cctx.beginPath(); cctx.arc(mx, my, 13, 0, Math.PI*2); cctx.fill();
+
+    // ── 4. PHOTON RING — bright gold ────────────────────────────
+    cctx.beginPath();
+    cctx.arc(mx, my, 14.5, 0, Math.PI*2);
+    cctx.strokeStyle = 'rgba(255,218,0,0.92)';
+    cctx.lineWidth = 2.2;
+    cctx.stroke();
+
+    // Soft second ring
+    cctx.beginPath();
+    cctx.arc(mx, my, 18.5, 0, Math.PI*2);
+    cctx.strokeStyle = 'rgba(255,185,0,0.18)';
+    cctx.lineWidth = 2.8;
+    cctx.stroke();
+
+    // ── 5. ACCRETION DISK — front half (over void) ──────────────
+    cctx.save();
+    cctx.translate(mx, my);
+    for (const s of diskStreams) {
+      const x = Math.cos(s.angle) * s.orbitA;
+      const y = Math.sin(s.angle) * s.orbitB;
+      if (Math.sin(s.angle) >= 0) continue;
+
+      const h = s.heat;
+      const r = Math.round(195 + h * 60);
+      const g = Math.round(110 + h * 120);
+      const b = Math.round(  0 + h *  25);
+      cctx.beginPath();
+      cctx.arc(x, y, s.size, 0, Math.PI*2);
+      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha})`;
+      cctx.fill();
     }
+    cctx.restore();
 
-    // Black hole core glow when active
-    if (mouse.active) {
-      // Outer glow
-      const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 80);
-      grad.addColorStop(0, 'rgba(0,0,0,0.85)');
-      grad.addColorStop(0.3, 'rgba(30,60,120,0.3)');
-      grad.addColorStop(0.7, 'rgba(100,181,246,0.06)');
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(mx, my, 80, 0, Math.PI*2);
-      ctx.fill();
-
-      // Event horizon ring
-      ctx.beginPath();
-      ctx.arc(mx, my, 12, 0, Math.PI*2);
-      const ringGrad = ctx.createRadialGradient(mx, my, 0, mx, my, 12);
-      ringGrad.addColorStop(0, 'rgba(0,0,0,1)');
-      ringGrad.addColorStop(0.7, 'rgba(0,10,30,1)');
-      ringGrad.addColorStop(1, 'rgba(100,181,246,0.8)');
-      ctx.fillStyle = ringGrad;
-      ctx.fill();
-
-      // Bright accent ring
-      ctx.beginPath();
-      ctx.arc(mx, my, 13, 0, Math.PI*2);
-      ctx.strokeStyle = 'rgba(144,202,249,0.6)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
+    // ── 6. GRAVITATIONAL LENSING ARC over the top ───────────────
+    cctx.save();
+    cctx.translate(mx, my);
+    for (const arc of lensArcs) {
+      arc.angle += arc.speed;
+      const x = Math.cos(arc.angle) * arc.orbitA;
+      const y = -Math.abs(Math.sin(arc.angle) * arc.orbitB) - 14;
+      cctx.beginPath();
+      cctx.arc(x, y, arc.size, 0, Math.PI*2);
+      cctx.fillStyle = `rgba(255,205,40,${arc.alpha * 0.5})`;
+      cctx.fill();
     }
+    cctx.restore();
 
-    // Edge fade — blend into background
-    const fadeDir = side === 'l' ? 'l' : 'r';
-    const edgeFade = ctx.createLinearGradient(
-      fadeDir === 'l' ? 0 : WARP_W, 0,
-      fadeDir === 'l' ? WARP_W : 0, 0
-    );
-    edgeFade.addColorStop(0, 'rgba(5,7,15,0.95)');
-    edgeFade.addColorStop(0.4, 'rgba(5,7,15,0.3)');
-    edgeFade.addColorStop(1, 'rgba(5,7,15,0)');
-    ctx.fillStyle = edgeFade;
-    ctx.fillRect(0, 0, WARP_W, window.innerHeight);
+    // ── 7. TIGHT INNER GLOW around the ring (low alpha) ─────────
+    const inner = cctx.createRadialGradient(mx, my, 10, mx, my, 22);
+    inner.addColorStop(0,   'rgba(0,0,0,0)');
+    inner.addColorStop(0.4, 'rgba(255,155,0,0.10)');
+    inner.addColorStop(0.8, 'rgba(255,90,0,0.03)');
+    inner.addColorStop(1,   'rgba(0,0,0,0)');
+    cctx.fillStyle = inner;
+    cctx.beginPath(); cctx.arc(mx, my, 22, 0, Math.PI*2); cctx.fill();
   }
 
-  // ── MAIN LOOP ────────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────
+  //  MAIN LOOP
+  // ─────────────────────────────────────────────────────────────
   function loop(now) {
+    smoothX += (mouse.x - smoothX) * 0.1;
+    smoothY += (mouse.y - smoothY) * 0.1;
+
     drawStars(now);
-
-    updateGrid(gridL, mouseL, WARP_W, window.innerHeight);
-    updateGrid(gridR, mouseR, WARP_W, window.innerHeight);
-    drawWarp(wctxL, gridL, mouseL, 'l');
-    drawWarp(wctxR, gridR, mouseR, 'r');
-
+    drawWarp();
+    drawCursor();
     requestAnimationFrame(loop);
   }
 
   function resizeAll() {
-    starCanvas.width  = window.innerWidth;
-    starCanvas.height = window.innerHeight;
-    resizeWarp();
-    reinitGrids();
-    initStars();
+    const W = window.innerWidth, H = window.innerHeight;
+    starCanvas.width    = W; starCanvas.height    = H;
+    warpCanvas.width    = W; warpCanvas.height    = H;
+    cursorCanvas.width  = W; cursorCanvas.height  = H;
+    initStars(W, H);
+    initWarp(W, H);
   }
 
   resizeAll();
   requestAnimationFrame(loop);
   window.addEventListener('resize', resizeAll);
   </script>
-
 </body>
 </html>
