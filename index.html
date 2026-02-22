@@ -6,20 +6,25 @@
   <title>chayanth</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Orbitron = space display font for headings | Exo 2 = clean sci-fi body -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #05070f;
-      --bg2: #0d1020;
-      --fg: #e8e2d9;
-      --fg2: #888;
-      --accent: #64b5f6;
+      --bg:      #03050e;
+      --bg2:     #080c1a;
+      --fg:      #dde8f5;        /* bright, cool white-blue — very readable */
+      --fg2:     #8faac8;        /* secondary: soft steel blue, not grey */
+      --accent:  #64b5f6;
       --accent2: #90caf9;
-      --border: #1e2235;
-      --mono: 'Space Mono', monospace;
-      --sans: 'DM Sans', sans-serif;
+      --accent3: #a78bfa;        /* violet accent for variety */
+      --border:  #16213a;
+      --glow:    rgba(100,181,246,0.55);
+      --mono:    'Space Mono', monospace;
+      --display: 'Orbitron', sans-serif;
+      --body:    'Exo 2', sans-serif;
       --spotify: #1DB954;
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     * { cursor: none !important; }
@@ -27,11 +32,20 @@
     body {
       background: var(--bg);
       color: var(--fg);
-      font-family: var(--sans);
+      font-family: var(--body);
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.7;
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    /* subtle radial nebula in background */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 40%, rgba(100,181,246,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 85% 70%, rgba(167,139,250,0.04) 0%, transparent 70%);
     }
 
     #stars         { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
@@ -40,88 +54,241 @@
 
     nav, main, footer { position: relative; z-index: 3; }
 
+    /* ── NAV ─────────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 1.2rem 2rem;
+      padding: 1.1rem 3rem;
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid var(--border);
-      background: rgba(5,7,15,0.85);
-      backdrop-filter: blur(14px);
+      background: rgba(3,5,14,0.88);
+      backdrop-filter: blur(16px);
     }
-    .nav-left { display: flex; align-items: center; gap: 1.2rem; }
-    .nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-left { display: flex; align-items: center; gap: 1.4rem; }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-decoration: none;
+      text-shadow:
+        0 0 12px rgba(100,181,246,0.8),
+        0 0 40px rgba(100,181,246,0.3);
+    }
+
     .nav-spotify { display: none; align-items: center; gap: 10px; padding-left: 1.2rem; border-left: 1px solid var(--border); text-decoration: none; }
     #spot-album { width: 20px; height: 20px; border-radius: 2px; border: 1px solid var(--border); }
     .spot-dot { width: 6px; height: 6px; background: var(--spotify); border-radius: 50%; box-shadow: 0 0 8px var(--spotify); animation: spotPulse 2s infinite; }
-    #spot-text { font-family: var(--mono); font-size: 0.65rem; color: var(--fg2); text-transform: uppercase; letter-spacing: 0.05em; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #spot-text { font-family: var(--mono); font-size: 0.63rem; color: var(--fg2); text-transform: uppercase; letter-spacing: 0.05em; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     @keyframes spotPulse { 0%{opacity:.5}50%{opacity:1}100%{opacity:.5} }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-    .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--fg2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .resume-link { border: 1px solid var(--border); padding: 0.3rem 0.6rem; border-radius: 3px; transition: all 0.2s !important; }
-    .resume-link:hover { background: rgba(100,181,246,0.1); border-color: var(--accent) !important; }
+    .nav-links a {
+      font-family: var(--display);
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      color: var(--fg2);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 10px rgba(100,181,246,0.6);
+    }
+    .resume-link {
+      border: 1px solid var(--border); padding: 0.3rem 0.65rem;
+      border-radius: 3px; transition: all 0.2s !important;
+    }
+    .resume-link:hover {
+      background: rgba(100,181,246,0.08);
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 12px rgba(100,181,246,0.2);
+    }
 
-    main { max-width: 900px; margin: 0 auto; padding: 120px 2rem 4rem; }
+    /* ── MAIN ─────────────────────────────────────────────────── */
+    main { max-width: 900px; margin: 0 auto; padding: 130px 2.5rem 5rem; }
 
-    .hero { margin-bottom: 5rem; animation: fadeUp 0.8s ease both; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
-    .hero-text h1 { font-family: var(--mono); font-size: clamp(2rem,6vw,3.2rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 0.5rem; color: var(--accent); min-height: 1.2em; }
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      margin-bottom: 5.5rem;
+      animation: fadeUp 0.9s ease both;
+      display: grid; grid-template-columns: 1fr auto; gap: 2.5rem; align-items: start;
+    }
+
+    .hero-text h1 {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.6rem;
+      color: var(--accent);
+      /* layered glow — tight bloom + wide halo */
+      text-shadow:
+        0 0 20px rgba(100,181,246,0.9),
+        0 0 60px rgba(100,181,246,0.4),
+        0 0 120px rgba(100,181,246,0.15);
+    }
+
     .blink { display: inline-block; animation: blink 1.1s step-end infinite; color: var(--accent); }
-    .hero-sub { font-family: var(--mono); font-size: 0.8rem; color: var(--accent2); letter-spacing: 0.04em; margin-bottom: 1.2rem; }
-    .hero-bio { color: var(--fg2); font-size: 0.95rem; max-width: 420px; line-height: 1.75; }
-    .hero-bio strong { color: var(--fg); font-weight: 500; }
-    .hero-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.1rem; }
-    .tag { font-family: var(--mono); font-size: 0.67rem; padding: 0.2rem 0.55rem; border: 1px solid var(--border); border-radius: 2px; color: var(--fg2); letter-spacing: 0.06em; }
-    .hero-photo { width: 160px; flex-shrink: 0; }
-    .hero-photo img { width: 160px; height: 160px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); filter: grayscale(15%); transition: filter 0.3s; display: block; }
-    .hero-photo img:hover { filter: grayscale(0%); }
-    .photo-caption { font-family: var(--mono); font-size: 0.62rem; color: #444; margin-top: 0.5rem; text-align: center; letter-spacing: 0.06em; }
 
+    .hero-sub {
+      font-family: var(--display);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--accent2);
+      margin-bottom: 1.4rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    .hero-bio {
+      font-family: var(--body);
+      font-size: 0.98rem;
+      color: var(--fg);          /* bright, not grey */
+      max-width: 480px;
+      line-height: 1.85;
+      font-weight: 300;
+    }
+    .hero-bio strong {
+      color: var(--accent2);
+      font-weight: 500;
+      text-shadow: 0 0 12px rgba(144,202,249,0.35);
+    }
+
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.2rem; }
+    .tag {
+      font-family: var(--display);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      padding: 0.22rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--fg2);
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-photo { width: 160px; flex-shrink: 0; }
+    .hero-photo img {
+      width: 160px; height: 160px; object-fit: cover;
+      border-radius: 4px; border: 1px solid var(--border);
+      filter: grayscale(15%); transition: filter 0.3s, box-shadow 0.3s;
+      display: block;
+    }
+    .hero-photo img:hover {
+      filter: grayscale(0%);
+      box-shadow: 0 0 24px rgba(100,181,246,0.2);
+    }
+    .photo-caption {
+      font-family: var(--mono); font-size: 0.6rem; color: #2a3550;
+      margin-top: 0.5rem; text-align: center; letter-spacing: 0.06em;
+    }
+
+    /* ── SECTIONS ─────────────────────────────────────────────── */
     section { margin-bottom: 4rem; animation: fadeUp 0.8s ease both; }
-    .section-label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+
+    .section-label {
+      font-family: var(--display);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.9rem;
+      text-shadow: 0 0 14px rgba(100,181,246,0.5);
+    }
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .exp-item { display: grid; grid-template-columns: 1fr auto; gap: 0.25rem 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    /* ── EXPERIENCE ───────────────────────────────────────────── */
+    .exp-item {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 0.25rem 1rem; padding: 1.3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
     .exp-item:first-of-type { border-top: 1px solid var(--border); }
-    .exp-role { font-weight: 500; color: var(--fg); font-size: 0.92rem; }
-    .exp-company { font-family: var(--mono); font-size: 0.73rem; color: var(--accent2); margin-top: 0.1rem; }
-    .exp-desc { grid-column: 1; font-size: 0.84rem; color: var(--fg2); margin-top: 0.4rem; line-height: 1.6; }
-    .exp-date { font-family: var(--mono); font-size: 0.68rem; color: var(--fg2); white-space: nowrap; text-align: right; align-self: start; padding-top: 0.15rem; }
+    .exp-role { font-family: var(--body); font-weight: 500; color: var(--fg); font-size: 0.94rem; }
+    .exp-company { font-family: var(--display); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--accent2); margin-top: 0.15rem; opacity: 0.85; }
+    .exp-desc { grid-column: 1; font-size: 0.85rem; color: var(--fg); margin-top: 0.45rem; line-height: 1.7; font-weight: 300; }
+    .exp-date { font-family: var(--mono); font-size: 0.66rem; color: var(--fg2); white-space: nowrap; text-align: right; align-self: start; padding-top: 0.15rem; }
 
-    .project-card { padding: 1.25rem; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 0.75rem; background: rgba(13,16,32,0.7); backdrop-filter: blur(4px); transition: border-color 0.2s, transform 0.2s; }
-    .project-card:hover { border-color: var(--accent); transform: translateX(4px); }
-    .project-title { font-family: var(--mono); font-size: 0.86rem; color: var(--fg); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-    .project-badge { font-size: 0.63rem; padding: 0.1rem 0.4rem; background: rgba(100,181,246,0.1); color: var(--accent); border-radius: 2px; border: 1px solid rgba(100,181,246,0.28); }
-    .project-desc { font-size: 0.83rem; color: var(--fg2); line-height: 1.6; }
+    /* ── PROJECTS ─────────────────────────────────────────────── */
+    .project-card {
+      padding: 1.3rem; border: 1px solid var(--border); border-radius: 4px;
+      margin-bottom: 0.8rem; background: rgba(8,12,26,0.6);
+      backdrop-filter: blur(4px); transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .project-card:hover {
+      border-color: rgba(100,181,246,0.4);
+      transform: translateX(5px);
+      box-shadow: 0 0 20px rgba(100,181,246,0.07);
+    }
+    .project-title {
+      font-family: var(--body); font-weight: 500; font-size: 0.88rem;
+      color: var(--fg); margin-bottom: 0.45rem;
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .project-badge {
+      font-family: var(--display); font-size: 0.58rem; letter-spacing: 0.06em;
+      padding: 0.1rem 0.45rem; background: rgba(100,181,246,0.07);
+      color: var(--accent); border-radius: 2px; border: 1px solid rgba(100,181,246,0.22);
+    }
+    .project-desc { font-size: 0.84rem; color: var(--fg); line-height: 1.7; font-weight: 300; }
 
-    .edu-block { padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    /* ── EDUCATION ────────────────────────────────────────────── */
+    .edu-block { padding: 1.3rem 0; border-bottom: 1px solid var(--border); }
     .edu-block:first-of-type { border-top: 1px solid var(--border); }
-    .edu-school { font-weight: 500; color: var(--fg); font-size: 0.92rem; }
-    .edu-degree { font-size: 0.83rem; color: var(--fg2); margin-top: 0.15rem; }
-    .edu-date { font-family: var(--mono); font-size: 0.7rem; color: var(--accent2); margin-top: 0.2rem; }
+    .edu-school { font-family: var(--body); font-weight: 500; color: var(--fg); font-size: 0.94rem; }
+    .edu-degree { font-size: 0.84rem; color: var(--fg); margin-top: 0.18rem; font-weight: 300; }
+    .edu-date { font-family: var(--display); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--accent2); margin-top: 0.25rem; opacity: 0.8; }
 
-    .skills-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .skill-chip { font-family: var(--mono); font-size: 0.7rem; padding: 0.3rem 0.7rem; background: rgba(13,16,32,0.7); border: 1px solid var(--border); border-radius: 2px; color: var(--fg2); letter-spacing: 0.04em; transition: border-color 0.2s, color 0.2s; }
-    .skill-chip:hover { border-color: var(--accent2); color: var(--accent2); }
+    /* ── SKILLS ───────────────────────────────────────────────── */
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .skill-chip {
+      font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.1em;
+      padding: 0.3rem 0.75rem; background: rgba(8,12,26,0.7);
+      border: 1px solid var(--border); border-radius: 2px;
+      color: var(--fg2); text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s, text-shadow 0.2s;
+    }
+    .skill-chip:hover {
+      border-color: var(--accent2); color: var(--accent2);
+      text-shadow: 0 0 8px rgba(144,202,249,0.4);
+    }
 
-    footer { border-top: 1px solid var(--border); padding: 2rem; max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border); padding: 2rem 2.5rem;
+      max-width: 900px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
     .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { font-family: var(--mono); font-size: 0.72rem; color: var(--fg2); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--accent); }
-    .footer-copy { font-family: var(--mono); font-size: 0.65rem; color: #444; }
+    .footer-links a {
+      font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.12em;
+      color: var(--fg2); text-decoration: none; text-transform: uppercase;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); text-shadow: 0 0 8px rgba(100,181,246,0.5); }
+    .footer-copy { font-family: var(--mono); font-size: 0.63rem; color: #1e2d45; }
 
     @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)} }
 
     @media (max-width: 700px) {
       * { cursor: auto !important; }
       #cursor-canvas { display: none; }
-      nav { padding: 1rem; }
+      nav { padding: 1rem 1.5rem; }
       .nav-spotify { display: none !important; }
       .nav-links { gap: 1rem; }
-      main { padding: 100px 1rem 3rem; }
+      main { padding: 110px 1.2rem 3rem; }
       .hero { grid-template-columns: 1fr; }
-      .hero-photo img { width: 120px; height: 120px; }
+      .hero-photo { display: none; }
       .exp-item { grid-template-columns: 1fr; }
       .exp-date { text-align: left; }
       footer { flex-direction: column; }
@@ -291,24 +458,19 @@
   const el = document.getElementById('typewriter');
   const tw = 'CHAYANTH_';
   let ti = 0;
-  function type() { if (ti < tw.length) { el.textContent += tw[ti++]; setTimeout(type, 110); } }
+  function type() { if (ti < tw.length) { el.textContent += tw[ti++]; setTimeout(type, 120); } }
   setTimeout(type, 500);
 
   // ─────────────────────────────────────────────────────────────
-  //  SHARED MOUSE STATE
+  //  MOUSE
   // ─────────────────────────────────────────────────────────────
   const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   let smoothX = mouse.x, smoothY = mouse.y;
   let hasEntered = false;
-
-  window.addEventListener('mousemove', e => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    hasEntered = true;
-  });
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; hasEntered = true; });
 
   // ─────────────────────────────────────────────────────────────
-  //  STARFIELD — z-index 0, pure background
+  //  STARFIELD
   // ─────────────────────────────────────────────────────────────
   const starCanvas = document.getElementById('stars');
   const sctx = starCanvas.getContext('2d');
@@ -316,12 +478,12 @@
 
   function initStars(W, H) {
     stars = [];
-    const count = Math.floor((W * H) / 3500);
+    const count = Math.floor((W * H) / 3200);
     for (let i = 0; i < count; i++) {
       const big = Math.random() < 0.05;
       stars.push({
         x: Math.random() * W, y: Math.random() * H,
-        r: big ? Math.random()*1.4+0.8 : Math.random()*0.9+0.2,
+        r: big ? Math.random()*1.6+0.9 : Math.random()*0.9+0.2,
         base: Math.random()*0.5+0.15,
         freq: (Math.random()*1.5+0.5)*0.001,
         phase: Math.random()*Math.PI*2,
@@ -336,7 +498,7 @@
       const alpha = Math.max(0.02, Math.min(1, s.base + Math.sin(now*s.freq+s.phase)*s.amp));
       if (s.big) {
         sctx.save(); sctx.translate(s.x, s.y);
-        sctx.strokeStyle = `rgba(190,215,255,${alpha*0.55})`; sctx.lineWidth = 0.6;
+        sctx.strokeStyle = `rgba(190,220,255,${alpha*0.55})`; sctx.lineWidth = 0.6;
         const arm = s.r * 3.5;
         sctx.beginPath(); sctx.moveTo(-arm,0); sctx.lineTo(arm,0);
         sctx.moveTo(0,-arm); sctx.lineTo(0,arm); sctx.stroke();
@@ -349,206 +511,128 @@
   }
 
   // ─────────────────────────────────────────────────────────────
-  //  WARP PARTICLES — z-index 1, BELOW all HTML content
-  //  Dots rest as nearly-invisible specks. As the cursor pulls
-  //  them they shift blue→gold but stay very faint so they never
-  //  fight the text. The canvas itself is behind the DOM.
+  //  WARP PARTICLES
   // ─────────────────────────────────────────────────────────────
   const warpCanvas = document.getElementById('warp');
   const wctx = warpCanvas.getContext('2d');
-
   const WARP_COUNT = 480;
   let warpPts = [];
 
   function initWarp(W, H) {
     warpPts = [];
     for (let i = 0; i < WARP_COUNT; i++) {
-      const x = Math.random() * W;
-      const y = Math.random() * H;
-      warpPts.push({
-        ox: x, oy: y, x, y,
-        r:     Math.random() * 1.2 + 0.3,
-        alpha: Math.random() * 0.07 + 0.02,   // very faint at rest
-        speed: Math.random() * 0.06 + 0.03
-      });
+      const x = Math.random()*W, y = Math.random()*H;
+      warpPts.push({ ox:x, oy:y, x, y,
+        r: Math.random()*1.2+0.3,
+        alpha: Math.random()*0.07+0.02,
+        speed: Math.random()*0.06+0.03 });
     }
   }
 
   function drawWarp() {
-    const W = warpCanvas.width, H = warpCanvas.height;
-    wctx.clearRect(0, 0, W, H);
+    wctx.clearRect(0, 0, warpCanvas.width, warpCanvas.height);
     if (!hasEntered) return;
-
     const mx = smoothX, my = smoothY;
-    const PULL_R   = 260;
-    const MAX_PULL = 110;
-
+    const PULL_R = 260, MAX_PULL = 110;
     for (const p of warpPts) {
-      const dx = p.ox - mx, dy = p.oy - my;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-
+      const dx = p.ox-mx, dy = p.oy-my;
+      const dist = Math.sqrt(dx*dx+dy*dy);
       let tx, ty;
       if (dist < PULL_R) {
-        const force = Math.pow(1 - dist / PULL_R, 1.9);
-        const pull  = force * MAX_PULL;
-        tx = p.ox - (dx / (dist || 1)) * pull;
-        ty = p.oy - (dy / (dist || 1)) * pull;
-      } else { tx = p.ox; ty = p.oy; }
-
-      p.x += (tx - p.x) * p.speed;
-      p.y += (ty - p.y) * p.speed;
-
-      const dispX = p.x - p.ox, dispY = p.y - p.oy;
-      const disp  = Math.sqrt(dispX*dispX + dispY*dispY);
-      const heat  = Math.min(1, disp / 60);
-
-      // rest=cool blue → pulled=warm gold, but always low alpha
-      const r = Math.round(100*(1-heat) + 255*heat);
-      const g = Math.round(181*(1-heat) + 200*heat);
-      const b = Math.round(246*(1-heat) +  15*heat);
-      const a = p.alpha + heat * 0.16;  // max ~0.23 even when fully pulled
-
-      wctx.beginPath();
-      wctx.arc(p.x, p.y, p.r + heat * 1.2, 0, Math.PI*2);
-      wctx.fillStyle = `rgba(${r},${g},${b},${a})`;
-      wctx.fill();
+        const pull = Math.pow(1-dist/PULL_R, 1.9)*MAX_PULL;
+        tx = p.ox-(dx/(dist||1))*pull; ty = p.oy-(dy/(dist||1))*pull;
+      } else { tx=p.ox; ty=p.oy; }
+      p.x+=(tx-p.x)*p.speed; p.y+=(ty-p.y)*p.speed;
+      const heat = Math.min(1, Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2)/60);
+      const r=Math.round(100*(1-heat)+255*heat), g=Math.round(181*(1-heat)+200*heat), b=Math.round(246*(1-heat)+15*heat);
+      wctx.beginPath(); wctx.arc(p.x, p.y, p.r+heat*1.2, 0, Math.PI*2);
+      wctx.fillStyle=`rgba(${r},${g},${b},${p.alpha+heat*0.16})`; wctx.fill();
     }
   }
 
   // ─────────────────────────────────────────────────────────────
-  //  CURSOR — minimal clean black hole
-  //
-  //  Philosophy: the cursor should be noticeable but not loud.
-  //  • Sharp gold photon ring is the main identifier
-  //  • Disk is very tight (stays within ~16px of center)
-  //  • All particle alphas kept ≤ 0.15 so text always wins
-  //  • Zero background darkening / void overlay
+  //  CURSOR — clean minimal black hole
   // ─────────────────────────────────────────────────────────────
   const cursorCanvas = document.getElementById('cursor-canvas');
   const cctx = cursorCanvas.getContext('2d');
 
-  // Tight accretion disk — small orbits, few particles, low alpha
   const STREAM_COUNT = 60;
-  const diskStreams = Array.from({ length: STREAM_COUNT }, (_, i) => ({
-    angle:  (i / STREAM_COUNT) * Math.PI * 2,
-    speed:  0.022 + Math.random() * 0.014,
-    orbitA: 9  + Math.random() * 5,   // max ~14px from center
-    orbitB: 2  + Math.random() * 1.5, // very flat disk
-    size:   Math.random() * 0.9 + 0.2,
-    heat:   Math.random(),
-    alpha:  Math.random() * 0.12 + 0.04, // max 0.16 — barely visible
+  const diskStreams = Array.from({length:STREAM_COUNT},(_,i)=>({
+    angle:(i/STREAM_COUNT)*Math.PI*2,
+    speed:0.022+Math.random()*0.014,
+    orbitA:9+Math.random()*5, orbitB:2+Math.random()*1.5,
+    size:Math.random()*0.9+0.2, heat:Math.random(),
+    alpha:Math.random()*0.12+0.04,
   }));
 
-  // Minimal lensing arc — just a whisper over the top
   const LENS_COUNT = 20;
-  const lensArcs = Array.from({ length: LENS_COUNT }, () => ({
-    angle:  Math.random() * Math.PI,
-    speed:  0.008 + Math.random() * 0.005,
-    orbitA: 7 + Math.random() * 3,
-    orbitB: 2 + Math.random() * 1.5,
-    size:   Math.random() * 0.7 + 0.15,
-    alpha:  Math.random() * 0.10 + 0.03, // max 0.13
+  const lensArcs = Array.from({length:LENS_COUNT},()=>({
+    angle:Math.random()*Math.PI, speed:0.008+Math.random()*0.005,
+    orbitA:7+Math.random()*3, orbitB:2+Math.random()*1.5,
+    size:Math.random()*0.7+0.15, alpha:Math.random()*0.10+0.03,
   }));
 
   function drawCursor() {
     cctx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
     if (!hasEntered) return;
+    const mx=smoothX, my=smoothY;
 
-    const mx = smoothX, my = smoothY;
-
-    // ── 1. BACK HALF of accretion disk (behind event horizon) ───
-    cctx.save();
-    cctx.translate(mx, my);
+    cctx.save(); cctx.translate(mx,my);
     for (const s of diskStreams) {
-      s.angle += s.speed;
-      const x = Math.cos(s.angle) * s.orbitA;
-      const y = Math.sin(s.angle) * s.orbitB;
-      if (Math.sin(s.angle) < 0) continue;
-      const h = s.heat;
-      const r = Math.round(200 + h * 55);
-      const g = Math.round(120 + h * 110);
-      const b = Math.round(0);
-      cctx.beginPath();
-      cctx.arc(x, y, s.size, 0, Math.PI*2);
-      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha})`;
+      s.angle+=s.speed;
+      const x=Math.cos(s.angle)*s.orbitA, y=Math.sin(s.angle)*s.orbitB;
+      if (Math.sin(s.angle)<0) continue;
+      cctx.beginPath(); cctx.arc(x,y,s.size,0,Math.PI*2);
+      cctx.fillStyle=`rgba(${Math.round(200+s.heat*55)},${Math.round(120+s.heat*110)},0,${s.alpha})`;
       cctx.fill();
     }
     cctx.restore();
 
-    // ── 2. EVENT HORIZON — solid black sphere, 8px radius ───────
-    cctx.beginPath();
-    cctx.arc(mx, my, 8, 0, Math.PI*2);
-    cctx.fillStyle = '#000';
-    cctx.fill();
+    cctx.beginPath(); cctx.arc(mx,my,8,0,Math.PI*2);
+    cctx.fillStyle='#000'; cctx.fill();
 
-    // ── 3. PHOTON RING — sharp bright gold, the main feature ────
-    cctx.beginPath();
-    cctx.arc(mx, my, 9.5, 0, Math.PI*2);
-    cctx.strokeStyle = 'rgba(255,215,0,0.90)';
-    cctx.lineWidth = 1.8;
-    cctx.stroke();
+    cctx.beginPath(); cctx.arc(mx,my,9.5,0,Math.PI*2);
+    cctx.strokeStyle='rgba(255,215,0,0.90)'; cctx.lineWidth=1.8; cctx.stroke();
 
-    // Very faint soft halo just outside the ring
-    cctx.beginPath();
-    cctx.arc(mx, my, 12, 0, Math.PI*2);
-    cctx.strokeStyle = 'rgba(255,190,0,0.10)';
-    cctx.lineWidth = 2.5;
-    cctx.stroke();
+    cctx.beginPath(); cctx.arc(mx,my,12,0,Math.PI*2);
+    cctx.strokeStyle='rgba(255,190,0,0.10)'; cctx.lineWidth=2.5; cctx.stroke();
 
-    // ── 4. FRONT HALF of accretion disk (over event horizon) ────
-    cctx.save();
-    cctx.translate(mx, my);
+    cctx.save(); cctx.translate(mx,my);
     for (const s of diskStreams) {
-      const x = Math.cos(s.angle) * s.orbitA;
-      const y = Math.sin(s.angle) * s.orbitB;
-      if (Math.sin(s.angle) >= 0) continue;
-      const h = s.heat;
-      const r = Math.round(200 + h * 55);
-      const g = Math.round(120 + h * 110);
-      const b = Math.round(0);
-      cctx.beginPath();
-      cctx.arc(x, y, s.size, 0, Math.PI*2);
-      cctx.fillStyle = `rgba(${r},${g},${b},${s.alpha * 1.4})`; // front slightly brighter
+      const x=Math.cos(s.angle)*s.orbitA, y=Math.sin(s.angle)*s.orbitB;
+      if (Math.sin(s.angle)>=0) continue;
+      cctx.beginPath(); cctx.arc(x,y,s.size,0,Math.PI*2);
+      cctx.fillStyle=`rgba(${Math.round(200+s.heat*55)},${Math.round(120+s.heat*110)},0,${s.alpha*1.4})`;
       cctx.fill();
     }
     cctx.restore();
 
-    // ── 5. LENSING ARC — barely-there gold shimmer over top ─────
-    cctx.save();
-    cctx.translate(mx, my);
+    cctx.save(); cctx.translate(mx,my);
     for (const arc of lensArcs) {
-      arc.angle += arc.speed;
-      const x = Math.cos(arc.angle) * arc.orbitA;
-      const y = -Math.abs(Math.sin(arc.angle) * arc.orbitB) - 10;
-      cctx.beginPath();
-      cctx.arc(x, y, arc.size, 0, Math.PI*2);
-      cctx.fillStyle = `rgba(255,210,40,${arc.alpha})`;
-      cctx.fill();
+      arc.angle+=arc.speed;
+      const x=Math.cos(arc.angle)*arc.orbitA, y=-Math.abs(Math.sin(arc.angle)*arc.orbitB)-10;
+      cctx.beginPath(); cctx.arc(x,y,arc.size,0,Math.PI*2);
+      cctx.fillStyle=`rgba(255,210,40,${arc.alpha})`; cctx.fill();
     }
     cctx.restore();
   }
 
   // ─────────────────────────────────────────────────────────────
-  //  MAIN LOOP
+  //  LOOP
   // ─────────────────────────────────────────────────────────────
   function loop(now) {
-    // 0.25 = snappy follow; lower for more float
-    smoothX += (mouse.x - smoothX) * 0.25;
-    smoothY += (mouse.y - smoothY) * 0.25;
-
-    drawStars(now);
-    drawWarp();
-    drawCursor();
+    smoothX+=(mouse.x-smoothX)*0.25;
+    smoothY+=(mouse.y-smoothY)*0.25;
+    drawStars(now); drawWarp(); drawCursor();
     requestAnimationFrame(loop);
   }
 
   function resizeAll() {
-    const W = window.innerWidth, H = window.innerHeight;
-    starCanvas.width    = W; starCanvas.height    = H;
-    warpCanvas.width    = W; warpCanvas.height    = H;
-    cursorCanvas.width  = W; cursorCanvas.height  = H;
-    initStars(W, H);
-    initWarp(W, H);
+    const W=window.innerWidth, H=window.innerHeight;
+    starCanvas.width=W; starCanvas.height=H;
+    warpCanvas.width=W; warpCanvas.height=H;
+    cursorCanvas.width=W; cursorCanvas.height=H;
+    initStars(W,H); initWarp(W,H);
   }
 
   resizeAll();
