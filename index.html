@@ -90,11 +90,13 @@
 
     /* ══════════════════════════════════════════════
        SITE
+       [CHANGE 1] transition slowed to 3s so explosion
+       is visible fading in underneath
     ══════════════════════════════════════════════ */
     #site {
       opacity: 0; pointer-events: none;
       background: var(--bg);
-      transition: opacity 0.9s ease;
+      transition: opacity 3s ease;
       min-height: 100vh;
     }
     #site.visible { opacity: 1; pointer-events: all; }
@@ -143,7 +145,17 @@
     main { max-width: 900px; margin: 0 auto; padding: 130px 2.5rem 5rem; }
 
     .hero { margin-bottom:5.5rem; animation:fadeUp 0.9s ease both; display:grid; grid-template-columns:1fr auto; gap:2.5rem; align-items:start; }
-    .hero-text h1 { font-family:var(--display); font-size:clamp(2.2rem,6vw,3.8rem); font-weight:900; line-height:1.05; letter-spacing:0.06em; margin-bottom:0.6rem; color:var(--accent); text-shadow:0 0 20px rgba(100,181,246,0.9),0 0 60px rgba(100,181,246,0.4),0 0 120px rgba(100,181,246,0.15); }
+
+    /* [CHANGE 2] h1 hidden until typewriter fires, so it doesn't
+       appear pre-filled during the 3s site fade-in */
+    .hero-text h1 {
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      font-family:var(--display); font-size:clamp(2.2rem,6vw,3.8rem); font-weight:900;
+      line-height:1.05; letter-spacing:0.06em; margin-bottom:0.6rem; color:var(--accent);
+      text-shadow:0 0 20px rgba(100,181,246,0.9),0 0 60px rgba(100,181,246,0.4),0 0 120px rgba(100,181,246,0.15);
+    }
+
     .blink { display:inline-block; animation:blink 1.1s step-end infinite; color:var(--accent); }
     .hero-sub { font-family:var(--display); font-size:0.68rem; font-weight:400; letter-spacing:0.12em; color:var(--accent2); margin-bottom:1.4rem; opacity:0.8; text-transform:uppercase; }
     .hero-bio { font-family:var(--body); font-size:0.98rem; color:var(--fg); max-width:480px; line-height:1.85; font-weight:300; }
@@ -670,12 +682,12 @@
         ictx.fillStyle = fc; ictx.beginPath(); ictx.arc(iCX,iCY,cr,0,Math.PI*2); ictx.fill();
       }
 
-      // ejecta streaks
+      // ejecta streaks — [CHANGE 3a] linger 120 frames instead of 70
       ejecta.forEach(e => {
         const prog = nf*e.spd*0.55;
         const x1=iCX+Math.cos(e.a)*(prog*0.25), y1=iCY+Math.sin(e.a)*(prog*0.25);
         const x2=iCX+Math.cos(e.a)*(prog+e.len), y2=iCY+Math.sin(e.a)*(prog+e.len);
-        const fade = Math.max(0, e.alpha*(1-nf/70));
+        const fade = Math.max(0, e.alpha*(1-nf/120));
         if (fade < 0.01) return;
         const lg = ictx.createLinearGradient(x1,y1,x2,y2);
         lg.addColorStop(0, `rgba(${e.color},${fade})`);
@@ -694,18 +706,21 @@
         ictx.strokeStyle = `rgba(${sw.color},${a})`; ictx.lineWidth = sw.w; ictx.stroke();
       });
 
-      // flying particles
+      // flying particles — [CHANGE 3b] linger 100 frames instead of 60
       ring.forEach(p => {
         p.vx *= 0.97; p.vy *= 0.97;
         p.px += p.vx; p.py += p.vy;
-        const fade = Math.max(0, 1-nf/60);
+        const fade = Math.max(0, 1-nf/100);
         if (fade < 0.01) return;
         ictx.beginPath(); ictx.arc(p.px,p.py,p.size*(1+nf*0.06),0,Math.PI*2);
         ictx.fillStyle = `rgba(255,225,150,${p.alpha*fade})`; ictx.fill();
       });
 
-      if (nf === 20) revealSite();
-      if (nf > 110) {
+      // [CHANGE 3c] reveal site at frame 50 instead of 20 — explosion well underway first
+      if (nf === 50) revealSite();
+
+      // [CHANGE 3d] keep intro overlay until frame 200 instead of 110
+      if (nf > 200) {
         introDone = true;
         document.getElementById('intro').classList.add('gone');
       }
@@ -735,7 +750,8 @@
     // Now reveal
     onSite = true;
     document.getElementById('site').classList.add('visible');
-    setTimeout(type, 400);
+    // [CHANGE 4] wait for 3s fade to finish before typewriter starts
+    setTimeout(type, 3200);
     updateSpotify();
   }
 
@@ -763,10 +779,17 @@
 
   // ═══════════════════════════════════════════════════════════
   //  TYPEWRITER
+  //  [CHANGE 5] fade h1 in on first keystroke so it isn't
+  //  visible blank during the site fade-in
   // ═══════════════════════════════════════════════════════════
   const twEl = document.getElementById('typewriter');
   const tw = 'CHAYANTH_'; let ti = 0;
-  function type() { if(ti<tw.length){twEl.textContent+=tw[ti++];setTimeout(type,120);} }
+  function type() {
+    if (ti === 0) {
+      document.querySelector('.hero-text h1').style.opacity = '1';
+    }
+    if (ti < tw.length) { twEl.textContent += tw[ti++]; setTimeout(type, 120); }
+  }
 
   // ═══════════════════════════════════════════════════════════
   //  STARFIELD
