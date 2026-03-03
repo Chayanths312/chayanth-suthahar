@@ -19,7 +19,9 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    *{cursor:none!important}
+    body.use-mouse *{cursor:none!important}
+    #intro .enter-btn{cursor:pointer}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
     body{background:#000;color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.7;min-height:100vh;overflow-x:hidden}
 
     /* ══ INTRO ════════════════════════════════════ */
@@ -207,7 +209,7 @@
         <li><a href="#experience">exp</a></li>
         <li><a href="#projects">projects</a></li>
         <li><a href="Chayanths.pdf" class="resume-link" target="_blank">resume</a></li>
-        <li><a href="mailto:chayanthsuthahar@gmail.com">contact</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#cfaca7aeb6aea1bba7bcbabba7aea7aebd8fa8a2aea6a3e1aca0a2">contact</a></li>
       </ul>
     </nav>
 
@@ -360,7 +362,7 @@
       <div class="footer-links">
         <a href="https://linkedin.com/in/chayanth" target="_blank">LinkedIn</a>
         <a href="Chayanths.pdf" target="_blank">Resume</a>
-        <a href="mailto:chayanthsuthahar@gmail.com">Email</a>
+        <a href="/cdn-cgi/l/email-protection#c9aaa1a8b0a8a7bda1babcbda1a8a1a8bb89aea4a8a0a5e7aaa6a4">Email</a>
       </div>
       <p class="footer-copy">chayanth suthahar &mdash; 2025</p>
     </footer>
@@ -369,12 +371,18 @@
   <canvas id="cursor-canvas"></canvas>
 
   <script>
+  try{var _cfs=document.createElement('script');_cfs.src='/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js';document.head.appendChild(_cfs);}catch(e){}
+  </script>
+  <script>
   // ═══════════════════════════════════════════════════════════
   //  GLOBALS
   // ═══════════════════════════════════════════════════════════
   const mouse={x:window.innerWidth/2,y:window.innerHeight/2};
   let smoothX=mouse.x,smoothY=mouse.y,hasEntered=false,onSite=false;
-  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;hasEntered=true;});
+  window.addEventListener('mousemove',e=>{
+    if(!hasEntered){smoothX=e.clientX;smoothY=e.clientY;document.body.classList.add('use-mouse');}
+    mouse.x=e.clientX;mouse.y=e.clientY;hasEntered=true;
+  });
 
   // ═══════════════════════════════════════════════════════════
   //  CURSOR CANVAS
@@ -527,7 +535,8 @@
   const spotContainer=document.getElementById('spotify-status');
   const spotText=document.getElementById('spot-text');
   const spotAlbum=document.getElementById('spot-album');
-  async function updateSpotify(){try{const res=await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);const{data}=await res.json();if(data.listening_to_spotify){const s=data.spotify;spotText.innerText=`${s.song} — ${s.artist.split(';')[0]}`;spotAlbum.src=s.album_art_url;spotContainer.href=`https://open.spotify.com/track/${s.track_id}`;spotContainer.style.display='flex';}else{spotContainer.style.display='none';}}catch(e){spotContainer.style.display='none';}}
+  async function updateSpotify(){try{const ctrl=new AbortController();const tid=setTimeout(()=>ctrl.abort(),3000);const res=await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`,{signal:ctrl.signal});clearTimeout(tid);const{data}=await res.json();if(data.listening_to_spotify){const s=data.spotify;spotText.innerText=`${s.song} — ${s.artist.split(';')[0]}`;spotAlbum.src=s.album_art_url;spotContainer.href=`https://open.spotify.com/track/${s.track_id}`;spotContainer.style.display='flex';}else{spotContainer.style.display='none';}}catch(e){spotContainer.style.display='none';}}
+  setTimeout(()=>{if(spotText&&spotText.innerText==='Loading...')spotContainer.style.display='none';},3000);
   setInterval(updateSpotify,10000);
 
   // ═══════════════════════════════════════════════════════════
@@ -569,8 +578,3 @@
 
   window.addEventListener('resize',()=>{
     resizeCursor();resizeIntro();
-    if(onSite){const W=window.innerWidth,H=window.innerHeight;starCanvas.width=W;starCanvas.height=H;warpCanvas.width=W;warpCanvas.height=H;initStars(W,H);initWarp(W,H);}
-  });
-  </script>
-</body>
-</html>
