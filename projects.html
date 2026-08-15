@@ -155,6 +155,22 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 .speclist--dim li{color:var(--dim)}
 .speclist--dim li::before{background:var(--dim)}
 
+/* ---------- coming soon panel ---------- */
+.coming{
+  margin-top:clamp(2rem,5vw,3.5rem);
+  border:1px dashed var(--hair);
+  display:grid;place-items:center;text-align:center;gap:.9rem;
+  padding:clamp(2.75rem,8vw,5rem) var(--pad);
+}
+.coming__label{
+  font-size:.75rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim);
+}
+.coming__msg{
+  margin:0;font-size:clamp(1.1rem,2.4vw,1.5rem);line-height:1.4;
+  color:var(--fg);max-width:42ch;
+}
+
 @media (max-width:820px){
   .spec{grid-template-columns:1fr}
   .spec--flip .spec__media{order:0}
@@ -244,77 +260,21 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
     </div>
   </section>
 
-  <!-- ================= PROJECT 02 — TEMPLATE (copy me) =================
-       Duplicate this whole <section>, bump the number, set the title,
-       tag, render, lede, and lists. Add class="spec spec--flip" on the
-       .spec div to put the render on the right and alternate the rhythm.
+  <!-- ================= PROJECT 02 — COMING SOON =================
+       Placeholder slot. When you're ready to add a real project,
+       copy the DRIVETRAIN <section> above, bump the number, and
+       fill in the render, lede, and lists.
   -->
   <section class="project">
     <header class="project__head">
       <span class="project__no">02</span>
-      <h2 class="project__name">Project name</h2>
-      <span class="project__tag">Category</span>
+      <h2 class="project__name">Coming soon</h2>
+      <span class="project__tag">In Progress</span>
     </header>
 
-    <div class="spec spec--flip">
-      <div class="spec__media spec__media--slot">
-        <span class="ph">Render.png · transparent</span>
-      </div>
-
-      <div class="spec__body">
-        <p class="spec__lede">One line on what this project is and the result that matters.</p>
-
-        <p class="spec__kicker">Requirements</p>
-        <hr class="spec__rule">
-        <ul class="speclist">
-          <li><span>What it had to do.</span></li>
-          <li><span>The constraint that made it hard.</span></li>
-          <li><span>The bar it had to clear.</span></li>
-        </ul>
-
-        <p class="spec__kicker">Details</p>
-        <hr class="spec__rule">
-        <ul class="speclist speclist--dim">
-          <li><span>How you built it — materials, ratios, components.</span></li>
-          <li><span>A decision you made and why.</span></li>
-          <li><span>A number that proves the outcome.</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= PROJECT 03 — TEMPLATE (copy me) ================= -->
-  <section class="project">
-    <header class="project__head">
-      <span class="project__no">03</span>
-      <h2 class="project__name">Project name</h2>
-      <span class="project__tag">Category</span>
-    </header>
-
-    <div class="spec">
-      <div class="spec__media spec__media--slot">
-        <span class="ph">Render.png · transparent</span>
-      </div>
-
-      <div class="spec__body">
-        <p class="spec__lede">One line on what this project is and the result that matters.</p>
-
-        <p class="spec__kicker">Requirements</p>
-        <hr class="spec__rule">
-        <ul class="speclist">
-          <li><span>What it had to do.</span></li>
-          <li><span>The constraint that made it hard.</span></li>
-          <li><span>The bar it had to clear.</span></li>
-        </ul>
-
-        <p class="spec__kicker">Details</p>
-        <hr class="spec__rule">
-        <ul class="speclist speclist--dim">
-          <li><span>How you built it — materials, ratios, components.</span></li>
-          <li><span>A decision you made and why.</span></li>
-          <li><span>A number that proves the outcome.</span></li>
-        </ul>
-      </div>
+    <div class="coming">
+      <span class="coming__label">Coming soon</span>
+      <p class="coming__msg">More work is being documented &mdash; check back shortly.</p>
     </div>
   </section>
 
