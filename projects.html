@@ -56,18 +56,18 @@ a{color:inherit;text-decoration:none}
 ::selection{background:var(--fg);color:var(--bg)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-/* ---------- binder nav ---------- */
-.bindernav{
+/* ---------- top nav (matches home) ---------- */
+.topbar{
   display:flex;justify-content:space-between;align-items:center;gap:1rem;
   padding:1rem var(--pad);border-bottom:1px solid var(--hair);
 }
-.wordmark{font-size:1.05rem;letter-spacing:.02em}
-.wordmark b{font-weight:700}
-.wordmark span{color:var(--dim);font-weight:400;margin-left:.35rem}
-.binderlinks{display:flex;flex-wrap:wrap;gap:1.6rem;font-size:.95rem}
-.binderlinks a{color:var(--dim);transition:color .2s}
-.binderlinks a:hover{color:var(--accent)}
-.binderlinks a.is-current{color:var(--fg)}
+.corner{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;font-size:.8125rem}
+.corner a{
+  color:var(--dim);padding-bottom:.15rem;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.corner a:hover,.corner a:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
 .swatch{
   font:inherit;color:var(--fg);background:none;border:0;padding:0;cursor:pointer;
   font-size:1.15rem;line-height:1;
@@ -76,8 +76,7 @@ a{color:inherit;text-decoration:none}
 .swatch:hover,.swatch:focus-visible{transform:rotate(90deg)}
 .swatch:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media (max-width:640px){
-  .wordmark span{display:none}
-  .binderlinks{gap:1rem;font-size:.85rem}
+  .corner{gap:1rem}
 }
 
 main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--pad) 6rem}
@@ -89,9 +88,9 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
   text-transform:uppercase;color:var(--dim);flex:none;
 }
 .ptitle{
-  margin:0;font-style:italic;font-weight:700;
-  font-size:clamp(2.8rem,10vw,7rem);line-height:.9;letter-spacing:-.03em;
-  text-transform:uppercase;flex:none;
+  margin:0;font-weight:500;
+  font-size:clamp(2.8rem,10vw,7rem);line-height:.9;letter-spacing:-.04em;
+  flex:none;
 }
 .pagehead__rule{flex:1;height:1px;background:var(--hair);align-self:center}
 
@@ -183,8 +182,8 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 @media (max-width:520px){
   .pagehead{flex-wrap:wrap;gap:.75rem}
   .pagehead__rule{display:none}
-  .bindernav{flex-wrap:wrap}
-  .binderlinks{gap:1rem .9rem;font-size:.85rem;width:100%;justify-content:flex-start}
+  .topbar{flex-wrap:wrap}
+  .corner{gap:1rem .9rem;font-size:.8125rem;width:100%;justify-content:flex-start}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 /* ---------- page transition curtain ---------- */
@@ -202,14 +201,13 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 
 <div class="curtain" id="curtain"></div>
 
-<header class="bindernav">
-  <a class="wordmark" href="index.html"><b>CHAYANTH</b> SUTHAHAR<span>| 2026 Portfolio</span></a>
-  <nav class="binderlinks" aria-label="Primary">
-    <a href="projects.html" class="is-current" aria-current="page">Projects</a>
+<header class="topbar">
+  <nav class="corner" aria-label="Primary">
     <a href="index.html">Home</a>
-    <a href="#" onclick="window.print();return false">Print Version</a>
-    <button class="swatch" id="swatch" aria-label="Change colour theme" title="Change colour">+</button>
+    <a href="ChayanthResume%20(1).pdf" target="_blank" rel="noopener">Resume</a>
+    <a href="https://www.linkedin.com/in/chayanth/" target="_blank" rel="noopener">connect</a>
   </nav>
+  <button class="swatch" id="swatch" aria-label="Change colour theme" title="Change colour">+</button>
 </header>
 
 <main>
