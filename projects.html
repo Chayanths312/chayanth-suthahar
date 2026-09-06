@@ -184,33 +184,45 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 }
 
 /* ============================================================
-   RENDER TOGGLE — two renders stacked in the same cell, aligned
-   pixel-for-pixel, crossfaded by opacity. Use for any project
-   with a "structure" and a "finished" render at matching crop.
+   RENDER TOGGLE — two renders stacked in a LOCKED-RATIO frame.
+   Using aspect-ratio + object-fit:contain (rather than trusting
+   both source images to share identical pixel dimensions) means
+   the box literally cannot resize when you switch — even if a
+   future image pair isn't perfectly pre-cropped to match.
    ============================================================ */
 .toggle-stage{
-  display:grid;grid-template-areas:"stack";width:100%;
+  position:relative;width:100%;
+  aspect-ratio:2.41/1;   /* matches the aircraft renders; adjust per project */
 }
 .toggle-stage img{
-  grid-area:stack;width:100%;height:auto;display:block;
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
   filter:grayscale(1) contrast(1.03);
-  opacity:0;transition:opacity .5s ease;pointer-events:none;
+  opacity:0;transition:opacity .45s ease;pointer-events:none;
 }
 .toggle-stage img.is-active{opacity:1;pointer-events:auto}
 
+/* ---- sliding pill switch, black & white ---- */
 .toggle{
-  display:inline-flex;gap:0;margin:0 0 1rem;
-  border:1px solid var(--hair);
+  position:relative;display:inline-flex;
+  margin:0 0 1.1rem;padding:.25rem;
+  background:var(--hair);border-radius:999px;
+}
+.toggle__pill{
+  position:absolute;top:.25rem;bottom:.25rem;left:.25rem;
+  width:var(--pill-w, 50%);
+  background:var(--fg);border-radius:999px;
+  transition:transform .32s cubic-bezier(.65,0,.35,1);
+  transform:translateX(0);
 }
 .toggle button{
-  font:inherit;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--dim);background:none;border:0;padding:.55rem 1.1rem;cursor:pointer;
-  transition:color .2s,background .2s;
+  position:relative;z-index:1;
+  font:inherit;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);background:none;border:0;cursor:pointer;
+  padding:.6rem 1.25rem;border-radius:999px;
+  transition:color .25s ease;
 }
-.toggle button + button{border-left:1px solid var(--hair)}
-.toggle button.is-on{color:var(--bg);background:var(--fg)}
-.toggle button:not(.is-on):hover{color:var(--fg)}
-.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.toggle button.is-on{color:var(--bg)}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ============================================================
    VIEWER LINK — click-through to a separate interactive page
@@ -348,6 +360,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
     <div class="spec spec--flip">
       <div class="spec__media">
         <div class="toggle" role="group" aria-label="Render view">
+          <span class="toggle__pill" aria-hidden="true"></span>
           <button type="button" class="is-on"
                   onclick="setPlaneView(this,'plane-covered')">Covered</button>
           <button type="button"
@@ -427,15 +440,26 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 </main>
 
 <script>
-/* ---- render toggle: swap which stacked image is visible, crossfade via CSS ---- */
+/* ---- render toggle: slide the pill to the clicked button, crossfade images ---- */
 function setPlaneView(btn, activeId){
   var group = btn.closest('.toggle');
+  var pill  = group.querySelector('.toggle__pill');
   group.querySelectorAll('button').forEach(function(b){ b.classList.toggle('is-on', b===btn); });
+
+  // measure so the pill fits/slides to THIS button, regardless of label length
+  pill.style.width = btn.offsetWidth + 'px';
+  pill.style.transform = 'translateX(' + (btn.offsetLeft - group.clientLeft - 4) + 'px)';
+
   var stage = group.nextElementSibling; // .toggle-stage
   stage.querySelectorAll('img').forEach(function(img){
     img.classList.toggle('is-active', img.id===activeId);
   });
 }
+/* size the pill correctly on first paint (before any click) */
+document.querySelectorAll('.toggle').forEach(function(group){
+  var on = group.querySelector('button.is-on') || group.querySelector('button');
+  if(on) setPlaneView(on, on.getAttribute('onclick').match(/'([^']+)'\)$/)[1]);
+});
 </script>
 
 <script>
