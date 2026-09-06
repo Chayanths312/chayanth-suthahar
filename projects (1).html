@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  PROJECTS PAGE
+  Header reads "Projects". Each project is a <section class="project">
+  divided by its own title. Drivetrain (01) is filled in as the
+  worked example; copy a <section class="project"> to add another.
+
+  PER PROJECT, EDIT:
+    1. .project__no   — the two-digit number
+    2. .project__name — the project title ("what it is")
+    3. .project__tag  — a short category on the right
+    4. the render: swap the <img src> (export TRANSPARENT PNG)
+    5. .spec__lede    — one-line summary
+    6. the Requirements and Details lists
+
+  This page inherits whatever theme was picked on the home page.
+  It's black & white for now — the accent token is set to white.
+
+  INTERACTIVE MODEL LINK (Aircraft project):
+  The ".viewer-link" button points at "aircraft-viewer/Open.html".
+  That path does NOT exist in this file set yet — it's a CAD export
+  (an Open.html launcher + its whole Data/ folder). To make the
+  button work:
+    1. Put the entire exported folder — Open.html AND the full
+       Data/ folder next to it — into this repo under a folder
+       named exactly "aircraft-viewer".
+    2. Nothing else needs to change; the href already points there.
+  Until that folder exists, the button is a real, styled dead link
+  (it will 404) — that's expected and safe, not a bug.
+  ============================================================
+-->
+<html lang="en" data-theme="void">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Chayanth Suthahar</title>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('theme');
+    if(['void','paper','blueprint'].indexOf(t)>-1)
+      document.documentElement.setAttribute('data-theme',t);
+  }catch(e){}
+})();
+</script>
+
+<style>
+:root,
+[data-theme="void"]{ --bg:#0B0B0C; --fg:#F4F4F2; --dim:#8C8C8E; --hair:#242427; --accent:#F4F4F2; }
+[data-theme="paper"]{ --bg:#FAF8F3; --fg:#141312; --dim:#8A857B; --hair:#DDD8CD; --accent:#12808F; }
+[data-theme="blueprint"]{ --bg:#0A1014; --fg:#EAF6F8; --dim:#6F8A92; --hair:#173038; --accent:#3FC9D6; }
+
+:root{
+  --grotesk:'Helvetica Neue','Helvetica','Arial',sans-serif;
+  --pad:clamp(1.15rem,3vw,2.75rem);
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--grotesk);-webkit-font-smoothing:antialiased;
+  transition:background-color .45s ease,color .45s ease;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--fg);color:var(--bg)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------- top nav (matches home) ---------- */
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  padding:1rem var(--pad);border-bottom:1px solid var(--hair);
+}
+.corner{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;font-size:.8125rem}
+.corner a{
+  color:var(--dim);padding-bottom:.15rem;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.corner a:hover,.corner a:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
+.swatch{
+  font:inherit;color:var(--fg);background:none;border:0;padding:0;cursor:pointer;
+  font-size:1.15rem;line-height:1;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),color .45s ease;
+}
+.swatch:hover,.swatch:focus-visible{transform:rotate(90deg)}
+.swatch:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (max-width:640px){
+  .corner{gap:1rem}
+}
+
+main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--pad) 6rem}
+
+/* ---------- page header ---------- */
+.pagehead{display:flex;align-items:baseline;gap:1.5rem}
+.eyebrow{
+  margin:0;font-size:.8125rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim);flex:none;
+}
+.ptitle{
+  margin:0;font-weight:500;
+  font-size:clamp(2.8rem,10vw,7rem);line-height:.9;letter-spacing:-.04em;
+  flex:none;
+}
+.pagehead__rule{flex:1;height:1px;background:var(--hair);align-self:center}
+
+/* ============================================================
+   PROJECT — divider title + spec content
+   ============================================================ */
+.project{margin-top:clamp(4rem,9vw,7rem)}
+.project__head{
+  display:flex;align-items:baseline;gap:1rem;
+  padding-bottom:1.1rem;border-bottom:1px solid var(--hair);
+}
+.project__no{font-size:.9rem;font-weight:500;color:var(--dim);letter-spacing:.04em}
+.project__name{
+  margin:0;font-weight:600;
+  font-size:clamp(1.7rem,4.5vw,3rem);line-height:1;letter-spacing:-.02em;
+}
+.project__tag{
+  margin-left:auto;font-size:.75rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);white-space:nowrap;
+}
+
+/* ---------- spec body ---------- */
+.spec{
+  display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(2rem,5vw,4.5rem);align-items:start;
+  margin-top:clamp(2rem,5vw,3.5rem);
+}
+.spec--flip .spec__media{order:2}
+
+/* text-only project: single readable column (no render yet).
+   To add a render later, mirror Drivetrain — drop "spec--solo"
+   and add <div class="spec__media"><img ...></div> beside the body. */
+.spec--solo{grid-template-columns:1fr}
+.spec--solo .spec__body{max-width:68ch}
+
+.spec__media{display:grid;place-items:center;align-self:start}
+/* pin the render while you scroll the points; it releases at the next project */
+@media (min-width:821px){
+  .spec__media{position:sticky;top:clamp(2rem,10vh,6rem)}
+}
+.spec__media--slot{aspect-ratio:4/3;border:1px dashed var(--hair)}
+.spec__media--slot .ph{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+/* transparent render floats — grayscale keeps it B&W;
+   delete the filter line to bring colour back */
+.spec__media img{width:100%;height:auto;display:block;filter:grayscale(1) contrast(1.03)}
+
+.spec__lede{
+  margin:0;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.5;
+  color:var(--fg);max-width:44ch;
+}
+.spec--solo .spec__lede{max-width:none}
+.spec__kicker{
+  margin:clamp(1.75rem,4vw,2.5rem) 0 .7rem;
+  font-size:.75rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+}
+.spec__rule{height:1px;background:var(--hair);border:0;margin:0}
+
+.speclist{list-style:none;margin:1.1rem 0 0;padding:0}
+.speclist li{
+  display:grid;grid-template-columns:auto 1fr;gap:.8rem;align-items:start;
+  margin-top:.85rem;font-size:1rem;line-height:1.45;color:var(--fg);
+}
+.speclist li:first-child{margin-top:0}
+.speclist li::before{
+  content:'';width:.38rem;height:.38rem;border-radius:50%;
+  background:var(--fg);margin-top:.62em;
+}
+.speclist--dim li{color:var(--dim)}
+.speclist--dim li::before{background:var(--dim)}
+
+/* ---------- nested highlights: round main point (--fg) + dash sub-points (--dim) ---------- */
+.speclist .subs{list-style:none;grid-column:2;margin:.6rem 0 0;padding:0}
+.speclist .subs li{margin-top:.55rem;font-size:.95rem;color:var(--dim)}
+.speclist .subs li:first-child{margin-top:0}
+.speclist .subs li::before{
+  content:"\2013";                 /* en dash, dim */
+  width:auto;height:auto;border-radius:0;background:none;
+  color:var(--dim);margin-top:0;justify-self:start;
+}
+
+/* ============================================================
+   RENDER TOGGLE — two renders stacked in the same cell, aligned
+   pixel-for-pixel, crossfaded by opacity. Use for any project
+   with a "structure" and a "finished" render at matching crop.
+   ============================================================ */
+.toggle-stage{
+  display:grid;grid-template-areas:"stack";width:100%;
+}
+.toggle-stage img{
+  grid-area:stack;width:100%;height:auto;display:block;
+  filter:grayscale(1) contrast(1.03);
+  opacity:0;transition:opacity .5s ease;pointer-events:none;
+}
+.toggle-stage img.is-active{opacity:1;pointer-events:auto}
+
+.toggle{
+  display:inline-flex;gap:0;margin:0 0 1rem;
+  border:1px solid var(--hair);
+}
+.toggle button{
+  font:inherit;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);background:none;border:0;padding:.55rem 1.1rem;cursor:pointer;
+  transition:color .2s,background .2s;
+}
+.toggle button + button{border-left:1px solid var(--hair)}
+.toggle button.is-on{color:var(--bg);background:var(--fg)}
+.toggle button:not(.is-on):hover{color:var(--fg)}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ============================================================
+   VIEWER LINK — click-through to a separate interactive page
+   (e.g. an exported CAD/3D viewer). Styled as a bordered call-
+   to-action row, consistent with the site's monochrome tokens.
+   Opens in a new tab since it's a distinct experience/page.
+   ============================================================ */
+.viewer-link{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-top:clamp(1.75rem,4vw,2.5rem);
+  padding:1.1rem 1.3rem;
+  border:1px solid var(--hair);
+  transition:border-color .2s,background .2s,color .2s;
+}
+.viewer-link:hover,.viewer-link:focus-visible{
+  border-color:var(--fg);background:color-mix(in srgb, var(--fg) 6%, transparent);
+}
+.viewer-link__text{display:flex;flex-direction:column;gap:.2rem}
+.viewer-link__label{
+  font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+}
+.viewer-link__title{font-size:1.05rem;font-weight:600}
+.viewer-link__arrow{
+  font-size:1.2rem;flex:none;transition:transform .2s;
+}
+.viewer-link:hover .viewer-link__arrow,
+.viewer-link:focus-visible .viewer-link__arrow{transform:translateX(4px)}
+
+@media (max-width:820px){
+  .spec{grid-template-columns:1fr}
+  .spec--flip .spec__media{order:0}
+  /* cap the render so it doesn't eat the whole phone screen */
+  .spec__media img{max-height:52vh;width:auto;max-width:100%;margin:0 auto}
+  /* let a long project name + tag wrap instead of colliding on one line */
+  .project__head{flex-wrap:wrap;gap:.5rem .9rem;align-items:baseline}
+  .project__tag{margin-left:0;flex-basis:100%}
+}
+@media (max-width:520px){
+  .pagehead{flex-wrap:wrap;gap:.75rem}
+  .pagehead__rule{display:none}
+  .topbar{flex-wrap:wrap}
+  .corner{gap:1rem .9rem;font-size:.8125rem;width:100%;justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ---------- page transition curtain ---------- */
+.curtain{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  opacity:1;pointer-events:none;
+  transition:opacity .5s ease;
+}
+.curtain.clear{opacity:0}
+@media (prefers-reduced-motion:reduce){ .curtain{transition:none} }
+</style>
+</head>
+<body>
+
+<div class="curtain" id="curtain"></div>
+
+<header class="topbar">
+  <nav class="corner" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="ChayanthResume%20(1).pdf" target="_blank" rel="noopener">Resume</a>
+    <a href="https://www.linkedin.com/in/chayanth/" target="_blank" rel="noopener">connect</a>
+  </nav>
+  <button class="swatch" id="swatch" aria-label="Change colour theme" title="Change colour">+</button>
+</header>
+
+<main>
+
+  <div class="pagehead">
+    <h1 class="ptitle">Projects</h1>
+    <span class="pagehead__rule" aria-hidden="true"></span>
+    <p class="eyebrow">Selected Work</p>
+  </div>
+
+  <!-- ================= PROJECT 01 — DRIVETRAIN (filled) ================= -->
+  <section class="project">
+    <header class="project__head">
+      <span class="project__no">01</span>
+      <h2 class="project__name">Drivetrain</h2>
+      <span class="project__tag">FRC 2056 · Mechanical</span>
+    </header>
+
+    <div class="spec">
+      <div class="spec__media">
+        <img src="drivebase.png" alt="2056 drivetrain render — swerve base with electronics">
+      </div>
+
+      <div class="spec__body">
+        <p class="spec__lede">A 32" &times; 28" swerve base on MK4i modules &mdash; Kraken X60 drive geared to 15 ft/s, Kraken X44 steering.</p>
+
+        <p class="spec__kicker">Requirements</p>
+        <hr class="spec__rule">
+        <ul class="speclist">
+          <li><span>Agile, responsive, and highly controllable.</span></li>
+          <li><span>Extremely robust, rigid, and reliable.</span></li>
+          <li><span>Low centre of mass (CoM).</span></li>
+          <li><span>Must provide rigid structure and mounting of subsystems.</span></li>
+        </ul>
+
+        <p class="spec__kicker">Details</p>
+        <hr class="spec__rule">
+        <ul class="speclist speclist--dim">
+          <li><span>Constructed of 3" x 1" x 1/8" aluminum tubing for stiffness and a lower chassis. A 1/16" solid aluminum baseplate acts as a shear plate, offers a mounting surface for electronics, and lowers the overall CoM to improve stability.</span></li>
+          <li><span>Maximum chassis size of 32" long by 28" wide to ensure stability when scoring.</span></li>
+          <li><span>The corners of the baseplate are bolted, adding extra support to the rivets.</span></li>
+          <li><span>The baseplate is fastened directly to the elevator gearbox, and an aluminum angle riveted along the baseplate near the battery prevents sagging.</span></li>
+          <li><span>Utilizes Swerve Drive Specialties MK4i modules, selected for their proven reliability, low CoM, and team familiarity.</span></li>
+          <li><span>Powered by Kraken X60 motors for a top speed of 15 ft/s. The L2 gear ratio balances speed and acceleration for the game's short cycle distances.</span></li>
+          <li><span>Each swerve module steers with a Kraken X44 on a custom shifted adapter plate and a 12-tooth pinion, saving nearly 2 lbs.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECT 02 — AUTONOMOUS RC AIRCRAFT (filled) =================
+       Uses the render TOGGLE: two images (uncovered / covered), same crop and
+       scale, crossfade between them. Swap in new pairs by:
+         1. cropping both to the identical frame (same bbox/canvas)
+         2. giving each <img> a unique id
+         3. pointing the two toggle buttons' onclick at those ids
+
+       The .viewer-link button below opens aircraft-viewer/Open.html in a new
+       tab. See the note at the top of this file for what needs to be added
+       to the repo before that link resolves to anything.
+  -->
+  <section class="project">
+    <header class="project__head">
+      <span class="project__no">02</span>
+      <h2 class="project__name">Autonomous RC Aircraft</h2>
+      <span class="project__tag">TMU Aero Design · Aerospace</span>
+    </header>
+
+    <div class="spec spec--flip">
+      <div class="spec__media">
+        <div class="toggle" role="group" aria-label="Render view">
+          <button type="button" class="is-on"
+                  onclick="setPlaneView(this,'plane-covered')">Covered</button>
+          <button type="button"
+                  onclick="setPlaneView(this,'plane-uncovered')">Structure</button>
+        </div>
+        <div class="toggle-stage">
+          <img id="plane-covered" class="is-active" src="plane-covered.png"
+               alt="Finished autonomous RC aircraft, covered airframe">
+          <img id="plane-uncovered" src="plane-uncovered.png"
+               alt="Autonomous RC aircraft structure, uncovered truss airframe">
+        </div>
+      </div>
+
+      <div class="spec__body">
+        <p class="spec__lede">A 5.5 ft wingspan autonomous airframe &mdash; FEA-validated and flight-tested.</p>
+
+        <p class="spec__kicker">Highlights</p>
+        <hr class="spec__rule">
+        <ul class="speclist">
+          <li>
+            <span>5.5 ft wingspan airframe designed in SolidWorks</span>
+            <ul class="subs">
+              <li><span>Built from plywood, aluminum spars, and carbon fibre composites for a high strength-to-weight structure</span></li>
+            </ul>
+          </li>
+          <li>
+            <span>Static structural FEA on the landing gear under landing-impact loading</span>
+            <ul class="subs">
+              <li><span>Redesign validated on real landings</span></li>
+            </ul>
+          </li>
+        </ul>
+
+        <a class="viewer-link" href="aircraft-viewer/Open.html" target="_blank" rel="noopener">
+          <span class="viewer-link__text">
+            <span class="viewer-link__label">Interactive Model</span>
+            <span class="viewer-link__title">Open the 3D viewer</span>
+          </span>
+          <span class="viewer-link__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECT 03 — VITALGROOVE (text-only) ================= -->
+  <section class="project">
+    <header class="project__head">
+      <span class="project__no">03</span>
+      <h2 class="project__name">VitalGroove</h2>
+      <span class="project__tag">MakeUofT · Robotics</span>
+    </header>
+
+    <div class="spec spec--solo">
+      <div class="spec__body">
+        <p class="spec__lede">An end-to-end sense&ndash;think&ndash;act robot built on an NVIDIA Jetson Nano in 24 hours.</p>
+
+        <p class="spec__kicker">Highlights</p>
+        <hr class="spec__rule">
+        <ul class="speclist">
+          <li>
+            <span>Full perception-to-actuation loop on a Jetson Nano</span>
+            <ul class="subs">
+              <li><span>Computer vision detects human interaction, a VLM pipeline decides, and motors actuate</span></li>
+            </ul>
+          </li>
+          <li>
+            <span>Brought up the entire hardware stack under a 24-hour deadline</span>
+            <ul class="subs">
+              <li><span>Debugged wiring, power, and inference latency to keep real-time control stable under live camera feeds</span></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ---- render toggle: swap which stacked image is visible, crossfade via CSS ---- */
+function setPlaneView(btn, activeId){
+  var group = btn.closest('.toggle');
+  group.querySelectorAll('button').forEach(function(b){ b.classList.toggle('is-on', b===btn); });
+  var stage = group.nextElementSibling; // .toggle-stage
+  stage.querySelectorAll('img').forEach(function(img){
+    img.classList.toggle('is-active', img.id===activeId);
+  });
+}
+</script>
+
+<script>
+/* ---- pinned render drifts down + rotates with scroll, stops at next project ---- */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(!matchMedia('(min-width: 821px)').matches) return;
+  var imgs=[].slice.call(document.querySelectorAll('.spec__media img'));
+  if(!imgs.length) return;
+  var DEG=12, DRIFT=30, ticking=false;
+  function update(){
+    ticking=false;
+    var vh=window.innerHeight;
+    imgs.forEach(function(img){
+      var sec=img.closest('.project'); if(!sec) return;
+      var r=sec.getBoundingClientRect();
+      var total=r.height-vh;                     // scrollable distance in this project
+      var p=total>0?Math.min(1,Math.max(0,(-r.top)/total)):0;
+      img.style.transform='translateY('+(p*DRIFT).toFixed(1)+'px) rotate('+(p*DEG).toFixed(2)+'deg) scale(.985)';
+    });
+  }
+  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(update);} }
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',onScroll);
+  update();
+})();
+</script>
+
+<script>
+/* ---- the "+" cycles the colour theme (shared with home via localStorage) ---- */
+(function () {
+  var themes = ['void','paper','blueprint'];
+  var i = themes.indexOf(document.documentElement.getAttribute('data-theme'));
+  if (i < 0) i = 0;
+  var btn = document.getElementById('swatch');
+  if (btn) btn.addEventListener('click', function () {
+    i = (i + 1) % themes.length;
+    document.documentElement.setAttribute('data-theme', themes[i]);
+    try { localStorage.setItem('theme', themes[i]); } catch (e) {}
+  });
+})();
+
+/* ---- smooth crossfade between pages (dissolves through the bg colour) ---- */
+(function(){
+  var c=document.getElementById('curtain');
+  if(!c) return;
+  var reveal=function(){ c.classList.add('clear'); };
+  requestAnimationFrame(function(){ requestAnimationFrame(reveal); });
+  window.addEventListener('pageshow', function(e){ if(e.persisted) reveal(); });
+
+  document.addEventListener('click', function(e){
+    if(e.defaultPrevented || e.button!==0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest ? e.target.closest('a') : null;
+    if(!a || a.target==='_blank') return;
+    var raw=a.getAttribute('href')||'';
+    if(!raw || raw.charAt(0)==='#' || raw.indexOf('mailto:')===0) return;
+    var url;
+    try{ url=new URL(a.href); }catch(err){ return; }               // let it navigate normally
+    if(url.origin!==location.origin) return;                       // external → normal
+    if(!/\.html$/.test(url.pathname)) return;                      // only html pages
+    if(url.pathname===location.pathname){ return; }                // same page → ignore
+    e.preventDefault();
+    var target=a.href;
+    c.classList.remove('clear');
+    var done=false, go=function(){ if(done)return; done=true; window.location.assign(target); };
+    c.addEventListener('transitionend', go, {once:true});
+    setTimeout(go, 600);
+  });
+})();
+</script>
+
+</body>
+</html>
