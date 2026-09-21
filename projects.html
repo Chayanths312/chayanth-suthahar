@@ -549,7 +549,10 @@ document.querySelectorAll('.toggle').forEach(function(group){
 (function(){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if(!matchMedia('(min-width: 821px)').matches) return;
-  var imgs=[].slice.call(document.querySelectorAll('.spec__media img'));
+  /* only direct-child renders drift (e.g. Drivetrain); the toggle's
+     images live in .spec__media > .toggle-stage > img, so "> img"
+     leaves them out and they stay put while you switch views */
+  var imgs=[].slice.call(document.querySelectorAll('.spec__media > img'));
   if(!imgs.length) return;
   var DEG=12, DRIFT=30, ticking=false;
   function update(){
