@@ -17,17 +17,11 @@
   This page inherits whatever theme was picked on the home page.
   It's black & white for now — the accent token is set to white.
 
-  INTERACTIVE MODEL LINK (Aircraft project):
-  The ".viewer-link" button points at "aircraft-viewer/Open.html".
-  That path does NOT exist in this file set yet — it's a CAD export
-  (an Open.html launcher + its whole Data/ folder). To make the
-  button work:
-    1. Put the entire exported folder — Open.html AND the full
-       Data/ folder next to it — into this repo under a folder
-       named exactly "aircraft-viewer".
-    2. Nothing else needs to change; the href already points there.
-  Until that folder exists, the button is a real, styled dead link
-  (it will 404) — that's expected and safe, not a bug.
+  INTERACTIVE 360° (Aircraft project):
+  The "Interactive Model" button (data-spin360) opens an in-page
+  drag-to-rotate viewer (.viewer360 modal), built from 25 pre-
+  rendered frames in the "plane360/" folder (frame01–25.webp).
+  Frames lazy-load on first open; replace them to update the spin.
   ============================================================
 -->
 <html lang="en" data-theme="void">
@@ -225,31 +219,63 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 .toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ============================================================
-   VIEWER LINK — click-through to a separate interactive page
-   (e.g. an exported CAD/3D viewer). Styled as a bordered call-
-   to-action row, consistent with the site's monochrome tokens.
-   Opens in a new tab since it's a distinct experience/page.
+   VIEWER TRIGGER — bordered call-to-action row that opens the
+   in-page 360° spin modal. Monochrome tokens. It's a <button>,
+   so it carries the button-reset properties inline.
    ============================================================ */
 .viewer-link{
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  margin-top:clamp(1.75rem,4vw,2.5rem);
+  width:100%;margin-top:clamp(1.75rem,4vw,2.5rem);
   padding:1.1rem 1.3rem;
-  border:1px solid var(--hair);
+  font:inherit;color:inherit;text-align:left;cursor:pointer;
+  background:none;border:1px solid var(--hair);
   transition:border-color .2s,background .2s,color .2s;
 }
 .viewer-link:hover,.viewer-link:focus-visible{
   border-color:var(--fg);background:color-mix(in srgb, var(--fg) 6%, transparent);
 }
+.viewer-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .viewer-link__text{display:flex;flex-direction:column;gap:.2rem}
 .viewer-link__label{
   font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
 }
 .viewer-link__title{font-size:1.05rem;font-weight:600}
 .viewer-link__arrow{
-  font-size:1.2rem;flex:none;transition:transform .2s;
+  font-size:1.25rem;flex:none;transition:transform .3s;
 }
 .viewer-link:hover .viewer-link__arrow,
-.viewer-link:focus-visible .viewer-link__arrow{transform:translateX(4px)}
+.viewer-link:focus-visible .viewer-link__arrow{transform:rotate(45deg)}
+
+/* ---------- 360° viewer modal ---------- */
+.viewer360{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:var(--pad)}
+.viewer360[hidden]{display:none}
+.viewer360__backdrop{position:absolute;inset:0;background:rgba(3,3,4,.86)}
+.viewer360__panel{
+  position:relative;z-index:1;width:min(94vw,1000px);
+  background:var(--bg);border:1px solid var(--hair);border-radius:4px;
+  padding:clamp(1rem,3vw,1.6rem);
+}
+.viewer360__head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin:0 0 .6rem}
+.viewer360__title{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.viewer360__close{
+  font:inherit;font-size:1.5rem;line-height:1;color:var(--dim);
+  background:none;border:0;cursor:pointer;transition:color .2s;
+}
+.viewer360__close:hover,.viewer360__close:focus-visible{color:var(--fg)}
+.viewer360__stage{
+  position:relative;aspect-ratio:16/9;display:grid;place-items:center;
+  cursor:grab;touch-action:none;overflow:hidden;
+}
+.viewer360__stage:active{cursor:grabbing}
+.viewer360__img{
+  width:100%;height:100%;object-fit:contain;filter:grayscale(1) contrast(1.03);
+  user-select:none;-webkit-user-select:none;-webkit-user-drag:none;pointer-events:none;
+}
+.viewer360__hint{
+  position:absolute;bottom:.4rem;left:50%;transform:translateX(-50%);margin:0;
+  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+  pointer-events:none;transition:opacity .5s;
+}
 
 @media (max-width:820px){
   .spec{grid-template-columns:1fr}
@@ -346,9 +372,8 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
          2. giving each <img> a unique id
          3. pointing the two toggle buttons' onclick at those ids
 
-       The .viewer-link button below opens aircraft-viewer/Open.html in a new
-       tab. See the note at the top of this file for what needs to be added
-       to the repo before that link resolves to anything.
+       The .viewer-link button below (data-spin360) opens the in-page 360°
+       drag-to-rotate modal, built from the frames in plane360/.
   -->
   <section class="project">
     <header class="project__head">
@@ -394,13 +419,13 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
           </li>
         </ul>
 
-        <a class="viewer-link" href="aircraft-viewer/Open.html" target="_blank" rel="noopener">
+        <button class="viewer-link" type="button" data-spin360>
           <span class="viewer-link__text">
             <span class="viewer-link__label">Interactive Model</span>
-            <span class="viewer-link__title">Open the 3D viewer</span>
+            <span class="viewer-link__title">Spin the aircraft 360°</span>
           </span>
-          <span class="viewer-link__arrow" aria-hidden="true">&rarr;</span>
-        </a>
+          <span class="viewer-link__arrow" aria-hidden="true">&#8635;</span>
+        </button>
       </div>
     </div>
   </section>
@@ -438,6 +463,63 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
   </section>
 
 </main>
+
+<!-- ================= 360° VIEWER MODAL (Autonomous RC Aircraft) ================= -->
+<div class="viewer360" id="viewer360" hidden>
+  <div class="viewer360__backdrop" data-close></div>
+  <div class="viewer360__panel" role="dialog" aria-modal="true" aria-label="Autonomous RC Aircraft — 360 degree view">
+    <div class="viewer360__head">
+      <span class="viewer360__title">Autonomous RC Aircraft — 360°</span>
+      <button class="viewer360__close" type="button" data-close aria-label="Close viewer">&times;</button>
+    </div>
+    <div class="viewer360__stage" id="v360stage">
+      <img class="viewer360__img" id="v360img" alt="Autonomous RC Aircraft, drag to rotate" draggable="false">
+      <p class="viewer360__hint" id="v360hint">Drag to rotate</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---- drag-to-spin 360° viewer (25 pre-rendered frames in plane360/) ---- */
+(function(){
+  var modal=document.getElementById('viewer360');
+  if(!modal) return;
+  var img=document.getElementById('v360img'),
+      stage=document.getElementById('v360stage'),
+      hint=document.getElementById('v360hint');
+  var N=25, frame=0, loaded=false, cache=[];
+  function url(i){ return 'plane360/frame'+String(i+1).padStart(2,'0')+'.webp'; }
+  function preload(){ if(loaded) return; for(var i=0;i<N;i++){ var im=new Image(); im.src=url(i); cache[i]=im; } loaded=true; }
+  function show(i){ frame=((i%N)+N)%N; img.src=url(frame); }
+  function open(){
+    preload(); show(frame);
+    modal.hidden=false;
+    document.documentElement.style.overflow='hidden';
+    if(hint) hint.style.opacity='1';
+  }
+  function close(){ modal.hidden=true; document.documentElement.style.overflow=''; }
+  document.addEventListener('click', function(e){
+    var o=e.target.closest && e.target.closest('[data-spin360]');
+    if(o){ e.preventDefault(); open(); return; }
+    if(!modal.hidden && e.target.closest && e.target.closest('[data-close]')) close();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.hidden) close(); });
+  var down=false, lastX=0, acc=0, STEP=13;
+  function press(x){ down=true; lastX=x; if(hint) hint.style.opacity='0'; }
+  function drag(x){
+    if(!down) return;
+    acc+=x-lastX; lastX=x;
+    while(Math.abs(acc)>=STEP){ if(acc>0){ show(frame-1); acc-=STEP; } else { show(frame+1); acc+=STEP; } }
+  }
+  function release(){ down=false; }
+  stage.addEventListener('mousedown', function(e){ e.preventDefault(); press(e.clientX); });
+  window.addEventListener('mousemove', function(e){ drag(e.clientX); });
+  window.addEventListener('mouseup', release);
+  stage.addEventListener('touchstart', function(e){ press(e.touches[0].clientX); }, {passive:true});
+  stage.addEventListener('touchmove', function(e){ drag(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+  stage.addEventListener('touchend', release);
+})();
+</script>
 
 <script>
 /* ---- render toggle: slide the pill to the clicked button, crossfade images ---- */
