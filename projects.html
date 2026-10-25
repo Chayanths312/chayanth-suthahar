@@ -141,7 +141,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 .spec__media--slot .ph{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
 /* transparent render floats — grayscale keeps it B&W;
    delete the filter line to bring colour back */
-.spec__media img{width:100%;height:auto;display:block;filter:grayscale(1) contrast(1.03)}
+.spec__media img{width:100%;height:auto;display:block;filter:contrast(1.03)}
 
 .spec__lede{
   margin:0;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.5;
@@ -168,7 +168,12 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 .speclist--dim li::before{background:var(--dim)}
 
 /* ---------- nested highlights: round main point (--fg) + dash sub-points (--dim) ---------- */
-.speclist .subs{list-style:none;grid-column:2;margin:.6rem 0 0;padding:0}
+/* nested sub-points, with a hairline "thread" down each sub-group
+   (uses --hair, so it stays black & white in every theme) */
+.speclist .subs{
+  list-style:none;grid-column:2;margin:.65rem 0 .15rem;
+  padding:.1rem 0 .1rem 1.1rem;border-left:1px solid var(--hair);
+}
 .speclist .subs li{margin-top:.55rem;font-size:.95rem;color:var(--dim)}
 .speclist .subs li:first-child{margin-top:0}
 .speclist .subs li::before{
