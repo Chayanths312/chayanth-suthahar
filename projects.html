@@ -214,9 +214,6 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 .sys__box{fill:none;stroke:var(--dim);stroke-width:1.5}
 .sys__line{fill:none;stroke:var(--dim);stroke-width:2}
 .sys__head{fill:var(--dim)}
-.sys .is-mine .sys__box{fill:var(--hair);stroke:var(--fg);stroke-width:2.5}
-.sys .is-mine .sys__line{stroke:var(--fg);stroke-width:3}
-.sys .is-mine .sys__head{fill:var(--fg)}
 
 /* ---------- Features list ---------- */
 .proj__label{
@@ -354,14 +351,6 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
           </div>
           <div class="panel" id="dt-p2" role="tabpanel" aria-labelledby="dt-t2">
             <div class="frame">
-              <a class="zoom" href="x44-plate.png" aria-label="Enlarge: Kraken X44 adapter plate">
-                <img src="x44-plate.png" alt="Custom shifted adapter plate for the Kraken X44 steering motor" loading="lazy" decoding="async">
-              </a>
-              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">Custom shifted adapter plate for the Kraken X44 steering motor</span><span class="slot__file">x44-plate.png</span></span>
-            </div>
-          </div>
-          <div class="panel" id="dt-p3" role="tabpanel" aria-labelledby="dt-t3">
-            <div class="frame">
               <a class="zoom" href="machining.jpg" aria-label="Enlarge: machining photo">
                 <img src="machining.jpg" alt="Machining drivetrain parts in the shop" loading="lazy" decoding="async">
               </a>
@@ -372,8 +361,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
         <div class="pills" role="tablist" aria-label="Drivetrain images">
           <span class="pills__ind" aria-hidden="true"></span>
           <button class="pill" type="button" role="tab" id="dt-t1" aria-controls="dt-p1" aria-selected="true">Drivetrain</button>
-          <button class="pill" type="button" role="tab" id="dt-t2" aria-controls="dt-p2" aria-selected="false" tabindex="-1">Adapter Plate</button>
-          <button class="pill" type="button" role="tab" id="dt-t3" aria-controls="dt-p3" aria-selected="false" tabindex="-1">Machining</button>
+          <button class="pill" type="button" role="tab" id="dt-t2" aria-controls="dt-p2" aria-selected="false" tabindex="-1">Machining</button>
         </div>
       </div>
 
@@ -441,14 +429,6 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
             </div>
           </div>
           <div class="panel" id="ac-p3" role="tabpanel" aria-labelledby="ac-t3">
-            <div class="frame">
-              <a class="zoom" href="fea-landing-gear.png" aria-label="Enlarge: landing gear FEA">
-                <img src="fea-landing-gear.png" alt="Static FEA of the aluminum landing gear under touchdown impact" loading="lazy" decoding="async">
-              </a>
-              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">Static FEA of the aluminum landing gear under touchdown impact</span><span class="slot__file">fea-landing-gear.png</span></span>
-            </div>
-          </div>
-          <div class="panel" id="ac-p4" role="tabpanel" aria-labelledby="ac-t4">
             <!-- 360° viewer: 25 pre-rendered frames in plane360/ (frame01–25.webp) -->
             <div class="spin" role="slider" tabindex="0"
                  aria-label="Rotate the RC aircraft" aria-describedby="ac-spin-keys"
@@ -464,8 +444,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
           <span class="pills__ind" aria-hidden="true"></span>
           <button class="pill" type="button" role="tab" id="ac-t1" aria-controls="ac-p1" aria-selected="true">Covered</button>
           <button class="pill" type="button" role="tab" id="ac-t2" aria-controls="ac-p2" aria-selected="false" tabindex="-1">Structure</button>
-          <button class="pill" type="button" role="tab" id="ac-t3" aria-controls="ac-p3" aria-selected="false" tabindex="-1">FEA</button>
-          <button class="pill" type="button" role="tab" id="ac-t4" aria-controls="ac-p4" aria-selected="false" tabindex="-1">3D</button>
+          <button class="pill" type="button" role="tab" id="ac-t3" aria-controls="ac-p3" aria-selected="false" tabindex="-1">3D</button>
         </div>
       </div>
 
@@ -484,11 +463,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
               <li><span>Redesign confirmed over 5 impacts: three 1&nbsp;m drop tests and two real landings</span></li>
             </ul>
           </li>
-          <li><span>SpeedyBee F405 Wing flight controller running iNav, ELRS radio link</span>
-            <ul>
-              <li><span><mark class="confirm">[CONFIRM: did it fly autonomous waypoints?]</mark></span></li>
-            </ul>
-          </li>
+          <li><span>SpeedyBee F405 Wing flight controller running iNav, ELRS radio link</span></li>
           <li><span>Onboard Pi Zero vision payload</span>
             <ul>
               <li><span>Scored the 100-point computer vision objective</span></li>
@@ -526,43 +501,33 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
           <div class="panel" id="vg-p2" role="tabpanel" aria-labelledby="vg-t2">
             <svg class="sys" viewBox="0 0 640 480" role="img" aria-labelledby="vg-sys-title vg-sys-desc">
               <title id="vg-sys-title">VitalGroove system diagram</title>
-              <desc id="vg-sys-desc">The camera feeds the Jetson Nano, which sends a serial signal to an ESP32 that drives the servo gate. The serial link, ESP32 and servo gate are highlighted as my part.</desc>
-              <g>
+              <desc id="vg-sys-desc">The camera feeds the Jetson Nano, which sends a serial signal to an ESP32 that drives the servo gate.</desc>
+              <g transform="translate(0 10)">
                 <rect class="sys__box" x="40" y="60" width="240" height="110" rx="10"/>
                 <text class="sys__name" x="160" y="115" text-anchor="middle" dominant-baseline="central">Camera</text>
-              </g>
-              <g>
+
                 <line class="sys__line" x1="280" y1="115" x2="348" y2="115"/>
                 <path class="sys__head" d="M360 115 l-13 -7.5 v15 z"/>
-              </g>
-              <g>
+
                 <rect class="sys__box" x="360" y="60" width="240" height="110" rx="10"/>
                 <text class="sys__name" x="480" y="100" text-anchor="middle" dominant-baseline="central">Jetson Nano</text>
                 <text class="sys__sub" x="480" y="136" text-anchor="middle" dominant-baseline="central">hug detection</text>
-              </g>
-              <g class="is-mine">
+
                 <line class="sys__line" x1="480" y1="170" x2="480" y2="277"/>
                 <path class="sys__head" d="M480 290 l-7.5 -13 h15 z"/>
                 <text class="sys__sub" x="496" y="230" dominant-baseline="central">serial</text>
-              </g>
-              <g class="is-mine">
+
                 <rect class="sys__box" x="360" y="290" width="240" height="110" rx="10"/>
                 <text class="sys__name" x="480" y="330" text-anchor="middle" dominant-baseline="central">ESP32</text>
                 <text class="sys__sub" x="480" y="366" text-anchor="middle" dominant-baseline="central">I2C sensors</text>
-              </g>
-              <g class="is-mine">
+
                 <line class="sys__line" x1="360" y1="345" x2="293" y2="345"/>
                 <path class="sys__head" d="M280 345 l13 -7.5 v15 z"/>
-              </g>
-              <g class="is-mine">
+
                 <rect class="sys__box" x="40" y="290" width="240" height="110" rx="10"/>
                 <text class="sys__name" x="160" y="330" text-anchor="middle" dominant-baseline="central">Servo gate</text>
                 <text class="sys__sub" x="160" y="366" text-anchor="middle" dominant-baseline="central">candy dispenser</text>
               </g>
-              <g class="is-mine">
-                <rect class="sys__box" x="40" y="430" width="22" height="22" rx="4"/>
-              </g>
-              <text class="sys__sub" x="76" y="441" dominant-baseline="central">My part</text>
             </svg>
           </div>
         </div>
@@ -579,7 +544,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
           <li><span>Jetson Nano vision pipeline detects a hug in real time</span>
             <ul>
               <li><span>Captures a polaroid-style photo of the moment</span></li>
-              <li><span><mark class="confirm">[CONFIRM: was a VLM used?]</mark></span></li>
+              <li><span>VLM pipeline decides when to dispense</span></li>
             </ul>
           </li>
           <li><span>Serial link from the Jetson to an ESP32</span>
