@@ -22,7 +22,7 @@
   [CONFIRM: ...] marks are facts still to be checked. Delete each
   one once it's answered.
 
-  The theme follows whatever was picked on the home page.
+  The page always uses the dark theme (theme switching was removed).
   ============================================================
 -->
 <html lang="en" data-theme="void">
@@ -30,16 +30,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Projects — Chayanth Suthahar</title>
-
-<script>
-(function(){
-  try{
-    var t=localStorage.getItem('theme');
-    if(['void','paper','blueprint'].indexOf(t)>-1)
-      document.documentElement.setAttribute('data-theme',t);
-  }catch(e){}
-})();
-</script>
 
 <style>
 :root,
@@ -336,7 +326,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
       <header class="proj__head">
         <p class="proj__eyebrow">FRC 2056 · Mechanical · 01</p>
         <h2 class="proj__title" id="drivetrain-title">Drivetrain.</h2>
-        <p class="proj__tagline">A 32" &times; 28" swerve base for the 2025 World Champion robot, geared for 15&nbsp;ft/s</p>
+        <p class="proj__tagline">A 32" &times; 28" swerve base for the 2025 robot ranked 1st in the world by EPA, geared for 15&nbsp;ft/s</p>
       </header>
 
       <div class="proj__media" data-media>
@@ -394,7 +384,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
         </ul>
 
         <dl class="facts">
-          <div><dt>Result</dt><dd>2025 FIRST World Champion and Ontario Champion; team 1st in Canada 2022&ndash;2025</dd></div>
+          <div><dt>Result</dt><dd>1st in the world by EPA in 2025 (Statbotics); team 1st in Canada 2022&ndash;2025</dd></div>
           <div><dt>My role</dt><dd>Designed the drive base, gearboxes and mounts; machined baseplates, gearbox plates, shafts and motor mounts on mill, lathe and CNC</dd></div>
         </dl>
       </div>
@@ -473,7 +463,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 
         <dl class="facts">
           <div><dt>Result</dt><dd>1st place on longest flight time (3:40, flown until the battery drained); judges' Best Handling aircraft</dd></div>
-          <div><dt>My role</dt><dd>Co-founder and design member; ran the landing-gear FEA and tests, integrated the flight controller and radio, helped wire the vision payload (built by a teammate)</dd></div>
+          <div><dt>My role</dt><dd>Co-founder and design member; designed the wing, tail and booms, and worked on the fuselage and the horizontal and vertical stabilizers; ran the landing-gear FEA and tests, integrated the flight controller and radio, helped wire the vision payload (built by a teammate)</dd></div>
         </dl>
       </div>
     </div>
@@ -492,10 +482,10 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
         <div class="stage" style="--ratio:4/3">
           <div class="panel is-active" id="vg-p1" role="tabpanel" aria-labelledby="vg-t1">
             <div class="frame">
-              <a class="zoom" href="vitalgroove-build.jpg" aria-label="Enlarge: dispenser build">
-                <img src="vitalgroove-build.jpg" alt="The VitalGroove candy dispenser build" loading="lazy" decoding="async">
+              <a class="zoom" href="vitalgroove-build.webp" aria-label="Enlarge: VitalGroove build">
+                <img src="vitalgroove-build.webp" alt="The VitalGroove build: camera and screen showing a captured hug photo, beside the candy dispenser" loading="lazy" decoding="async">
               </a>
-              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">The VitalGroove candy dispenser build</span><span class="slot__file">vitalgroove-build.jpg</span></span>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">The VitalGroove build: camera and screen showing a captured hug photo, beside the candy dispenser</span><span class="slot__file">vitalgroove-build.webp</span></span>
             </div>
           </div>
           <div class="panel" id="vg-p2" role="tabpanel" aria-labelledby="vg-t2">
@@ -575,7 +565,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 
       <div class="proj__media" data-media>
         <div class="stage" style="--ratio:16/9">
-          <div class="panel is-active" id="ew-p1" role="tabpanel" aria-labelledby="ew-t1">
+          <div class="panel is-active" id="ew-p1">
             <div class="frame">
               <!-- muted + lazy: the file only loads once this is on screen; tap/click shows controls -->
               <video autoplay muted loop playsinline preload="none" tabindex="0"
@@ -586,10 +576,6 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
               <span class="slot"><span class="slot__kicker">Video coming soon</span><span class="slot__alt">EdgeWave demo: playing chords and drums with hand gestures in the browser</span><span class="slot__file">edgewave.mp4 &middot; poster edgewave-poster.jpg</span></span>
             </div>
           </div>
-        </div>
-        <div class="pills" role="tablist" aria-label="EdgeWave media">
-          <span class="pills__ind" aria-hidden="true"></span>
-          <button class="pill" type="button" role="tab" id="ew-t1" aria-controls="ew-p1" aria-selected="true">Demo</button>
         </div>
       </div>
 
