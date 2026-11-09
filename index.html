@@ -147,13 +147,16 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .tagline .line:nth-child(4) > span{animation-delay:1.59s}
 .tagline em{font-style:normal;color:var(--dim)}
 
+/* the "+" (menu button): drawn as an SVG so it can be big and bold */
 .swatch{
   justify-self:end;align-self:start;
-  font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:.8;
+  width:clamp(2.4rem,4.4vw,3.75rem);height:clamp(2.4rem,4.4vw,3.75rem);
+  display:grid;place-items:center;
   color:var(--fg);
   opacity:0;animation:fade .8s ease 3.1s forwards;
   transition:transform .3s cubic-bezier(.16,1,.3,1),color .45s ease;
 }
+.swatch svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.6}
 .swatch:hover,.swatch:focus-visible{transform:rotate(90deg)}
 .swatch:active{transform:rotate(90deg) scale(.9)}
 
@@ -223,7 +226,12 @@ html.menu-open{overflow:hidden}
   width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;
   border:0;background:var(--bg);color:var(--fg);overflow:auto;
 }
-.menu::backdrop{background:var(--bg)}
+.menu::backdrop{background:transparent}
+/* page-style transition: the panel wipes up over the home page, then its
+   content rises in; on close the content fades and the panel retracts up */
+.menu{clip-path:inset(100% 0 0 0);transition:clip-path .6s cubic-bezier(.7,0,.25,1)}
+.menu.is-open{clip-path:inset(0 0 0 0)}
+.menu.is-closing{clip-path:inset(0 0 100% 0);transition-duration:.45s}
 .menu__inner{
   min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:2rem;padding:var(--pad);
 }
@@ -270,14 +278,29 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
 .menu__badge{display:block;width:88px;line-height:0}
 .menu__time{white-space:nowrap}
 
-.menu[open] .menu__inner{animation:menu-in .45s cubic-bezier(.16,1,.3,1)}
-@keyframes menu-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* content rises in, staggered, once the panel is moving ("backwards" fill
+   only holds the start state, so hover effects still work afterwards) */
+@keyframes menu-rise{from{opacity:0;transform:translateY(.45em)}}
+.menu.is-open .menu__top{animation:menu-rise .6s cubic-bezier(.16,1,.3,1) .32s backwards}
+.menu.is-open .menu__links a{animation:menu-rise .8s cubic-bezier(.16,1,.3,1) backwards}
+.menu.is-open .menu__links a:nth-child(1){animation-delay:.3s}
+.menu.is-open .menu__links a:nth-child(2){animation-delay:.38s}
+.menu.is-open .menu__links a:nth-child(3){animation-delay:.46s}
+.menu.is-open .menu__bio{animation:menu-rise .8s cubic-bezier(.16,1,.3,1) .5s backwards}
+.menu.is-open .menu__foot{animation:menu-rise .6s cubic-bezier(.16,1,.3,1) .62s backwards}
+.menu__inner{transition:opacity .2s ease}
+.menu.is-closing .menu__inner{opacity:0}
 
 @media (max-width:760px){
   .menu__body{grid-template-columns:minmax(0,1fr);align-self:start;row-gap:2.25rem;margin-top:4vh}
   .menu__bio{grid-column:auto}
 }
-@media (prefers-reduced-motion:reduce){ .menu[open] .menu__inner{animation:none} }
+@media (prefers-reduced-motion:reduce){
+  .menu{clip-path:none!important;transition:none}
+  .menu__inner{transition:none}
+  .menu.is-open .menu__top,.menu.is-open .menu__links a,
+  .menu.is-open .menu__bio,.menu.is-open .menu__foot{animation:none}
+}
 
 /* ---------- page transition curtain ---------- */
 .curtain{
@@ -326,7 +349,7 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
         <span class="line"><span></span></span>
       </p>
 
-      <button class="swatch" id="swatch" type="button" aria-label="Open menu" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false">+</button>
+      <button class="swatch" id="swatch" type="button" aria-label="Open menu" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5v21M1.5 12h21"/></svg></button>
     </section>
 
     <footer class="meta">
@@ -494,23 +517,38 @@ var I18N = {
   var menu = document.getElementById('menu');
   if (!btn || !menu || typeof menu.showModal !== 'function') return;
   var html = document.documentElement;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timer = null;
   function cleanup(){                      // safe to run more than once
     html.classList.remove('menu-open');
     btn.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('is-open', 'is-closing');
   }
-  function closeMenu(){ if (menu.open) menu.close(); cleanup(); btn.focus(); }
-  btn.addEventListener('click', function(){
+  function openMenu(){
+    if (timer){ clearTimeout(timer); timer = null; }
+    menu.classList.remove('is-closing');
     html.classList.add('menu-open');
     btn.setAttribute('aria-expanded', 'true');
-    menu.showModal();
-  });
-  menu.querySelector('.menu__close').addEventListener('click', closeMenu);
-  menu.addEventListener('cancel', cleanup);   // Esc
+    if (!menu.open) menu.showModal();
+    void menu.offsetWidth;                 // start the wipe from the closed position
+    menu.classList.add('is-open');
+  }
+  function finish(){ timer = null; if (menu.open) menu.close(); cleanup(); btn.focus(); }
+  function closeMenu(instant){
+    if (!menu.open){ cleanup(); return; }
+    if (instant || reduce){ finish(); return; }
+    menu.classList.remove('is-open');
+    menu.classList.add('is-closing');      // content fades, panel retracts upward
+    timer = setTimeout(finish, 450);
+  }
+  btn.addEventListener('click', openMenu);
+  menu.querySelector('.menu__close').addEventListener('click', function(){ closeMenu(); });
+  menu.addEventListener('cancel', function(e){ e.preventDefault(); closeMenu(); });   // Esc animates too
   menu.addEventListener('close', cleanup);
-  // links to other pages: close first so the page crossfade shows
+  // links to other pages: close at once so the page crossfade shows
   menu.addEventListener('click', function(e){
     var a = e.target.closest && e.target.closest('a');
-    if (a && !a.target && /\.html$/.test(a.pathname)){ if (menu.open) menu.close(); cleanup(); }
+    if (a && !a.target && /\.html$/.test(a.pathname)) closeMenu(true);
   });
 })();
 
