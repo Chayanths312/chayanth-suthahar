@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <!--
   ============================================================
-  PROJECTS PAGE
-  Header reads "Projects". Each project is a <section class="project">
-  divided by its own title. Drivetrain (01) is filled in as the
-  worked example; copy a <section class="project"> to add another.
+  PROJECTS PAGE — technical-binder layout
+  Every project is one <section class="proj"> with the same parts:
+    eyebrow  "<Team/Event> · <Discipline> · <NN>"
+    title    ends with a period, e.g. "Drivetrain."
+    tagline  one line: headline spec + result
+    media    pills (.pills) switch the panels inside .stage;
+             set the box shape per project with style="--ratio:W/H".
+             Click an image to enlarge it.
+    Features nested list: top level = design choice with specs,
+             sub-bullets = why / what it achieved (no end periods)
+    facts    "Result" and "My role"
+  Also add the project to the Contents list near the top.
 
-  PER PROJECT, EDIT:
-    1. .project__no   — the two-digit number
-    2. .project__name — the project title ("what it is")
-    3. .project__tag  — a short category on the right
-    4. the render: swap the <img src> (export TRANSPARENT PNG)
-    5. .spec__lede    — one-line summary
-    6. the Requirements and Details lists
+  ADDING MEDIA: each panel holds an <img> (inside <a class="zoom">)
+  or a <video>. If that file isn't uploaded yet, the page shows a
+  placeholder slot with the alt text automatically — upload a file
+  with the exact same name and it appears, no code change needed.
 
-  This page inherits whatever theme was picked on the home page.
-  It's black & white for now — the accent token is set to white.
+  [CONFIRM: ...] marks are facts still to be checked. Delete each
+  one once it's answered.
 
-  INTERACTIVE 360° (Aircraft project):
-  The "Interactive Model" button (data-spin360) opens an in-page
-  drag-to-rotate viewer (.viewer360 modal), built from 25 pre-
-  rendered frames in the "plane360/" folder (frame01–25.webp).
-  Frames lazy-load on first open; replace them to update the spin.
+  The theme follows whatever was picked on the home page.
   ============================================================
 -->
 <html lang="en" data-theme="void">
@@ -48,42 +49,36 @@
 
 :root{
   --grotesk:'Helvetica Neue','Helvetica','Arial',sans-serif;
+  --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
   --pad:clamp(1.15rem,3vw,2.75rem);
   --maxw:1180px;
+  --ease:cubic-bezier(.65,0,.35,1);
 }
 
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html.has-lightbox{overflow:hidden}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
 body{
   margin:0;background:var(--bg);color:var(--fg);
   font-family:var(--grotesk);-webkit-font-smoothing:antialiased;
   transition:background-color .45s ease,color .45s ease;
 }
 a{color:inherit;text-decoration:none}
+img,svg,video{max-width:100%}
 ::selection{background:var(--fg);color:var(--bg)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* ---------- top nav (matches home) ---------- */
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;gap:1rem;
-  padding:1rem var(--pad);border-bottom:1px solid var(--hair);
-}
-.corner{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;font-size:.8125rem}
+.topbar{padding:1rem var(--pad);border-bottom:1px solid var(--hair)}
+.corner{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;font-size:.8125rem}
 .corner a{
   color:var(--dim);padding-bottom:.15rem;
   border-bottom:1px solid transparent;
   transition:color .2s,border-color .2s;
 }
 .corner a:hover,.corner a:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
-.swatch{
-  font:inherit;color:var(--fg);background:none;border:0;padding:0;cursor:pointer;
-  font-size:1.15rem;line-height:1;
-  transition:transform .3s cubic-bezier(.16,1,.3,1),color .45s ease;
-}
-.swatch:hover,.swatch:focus-visible{transform:rotate(90deg)}
-.swatch:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media (max-width:640px){
-  .corner{gap:1rem}
-}
 
 main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--pad) 6rem}
 
@@ -100,202 +95,201 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 }
 .pagehead__rule{flex:1;height:1px;background:var(--hair);align-self:center}
 
-/* ============================================================
-   PROJECT — divider title + spec content
-   ============================================================ */
-.project{margin-top:clamp(4rem,9vw,7rem)}
-.project__head{
-  display:flex;align-items:baseline;gap:1rem;
-  padding-bottom:1.1rem;border-bottom:1px solid var(--hair);
+/* ---------- contents ---------- */
+.contents{margin-top:clamp(2.75rem,7vw,4.5rem)}
+.contents__title{margin:0 0 1rem;font-size:clamp(1.35rem,2.6vw,1.85rem);font-weight:500;letter-spacing:-.02em}
+.contents__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.contents__list a{
+  display:grid;grid-template-columns:2.75rem minmax(0,1fr) auto;align-items:baseline;column-gap:1rem;
+  padding:1rem .25rem;border-bottom:1px solid var(--hair);
 }
-.project__no{font-size:.9rem;font-weight:500;color:var(--dim);letter-spacing:.04em}
-.project__name{
+.contents__num{font-size:.875rem;font-weight:500;color:var(--dim);font-variant-numeric:tabular-nums}
+.contents__name{font-size:clamp(1.05rem,1.8vw,1.2rem);font-weight:500;letter-spacing:-.01em;transition:transform .25s var(--ease)}
+.contents__tag{font-size:.6875rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.contents__list a:hover .contents__name,
+.contents__list a:focus-visible .contents__name{transform:translateX(.35rem)}
+
+/* ============================================================
+   PROJECT SECTION — media left (sticky), text right; stacks on phones
+   ============================================================ */
+.proj{
+  margin-top:clamp(4rem,9vw,7rem);padding-top:clamp(1.75rem,4vw,2.75rem);
+  border-top:1px solid var(--hair);scroll-margin-top:1rem;
+}
+.proj__grid{
+  display:grid;grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"head" "media" "body";row-gap:clamp(1.75rem,5vw,2.5rem);
+}
+.proj__head{grid-area:head}
+.proj__media{grid-area:media;min-width:0}
+.proj__body{grid-area:body;min-width:0}
+@media (min-width:900px){
+  .proj__grid{
+    grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);grid-template-rows:auto 1fr;
+    grid-template-areas:"media head" "media body";
+    column-gap:clamp(2.25rem,4.5vw,3.5rem);row-gap:2.25rem;align-items:start;
+  }
+  .proj__media{position:sticky;top:clamp(1.5rem,7vh,4.5rem)}
+}
+
+.proj__eyebrow{
+  margin:0 0 .85rem;font-size:.6875rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);
+}
+.proj__title{
   margin:0;font-weight:600;
-  font-size:clamp(1.7rem,4.5vw,3rem);line-height:1;letter-spacing:-.02em;
+  font-size:clamp(2.4rem,5vw,4rem);line-height:1;letter-spacing:-.035em;
 }
-.project__tag{
-  margin-left:auto;font-size:.75rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--dim);white-space:nowrap;
-}
+.proj__tagline{margin:1rem 0 0;font-size:clamp(1rem,1.5vw,1.125rem);line-height:1.5;max-width:44ch}
 
-/* ---------- spec body ---------- */
-.spec{
-  display:grid;grid-template-columns:1.05fr .95fr;
-  gap:clamp(2rem,5vw,4.5rem);align-items:start;
-  margin-top:clamp(2rem,5vw,3.5rem);
+/* ---------- media stage: stacked panels, crossfade between them ---------- */
+.stage{position:relative;width:100%;aspect-ratio:var(--ratio,16/9)}
+.panel{
+  position:absolute;inset:0;display:grid;place-items:center;
+  opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s;
 }
-.spec--flip .spec__media{order:2}
+.panel.is-active{opacity:1;visibility:visible;transition:opacity .35s ease,visibility 0s}
+.frame{position:relative;width:100%;height:100%}
+.zoom{display:block;width:100%;height:100%;cursor:zoom-in}
+.frame img,.frame video{width:100%;height:100%;object-fit:contain;display:block;filter:contrast(1.03)}
+.frame video{cursor:pointer}
+.frame video[controls]{cursor:auto}
 
-/* text-only project: single readable column (no render yet).
-   To add a render later, mirror Drivetrain — drop "spec--solo"
-   and add <div class="spec__media"><img ...></div> beside the body. */
-.spec--solo{grid-template-columns:1fr}
-.spec--solo .spec__body{max-width:68ch}
+/* placeholder slot — shown only when the file isn't uploaded yet */
+.slot{
+  display:none;position:absolute;inset:0;
+  align-content:center;justify-items:center;gap:.45rem;padding:1.25rem;text-align:center;
+  border:1px dashed var(--hair);color:var(--dim);font-size:.875rem;line-height:1.45;
+}
+.slot__kicker{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.slot__alt{color:var(--fg);max-width:36ch}
+.slot__file{font-family:var(--mono);font-size:.75rem}
+.frame.is-missing .slot{display:grid}
+.frame.is-missing .zoom{display:none}
+.frame.is-missing video{opacity:0}
 
-.spec__media{display:grid;place-items:center;align-self:start}
-/* pin the render while you scroll the points; it releases at the next project */
-@media (min-width:821px){
-  .spec__media{position:sticky;top:clamp(2rem,10vh,6rem)}
+/* ---------- pill toggle (sliding highlight follows the selected pill) ---------- */
+.pills{
+  position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:.15rem;
+  width:fit-content;max-width:100%;margin:1.1rem auto 0;padding:.25rem;border-radius:1.4rem;
+  background:var(--hair);background:color-mix(in srgb,var(--fg) 7%,transparent);
 }
-.spec__media--slot{aspect-ratio:4/3;border:1px dashed var(--hair)}
-.spec__media--slot .ph{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-/* transparent render floats — grayscale keeps it B&W;
-   delete the filter line to bring colour back */
-.spec__media img{width:100%;height:auto;display:block;filter:contrast(1.03)}
-
-.spec__lede{
-  margin:0;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.5;
-  color:var(--fg);max-width:44ch;
-}
-.spec--solo .spec__lede{max-width:none}
-.spec__kicker{
-  margin:clamp(1.75rem,4vw,2.5rem) 0 .7rem;
-  font-size:.75rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
-}
-.spec__rule{height:1px;background:var(--hair);border:0;margin:0}
-
-.speclist{list-style:none;margin:1.1rem 0 0;padding:0}
-.speclist li{
-  display:grid;grid-template-columns:auto 1fr;gap:.8rem;align-items:start;
-  margin-top:.85rem;font-size:1rem;line-height:1.45;color:var(--fg);
-}
-.speclist li:first-child{margin-top:0}
-.speclist li::before{
-  content:'';width:.38rem;height:.38rem;border-radius:50%;
-  background:var(--fg);margin-top:.62em;
-}
-.speclist--dim li{color:var(--dim)}
-.speclist--dim li::before{background:var(--dim)}
-
-/* ---------- nested highlights: round main point (--fg) + dash sub-points (--dim) ---------- */
-/* nested sub-points, with a hairline "thread" down each sub-group
-   (uses --hair, so it stays black & white in every theme) */
-.speclist .subs{
-  list-style:none;grid-column:2;margin:.65rem 0 .15rem;
-  padding:.1rem 0 .1rem 1.1rem;border-left:1px solid var(--hair);
-}
-.speclist .subs li{margin-top:.55rem;font-size:.95rem;color:var(--dim)}
-.speclist .subs li:first-child{margin-top:0}
-.speclist .subs li::before{
-  content:"\2013";                 /* en dash, dim */
-  width:auto;height:auto;border-radius:0;background:none;
-  color:var(--dim);margin-top:0;justify-self:start;
-}
-
-/* ============================================================
-   RENDER TOGGLE — two renders stacked in a LOCKED-RATIO frame.
-   Using aspect-ratio + object-fit:contain (rather than trusting
-   both source images to share identical pixel dimensions) means
-   the box literally cannot resize when you switch — even if a
-   future image pair isn't perfectly pre-cropped to match.
-   ============================================================ */
-.toggle-stage{
-  position:relative;width:100%;
-  aspect-ratio:2.41/1;   /* matches the aircraft renders; adjust per project */
-}
-.toggle-stage img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-  filter:contrast(1.03);
-  opacity:0;transition:opacity .45s ease;pointer-events:none;
-}
-.toggle-stage img.is-active{opacity:1;pointer-events:auto}
-
-/* ---- sliding pill switch, black & white ---- */
-.toggle{
-  position:relative;display:inline-flex;
-  margin:0 0 1.1rem;padding:.25rem;
-  background:var(--hair);border-radius:999px;
-}
-.toggle__pill{
-  position:absolute;top:.25rem;bottom:.25rem;left:.25rem;
-  width:var(--pill-w, 50%);
-  background:var(--fg);border-radius:999px;
-  transition:transform .32s cubic-bezier(.65,0,.35,1);
-  transform:translateX(0);
-}
-.toggle button{
+.pill{
   position:relative;z-index:1;
-  font:inherit;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);background:none;border:0;cursor:pointer;
-  padding:.6rem 1.25rem;border-radius:999px;
-  transition:color .25s ease;
+  font:inherit;font-size:.6875rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);background:none;border:0;border-radius:999px;padding:.55rem .95rem;cursor:pointer;
+  transition:color .25s ease,background-color .25s ease;
 }
-.toggle button.is-on{color:var(--bg)}
-.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pill:hover{color:var(--fg)}
+.pill[aria-selected="true"]{color:var(--bg);background:var(--fg)}
+.pills.is-ready .pill[aria-selected="true"]{background:transparent}
+.pills__ind{
+  position:absolute;top:0;left:0;z-index:0;border-radius:999px;background:var(--fg);
+  opacity:0;pointer-events:none;
+  transition:transform .32s var(--ease),width .32s var(--ease),height .32s var(--ease);
+}
+.pills.is-ready .pills__ind{opacity:1}
 
-/* ============================================================
-   VIEWER TRIGGER — bordered call-to-action row that opens the
-   in-page 360° spin modal. Monochrome tokens. It's a <button>,
-   so it carries the button-reset properties inline.
-   ============================================================ */
-.viewer-link{
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  width:100%;margin-top:clamp(1.75rem,4vw,2.5rem);
-  padding:1.1rem 1.3rem;
-  font:inherit;color:inherit;text-align:left;cursor:pointer;
-  background:none;border:1px solid var(--hair);
-  transition:border-color .2s,background .2s,color .2s;
+/* ---------- 360° spinner (Aircraft "3D" pill) ---------- */
+.spin{
+  position:relative;width:100%;height:100%;cursor:grab;
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;
 }
-.viewer-link:hover,.viewer-link:focus-visible{
-  border-color:var(--fg);background:color-mix(in srgb, var(--fg) 6%, transparent);
+.spin.is-dragging{cursor:grabbing}
+.spin img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;-webkit-user-drag:none}
+.spin__hint{
+  position:absolute;left:50%;bottom:.65rem;transform:translateX(-50%);margin:0;
+  padding:.35rem .75rem;border-radius:999px;background:rgba(0,0,0,.5);color:#fff;
+  font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;
+  pointer-events:none;transition:opacity .4s ease;
 }
-.viewer-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.viewer-link__text{display:flex;flex-direction:column;gap:.2rem}
-.viewer-link__label{
+.spin.is-used .spin__hint{opacity:0}
+
+/* ---------- system diagram (VitalGroove "System" pill) ---------- */
+.sys{width:100%;height:100%;display:block}
+.sys text{font-family:var(--grotesk);fill:var(--fg)}
+.sys__name{font-size:30px;font-weight:600}
+.sys__sub{font-size:20px;fill:var(--dim)}
+.sys .sys__sub{fill:var(--dim)}
+.sys__box{fill:none;stroke:var(--dim);stroke-width:1.5}
+.sys__line{fill:none;stroke:var(--dim);stroke-width:2}
+.sys__head{fill:var(--dim)}
+.sys .is-mine .sys__box{fill:var(--hair);stroke:var(--fg);stroke-width:2.5}
+.sys .is-mine .sys__line{stroke:var(--fg);stroke-width:3}
+.sys .is-mine .sys__head{fill:var(--fg)}
+
+/* ---------- Features list ---------- */
+.proj__label{
+  margin:0 0 1.1rem;padding-bottom:.65rem;border-bottom:1px solid var(--hair);
   font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
 }
-.viewer-link__title{font-size:1.05rem;font-weight:600}
-.viewer-link__arrow{
-  font-size:1.25rem;flex:none;transition:transform .3s;
+.feat{list-style:none;margin:0;padding:0}
+.feat > li{
+  display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:.8rem;align-items:start;
+  margin-top:1rem;font-size:1rem;line-height:1.45;
 }
-.viewer-link:hover .viewer-link__arrow,
-.viewer-link:focus-visible .viewer-link__arrow{transform:rotate(45deg)}
+.feat > li:first-child{margin-top:0}
+.feat > li::before{
+  content:'';width:.38rem;height:.38rem;border-radius:50%;
+  background:var(--fg);margin-top:.54em;
+}
+/* sub-bullets: dash markers + a hairline "thread" down each group */
+.feat ul{
+  grid-column:2;list-style:none;margin:.55rem 0 .1rem;
+  padding:.1rem 0 .1rem 1.1rem;border-left:1px solid var(--hair);
+}
+.feat ul li{
+  display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:.6rem;
+  margin-top:.45rem;font-size:.9375rem;line-height:1.45;color:var(--dim);
+}
+.feat ul li:first-child{margin-top:0}
+.feat ul li::before{content:"\2013";color:var(--dim)}
 
-/* ---------- 360° viewer modal ---------- */
-.viewer360{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:var(--pad)}
-.viewer360[hidden]{display:none}
-.viewer360__backdrop{position:absolute;inset:0;background:rgba(3,3,4,.86)}
-.viewer360__panel{
-  position:relative;z-index:1;width:min(94vw,1000px);
-  background:var(--bg);border:1px solid var(--hair);border-radius:4px;
-  padding:clamp(1rem,3vw,1.6rem);
+/* ---------- Result / My role ---------- */
+.facts{margin:2rem 0 0;padding-top:1.25rem;border-top:1px solid var(--hair);display:grid;gap:.85rem}
+.facts > div{display:grid;grid-template-columns:5.75rem minmax(0,1fr);column-gap:1rem;align-items:baseline}
+.facts dt{font-size:.6875rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.facts dd{margin:0;font-size:.9375rem;line-height:1.5}
+@media (max-width:420px){ .facts > div{grid-template-columns:minmax(0,1fr);row-gap:.25rem} }
+
+/* "Try it live" */
+.cta{
+  display:inline-flex;align-items:center;gap:.6rem;margin-top:1.75rem;padding:.75rem 1.15rem;
+  border:1px solid var(--fg);border-radius:999px;
+  font-size:.75rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  transition:background-color .2s,color .2s;
 }
-.viewer360__head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin:0 0 .6rem}
-.viewer360__title{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
-.viewer360__close{
-  font:inherit;font-size:1.5rem;line-height:1;color:var(--dim);
-  background:none;border:0;cursor:pointer;transition:color .2s;
-}
-.viewer360__close:hover,.viewer360__close:focus-visible{color:var(--fg)}
-.viewer360__stage{
-  position:relative;aspect-ratio:16/9;display:grid;place-items:center;
-  cursor:grab;touch-action:none;overflow:hidden;
-}
-.viewer360__stage:active{cursor:grabbing}
-.viewer360__img{
-  width:100%;height:100%;object-fit:contain;
-  user-select:none;-webkit-user-select:none;-webkit-user-drag:none;pointer-events:none;
-}
-.viewer360__hint{
-  position:absolute;bottom:.4rem;left:50%;transform:translateX(-50%);margin:0;
-  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
-  pointer-events:none;transition:opacity .5s;
+.cta:hover,.cta:focus-visible{background:var(--fg);color:var(--bg)}
+
+/* visible marker for facts still to be checked */
+.confirm{
+  padding:.05em .4em;border:1px dashed currentColor;border-radius:3px;
+  background:none;color:var(--fg);font-size:.85em;
 }
 
-@media (max-width:820px){
-  .spec{grid-template-columns:1fr}
-  .spec--flip .spec__media{order:0}
-  /* cap the render so it doesn't eat the whole phone screen */
-  .spec__media img{max-height:52vh;width:auto;max-width:100%;margin:0 auto}
-  /* let a long project name + tag wrap instead of colliding on one line */
-  .project__head{flex-wrap:wrap;gap:.5rem .9rem;align-items:baseline}
-  .project__tag{margin-left:0;flex-basis:100%}
+/* ---------- lightbox ---------- */
+.lightbox{
+  width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;
+  border:0;background:transparent;color:#fff;overflow:hidden;
 }
+.lightbox::backdrop{background:rgba(5,5,6,.92)}
+.lightbox__inner{
+  width:100%;height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  gap:.75rem;padding:clamp(.75rem,3vw,2rem);
+}
+.lightbox__bar{display:flex;justify-content:flex-end}
+.lightbox__close{
+  font:inherit;font-size:1.75rem;line-height:1;color:#fff;background:none;border:0;
+  padding:.25rem .5rem;cursor:pointer;
+}
+.lightbox__img{width:100%;height:100%;min-height:0;object-fit:contain}
+.lightbox__cap{margin:0;text-align:center;font-size:.8125rem;color:rgba(255,255,255,.75)}
+
 @media (max-width:520px){
   .pagehead{flex-wrap:wrap;gap:.75rem}
   .pagehead__rule{display:none}
-  .topbar{flex-wrap:wrap}
-  .corner{gap:1rem .9rem;font-size:.8125rem;width:100%;justify-content:flex-start}
+  .corner{gap:.5rem 1rem}
+  .pill{font-size:.625rem;letter-spacing:.08em;padding:.55rem .7rem}   /* keeps 3–4 pills on one row */
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 /* ---------- page transition curtain ---------- */
@@ -316,10 +310,9 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 <header class="topbar">
   <nav class="corner" aria-label="Primary">
     <a href="index.html">Home</a>
-    <a href="ChayanthResume%20(1).pdf" target="_blank" rel="noopener">Resume</a>
-    <a href="https://www.linkedin.com/in/chayanth/" target="_blank" rel="noopener">connect</a>
+    <a href="Chayanth_Suthahar_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    <a href="https://www.linkedin.com/in/chayanth/" target="_blank" rel="noopener">Connect</a>
   </nav>
-  <button class="swatch" id="swatch" aria-label="Change colour theme" title="Change colour">+</button>
 </header>
 
 <main>
@@ -330,268 +323,551 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
     <p class="eyebrow">Selected Work</p>
   </div>
 
-  <!-- ================= PROJECT 01 — DRIVETRAIN (filled) ================= -->
-  <section class="project">
-    <header class="project__head">
-      <span class="project__no">01</span>
-      <h2 class="project__name">Drivetrain</h2>
-      <span class="project__tag">FRC 2056 · Mechanical</span>
-    </header>
+  <nav class="contents" aria-labelledby="contents-title">
+    <h2 class="contents__title" id="contents-title">Contents</h2>
+    <ol class="contents__list">
+      <li><a href="#drivetrain"><span class="contents__num">01</span><span class="contents__name">Drivetrain</span><span class="contents__tag">Mechanical</span></a></li>
+      <li><a href="#rc-aircraft"><span class="contents__num">02</span><span class="contents__name">RC Aircraft</span><span class="contents__tag">Aerospace</span></a></li>
+      <li><a href="#vitalgroove"><span class="contents__num">03</span><span class="contents__name">VitalGroove</span><span class="contents__tag">Robotics</span></a></li>
+      <li><a href="#edgewave"><span class="contents__num">04</span><span class="contents__name">EdgeWave</span><span class="contents__tag">Software</span></a></li>
+    </ol>
+  </nav>
 
-    <div class="spec">
-      <div class="spec__media">
-        <img src="drivebase.png" alt="2056 drivetrain render — swerve base with electronics">
+  <!-- ================= 01 — DRIVETRAIN ================= -->
+  <section class="proj" id="drivetrain" aria-labelledby="drivetrain-title">
+    <div class="proj__grid">
+      <header class="proj__head">
+        <p class="proj__eyebrow">FRC 2056 · Mechanical · 01</p>
+        <h2 class="proj__title" id="drivetrain-title">Drivetrain.</h2>
+        <p class="proj__tagline">A 32" &times; 28" swerve base for the 2025 World Champion robot, geared for 15&nbsp;ft/s</p>
+      </header>
+
+      <div class="proj__media" data-media>
+        <div class="stage" style="--ratio:5/4">
+          <div class="panel is-active" id="dt-p1" role="tabpanel" aria-labelledby="dt-t1">
+            <div class="frame">
+              <a class="zoom" href="drivebase.png" aria-label="Enlarge: drivetrain render">
+                <img src="drivebase.png" alt="CAD render of the 2056 swerve drive base with electronics" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">CAD render of the 2056 swerve drive base with electronics</span><span class="slot__file">drivebase.png</span></span>
+            </div>
+          </div>
+          <div class="panel" id="dt-p2" role="tabpanel" aria-labelledby="dt-t2">
+            <div class="frame">
+              <a class="zoom" href="x44-plate.png" aria-label="Enlarge: Kraken X44 adapter plate">
+                <img src="x44-plate.png" alt="Custom shifted adapter plate for the Kraken X44 steering motor" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">Custom shifted adapter plate for the Kraken X44 steering motor</span><span class="slot__file">x44-plate.png</span></span>
+            </div>
+          </div>
+          <div class="panel" id="dt-p3" role="tabpanel" aria-labelledby="dt-t3">
+            <div class="frame">
+              <a class="zoom" href="machining.jpg" aria-label="Enlarge: machining photo">
+                <img src="machining.jpg" alt="Machining drivetrain parts in the shop" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">Machining drivetrain parts in the shop</span><span class="slot__file">machining.jpg</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pills" role="tablist" aria-label="Drivetrain images">
+          <span class="pills__ind" aria-hidden="true"></span>
+          <button class="pill" type="button" role="tab" id="dt-t1" aria-controls="dt-p1" aria-selected="true">Drivetrain</button>
+          <button class="pill" type="button" role="tab" id="dt-t2" aria-controls="dt-p2" aria-selected="false" tabindex="-1">Adapter Plate</button>
+          <button class="pill" type="button" role="tab" id="dt-t3" aria-controls="dt-p3" aria-selected="false" tabindex="-1">Machining</button>
+        </div>
       </div>
 
-      <div class="spec__body">
-        <p class="spec__lede">A 32" &times; 28" swerve base on MK4i modules &mdash; Kraken X60 drive geared to 15 ft/s, Kraken X44 steering.</p>
-
-        <p class="spec__kicker">Requirements</p>
-        <hr class="spec__rule">
-        <ul class="speclist">
-          <li><span>Agile, responsive, and highly controllable.</span></li>
-          <li><span>Extremely robust, rigid, and reliable.</span></li>
-          <li><span>Low centre of mass (CoM).</span></li>
-          <li><span>Must provide rigid structure and mounting of subsystems.</span></li>
+      <div class="proj__body">
+        <p class="proj__label">Features</p>
+        <ul class="feat">
+          <li><span>3" &times; 1" &times; 1/8" aluminum box tube as main structure</span>
+            <ul>
+              <li><span>Stiff, low chassis to keep the centre of mass down</span></li>
+            </ul>
+          </li>
+          <li><span>1/16" solid aluminum baseplate</span>
+            <ul>
+              <li><span>Doubles as shear plate and electronics tray</span></li>
+              <li><span>Corners bolted to back up the rivets</span></li>
+              <li><span>Riveted aluminum angle near the battery stops sag</span></li>
+            </ul>
+          </li>
+          <li><span>SDS MK4i modules with Kraken X60 drive at the L2 ratio for 15&nbsp;ft/s</span>
+            <ul>
+              <li><span>Balances speed and acceleration for the game's short cycles</span></li>
+            </ul>
+          </li>
+          <li><span>Custom shifted adapter plate for Kraken X44 steering with a 12-tooth pinion</span>
+            <ul>
+              <li><span>Saved nearly 2&nbsp;lb, keeping the 135&nbsp;lb robot under the weight limit</span></li>
+            </ul>
+          </li>
+          <li><span>Baseplate fastened directly to the elevator gearbox</span></li>
         </ul>
 
-        <p class="spec__kicker">Details</p>
-        <hr class="spec__rule">
-        <ul class="speclist speclist--dim">
-          <li><span>Constructed of 3" x 1" x 1/8" aluminum tubing for stiffness and a lower chassis. A 1/16" solid aluminum baseplate acts as a shear plate, offers a mounting surface for electronics, and lowers the overall CoM to improve stability.</span></li>
-          <li><span>Maximum chassis size of 32" long by 28" wide to ensure stability when scoring.</span></li>
-          <li><span>The corners of the baseplate are bolted, adding extra support to the rivets.</span></li>
-          <li><span>The baseplate is fastened directly to the elevator gearbox, and an aluminum angle riveted along the baseplate near the battery prevents sagging.</span></li>
-          <li><span>Utilizes Swerve Drive Specialties MK4i modules, selected for their proven reliability, low CoM, and team familiarity.</span></li>
-          <li><span>Powered by Kraken X60 motors for a top speed of 15 ft/s. The L2 gear ratio balances speed and acceleration for the game's short cycle distances.</span></li>
-          <li><span>Each swerve module steers with a Kraken X44 on a custom shifted adapter plate and a 12-tooth pinion, saving nearly 2 lbs.</span></li>
-        </ul>
+        <dl class="facts">
+          <div><dt>Result</dt><dd>2025 FIRST World Champion and Ontario Champion; team 1st in Canada 2022&ndash;2025</dd></div>
+          <div><dt>My role</dt><dd>Designed the drive base, gearboxes and mounts; machined baseplates, gearbox plates, shafts and motor mounts on mill, lathe and CNC</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <!-- ================= PROJECT 02 — AUTONOMOUS RC AIRCRAFT (filled) =================
-       Uses the render TOGGLE: two images (uncovered / covered), same crop and
-       scale, crossfade between them. Swap in new pairs by:
-         1. cropping both to the identical frame (same bbox/canvas)
-         2. giving each <img> a unique id
-         3. pointing the two toggle buttons' onclick at those ids
+  <!-- ================= 02 — RC AIRCRAFT ================= -->
+  <section class="proj" id="rc-aircraft" aria-labelledby="rc-aircraft-title">
+    <div class="proj__grid">
+      <header class="proj__head">
+        <p class="proj__eyebrow">RC3 Competition · Aerospace · 02</p>
+        <h2 class="proj__title" id="rc-aircraft-title">RC Aircraft.</h2>
+        <p class="proj__tagline">A 5.5&nbsp;ft tail-dragger that won the RC3 competition with a 3&nbsp;min 40&nbsp;s flight</p>
+      </header>
 
-       The .viewer-link button below (data-spin360) opens the in-page 360°
-       drag-to-rotate modal, built from the frames in plane360/.
-  -->
-  <section class="project">
-    <header class="project__head">
-      <span class="project__no">02</span>
-      <h2 class="project__name">Autonomous RC Aircraft</h2>
-      <span class="project__tag">TMU Aero Design · Aerospace</span>
-    </header>
-
-    <div class="spec spec--flip">
-      <div class="spec__media">
-        <div class="toggle" role="group" aria-label="Render view">
-          <span class="toggle__pill" aria-hidden="true"></span>
-          <button type="button" class="is-on"
-                  onclick="setPlaneView(this,'plane-covered')">Covered</button>
-          <button type="button"
-                  onclick="setPlaneView(this,'plane-uncovered')">Structure</button>
+      <div class="proj__media" data-media>
+        <div class="stage" style="--ratio:16/9">
+          <div class="panel is-active" id="ac-p1" role="tabpanel" aria-labelledby="ac-t1">
+            <div class="frame">
+              <a class="zoom" href="plane-covered.png" aria-label="Enlarge: covered airframe">
+                <img src="plane-covered.png" alt="Finished RC aircraft with its covered airframe" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">Finished RC aircraft with its covered airframe</span><span class="slot__file">plane-covered.png</span></span>
+            </div>
+          </div>
+          <div class="panel" id="ac-p2" role="tabpanel" aria-labelledby="ac-t2">
+            <div class="frame">
+              <a class="zoom" href="plane-uncovered.png" aria-label="Enlarge: uncovered structure">
+                <img src="plane-uncovered.png" alt="RC aircraft with the covering removed, showing the ribs and spars" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">RC aircraft with the covering removed, showing the ribs and spars</span><span class="slot__file">plane-uncovered.png</span></span>
+            </div>
+          </div>
+          <div class="panel" id="ac-p3" role="tabpanel" aria-labelledby="ac-t3">
+            <div class="frame">
+              <a class="zoom" href="fea-landing-gear.png" aria-label="Enlarge: landing gear FEA">
+                <img src="fea-landing-gear.png" alt="Static FEA of the aluminum landing gear under touchdown impact" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">Static FEA of the aluminum landing gear under touchdown impact</span><span class="slot__file">fea-landing-gear.png</span></span>
+            </div>
+          </div>
+          <div class="panel" id="ac-p4" role="tabpanel" aria-labelledby="ac-t4">
+            <!-- 360° viewer: 25 pre-rendered frames in plane360/ (frame01–25.webp) -->
+            <div class="spin" role="slider" tabindex="0"
+                 aria-label="Rotate the RC aircraft" aria-describedby="ac-spin-keys"
+                 aria-valuemin="0" aria-valuemax="360" aria-valuenow="0" aria-valuetext="Rotated 0 degrees"
+                 data-frames="25" data-pattern="plane360/frame{n}.webp">
+              <img src="plane360/frame01.webp" alt="" loading="lazy" decoding="async" draggable="false">
+              <p class="spin__hint" aria-hidden="true">Drag to rotate</p>
+              <span class="sr-only" id="ac-spin-keys">Drag sideways, or use the left and right arrow keys, to rotate the aircraft.</span>
+            </div>
+          </div>
         </div>
-        <div class="toggle-stage">
-          <img id="plane-covered" class="is-active" src="plane-covered.png"
-               alt="Finished autonomous RC aircraft, covered airframe">
-          <img id="plane-uncovered" src="plane-uncovered.png"
-               alt="Autonomous RC aircraft structure, uncovered truss airframe">
+        <div class="pills" role="tablist" aria-label="RC aircraft views">
+          <span class="pills__ind" aria-hidden="true"></span>
+          <button class="pill" type="button" role="tab" id="ac-t1" aria-controls="ac-p1" aria-selected="true">Covered</button>
+          <button class="pill" type="button" role="tab" id="ac-t2" aria-controls="ac-p2" aria-selected="false" tabindex="-1">Structure</button>
+          <button class="pill" type="button" role="tab" id="ac-t3" aria-controls="ac-p3" aria-selected="false" tabindex="-1">FEA</button>
+          <button class="pill" type="button" role="tab" id="ac-t4" aria-controls="ac-p4" aria-selected="false" tabindex="-1">3D</button>
         </div>
       </div>
 
-      <div class="spec__body">
-        <p class="spec__lede">A 5.5 ft wingspan autonomous airframe &mdash; FEA-validated and flight-tested.</p>
-
-        <p class="spec__kicker">Highlights</p>
-        <hr class="spec__rule">
-        <ul class="speclist">
-          <li>
-            <span>5.5 ft wingspan airframe designed in SolidWorks</span>
-            <ul class="subs">
-              <li><span>Built from plywood, aluminum spars, and carbon fibre composites for a high strength-to-weight structure</span></li>
+      <div class="proj__body">
+        <p class="proj__label">Features</p>
+        <ul class="feat">
+          <li><span>5.5&nbsp;ft tapered wing on aluminum spars</span>
+            <ul>
+              <li><span>Ribs pocketed to cut weight without losing stiffness</span></li>
             </ul>
           </li>
-          <li>
-            <span>Static structural FEA on the landing gear under landing-impact loading</span>
-            <ul class="subs">
-              <li><span>Redesign validated on real landings</span></li>
+          <li><span>3D-printed fuselage with three carbon fibre tail booms</span></li>
+          <li><span>Aluminum tail-dragger landing gear validated with static FEA</span>
+            <ul>
+              <li><span>Geometry iterated against touchdown-impact results</span></li>
+              <li><span>Redesign confirmed over 5 impacts: three 1&nbsp;m drop tests and two real landings</span></li>
+            </ul>
+          </li>
+          <li><span>SpeedyBee F405 Wing flight controller running iNav, ELRS radio link</span>
+            <ul>
+              <li><span><mark class="confirm">[CONFIRM: did it fly autonomous waypoints?]</mark></span></li>
+            </ul>
+          </li>
+          <li><span>Onboard Pi Zero vision payload</span>
+            <ul>
+              <li><span>Scored the 100-point computer vision objective</span></li>
             </ul>
           </li>
         </ul>
 
-        <button class="viewer-link" type="button" data-spin360>
-          <span class="viewer-link__text">
-            <span class="viewer-link__label">Interactive Model</span>
-            <span class="viewer-link__title">Spin the aircraft 360°</span>
-          </span>
-          <span class="viewer-link__arrow" aria-hidden="true">&#8635;</span>
-        </button>
+        <dl class="facts">
+          <div><dt>Result</dt><dd>1st place on longest flight time (3:40, flown until the battery drained); judges' Best Handling aircraft</dd></div>
+          <div><dt>My role</dt><dd>Co-founder and design member; ran the landing-gear FEA and tests, integrated the flight controller and radio, helped wire the vision payload (built by a teammate)</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <!-- ================= PROJECT 03 — VITALGROOVE (text-only) ================= -->
-  <section class="project">
-    <header class="project__head">
-      <span class="project__no">03</span>
-      <h2 class="project__name">VitalGroove</h2>
-      <span class="project__tag">MakeUofT · Robotics</span>
-    </header>
+  <!-- ================= 03 — VITALGROOVE ================= -->
+  <section class="proj" id="vitalgroove" aria-labelledby="vitalgroove-title">
+    <div class="proj__grid">
+      <header class="proj__head">
+        <p class="proj__eyebrow">MakeUofT 2026 · Robotics · 03</p>
+        <h2 class="proj__title" id="vitalgroove-title">VitalGroove.</h2>
+        <p class="proj__tagline">A vision-triggered candy dispenser built and demoed in 24 hours</p>
+      </header>
 
-    <div class="spec spec--solo">
-      <div class="spec__body">
-        <p class="spec__lede">An end-to-end sense&ndash;think&ndash;act robot built on an NVIDIA Jetson Nano in 24 hours.</p>
+      <div class="proj__media" data-media>
+        <div class="stage" style="--ratio:4/3">
+          <div class="panel is-active" id="vg-p1" role="tabpanel" aria-labelledby="vg-t1">
+            <div class="frame">
+              <a class="zoom" href="vitalgroove-build.jpg" aria-label="Enlarge: dispenser build">
+                <img src="vitalgroove-build.jpg" alt="The VitalGroove candy dispenser build" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">The VitalGroove candy dispenser build</span><span class="slot__file">vitalgroove-build.jpg</span></span>
+            </div>
+          </div>
+          <div class="panel" id="vg-p2" role="tabpanel" aria-labelledby="vg-t2">
+            <svg class="sys" viewBox="0 0 640 480" role="img" aria-labelledby="vg-sys-title vg-sys-desc">
+              <title id="vg-sys-title">VitalGroove system diagram</title>
+              <desc id="vg-sys-desc">The camera feeds the Jetson Nano, which sends a serial signal to an ESP32 that drives the servo gate. The serial link, ESP32 and servo gate are highlighted as my part.</desc>
+              <g>
+                <rect class="sys__box" x="40" y="60" width="240" height="110" rx="10"/>
+                <text class="sys__name" x="160" y="115" text-anchor="middle" dominant-baseline="central">Camera</text>
+              </g>
+              <g>
+                <line class="sys__line" x1="280" y1="115" x2="348" y2="115"/>
+                <path class="sys__head" d="M360 115 l-13 -7.5 v15 z"/>
+              </g>
+              <g>
+                <rect class="sys__box" x="360" y="60" width="240" height="110" rx="10"/>
+                <text class="sys__name" x="480" y="100" text-anchor="middle" dominant-baseline="central">Jetson Nano</text>
+                <text class="sys__sub" x="480" y="136" text-anchor="middle" dominant-baseline="central">hug detection</text>
+              </g>
+              <g class="is-mine">
+                <line class="sys__line" x1="480" y1="170" x2="480" y2="277"/>
+                <path class="sys__head" d="M480 290 l-7.5 -13 h15 z"/>
+                <text class="sys__sub" x="496" y="230" dominant-baseline="central">serial</text>
+              </g>
+              <g class="is-mine">
+                <rect class="sys__box" x="360" y="290" width="240" height="110" rx="10"/>
+                <text class="sys__name" x="480" y="330" text-anchor="middle" dominant-baseline="central">ESP32</text>
+                <text class="sys__sub" x="480" y="366" text-anchor="middle" dominant-baseline="central">I2C sensors</text>
+              </g>
+              <g class="is-mine">
+                <line class="sys__line" x1="360" y1="345" x2="293" y2="345"/>
+                <path class="sys__head" d="M280 345 l13 -7.5 v15 z"/>
+              </g>
+              <g class="is-mine">
+                <rect class="sys__box" x="40" y="290" width="240" height="110" rx="10"/>
+                <text class="sys__name" x="160" y="330" text-anchor="middle" dominant-baseline="central">Servo gate</text>
+                <text class="sys__sub" x="160" y="366" text-anchor="middle" dominant-baseline="central">candy dispenser</text>
+              </g>
+              <g class="is-mine">
+                <rect class="sys__box" x="40" y="430" width="22" height="22" rx="4"/>
+              </g>
+              <text class="sys__sub" x="76" y="441" dominant-baseline="central">My part</text>
+            </svg>
+          </div>
+        </div>
+        <div class="pills" role="tablist" aria-label="VitalGroove views">
+          <span class="pills__ind" aria-hidden="true"></span>
+          <button class="pill" type="button" role="tab" id="vg-t1" aria-controls="vg-p1" aria-selected="true">Build</button>
+          <button class="pill" type="button" role="tab" id="vg-t2" aria-controls="vg-p2" aria-selected="false" tabindex="-1">System</button>
+        </div>
+      </div>
 
-        <p class="spec__kicker">Highlights</p>
-        <hr class="spec__rule">
-        <ul class="speclist">
-          <li>
-            <span>Full perception-to-actuation loop on a Jetson Nano</span>
-            <ul class="subs">
-              <li><span>Computer vision detects human interaction, a VLM pipeline decides, and motors actuate</span></li>
+      <div class="proj__body">
+        <p class="proj__label">Features</p>
+        <ul class="feat">
+          <li><span>Jetson Nano vision pipeline detects a hug in real time</span>
+            <ul>
+              <li><span>Captures a polaroid-style photo of the moment</span></li>
+              <li><span><mark class="confirm">[CONFIRM: was a VLM used?]</mark></span></li>
             </ul>
           </li>
-          <li>
-            <span>Brought up the entire hardware stack under a 24-hour deadline</span>
-            <ul class="subs">
-              <li><span>Debugged wiring, power, and inference latency to keep real-time control stable under live camera feeds</span></li>
+          <li><span>Serial link from the Jetson to an ESP32</span>
+            <ul>
+              <li><span>A detection fires the dispenser instantly</span></li>
+            </ul>
+          </li>
+          <li><span>Servo-actuated gate dispenser</span></li>
+          <li><span>ESP32 with I2C sensors, wiring and power brought up from scratch</span></li>
+        </ul>
+
+        <dl class="facts">
+          <div><dt>Result</dt><dd>Working live demo inside the 24-hour limit</dd></div>
+          <div><dt>My role</dt><dd>Designed and built the dispenser and led hardware integration</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 — EDGEWAVE ================= -->
+  <section class="proj" id="edgewave" aria-labelledby="edgewave-title">
+    <div class="proj__grid">
+      <header class="proj__head">
+        <p class="proj__eyebrow">Gibberish Hackathon · Software · 04</p>
+        <h2 class="proj__title" id="edgewave-title">EdgeWave.</h2>
+        <p class="proj__tagline">A browser instrument you play with hand gestures &mdash; built in 2 hours, 1st place</p>
+      </header>
+
+      <div class="proj__media" data-media>
+        <div class="stage" style="--ratio:16/9">
+          <div class="panel is-active" id="ew-p1" role="tabpanel" aria-labelledby="ew-t1">
+            <div class="frame">
+              <!-- muted + lazy: the file only loads once this is on screen; tap/click shows controls -->
+              <video autoplay muted loop playsinline preload="none" tabindex="0"
+                     poster="edgewave-poster.jpg" data-src="edgewave.mp4"
+                     aria-label="EdgeWave demo: playing chords and drums with hand gestures in the browser. Click or press Enter to show video controls.">
+                EdgeWave demo video.
+              </video>
+              <span class="slot"><span class="slot__kicker">Video coming soon</span><span class="slot__alt">EdgeWave demo: playing chords and drums with hand gestures in the browser</span><span class="slot__file">edgewave.mp4 &middot; poster edgewave-poster.jpg</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pills" role="tablist" aria-label="EdgeWave media">
+          <span class="pills__ind" aria-hidden="true"></span>
+          <button class="pill" type="button" role="tab" id="ew-t1" aria-controls="ew-p1" aria-selected="true">Demo</button>
+        </div>
+      </div>
+
+      <div class="proj__body">
+        <p class="proj__label">Features</p>
+        <ul class="feat">
+          <li><span>MediaPipe Hands tracks both hands through the webcam</span>
+            <ul>
+              <li><span>No physical controller needed</span></li>
+            </ul>
+          </li>
+          <li><span>Right hand plays chords</span>
+            <ul>
+              <li><span>Fist gestures and palm height map to diatonic chords in all 12 keys</span></li>
+              <li><span>Palm position sweeps a low-pass filter from 300&nbsp;Hz to 8&nbsp;kHz</span></li>
+            </ul>
+          </li>
+          <li><span>Left hand is a 4-piece drum kit, one finger per instrument</span>
+            <ul>
+              <li><span>Wrist tilt sets repeat speed, roughly 65&ndash;500&nbsp;BPM</span></li>
+            </ul>
+          </li>
+          <li><span>Timestamp-based looper for layering a performance hands-free</span>
+            <ul>
+              <li><span>Debounced chord changes and stale-hand detection release notes cleanly when tracking drops</span></li>
             </ul>
           </li>
         </ul>
+
+        <dl class="facts">
+          <div><dt>Result</dt><dd>1st place, Gibberish hackathon, built in 2 hours</dd></div>
+          <div><dt>My role</dt><dd>Built the majority of the app on a team of 3 (JavaScript, MediaPipe)</dd></div>
+        </dl>
+
+        <a class="cta" href="https://joelmathewsssss.github.io/edgewave.github.io/" target="_blank" rel="noopener">Try it live <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
       </div>
     </div>
   </section>
 
 </main>
 
-<!-- ================= 360° VIEWER MODAL (Autonomous RC Aircraft) ================= -->
-<div class="viewer360" id="viewer360" hidden>
-  <div class="viewer360__backdrop" data-close></div>
-  <div class="viewer360__panel" role="dialog" aria-modal="true" aria-label="Autonomous RC Aircraft — 360 degree view">
-    <div class="viewer360__head">
-      <span class="viewer360__title">Autonomous RC Aircraft — 360°</span>
-      <button class="viewer360__close" type="button" data-close aria-label="Close viewer">&times;</button>
-    </div>
-    <div class="viewer360__stage" id="v360stage">
-      <img class="viewer360__img" id="v360img" alt="Autonomous RC Aircraft, drag to rotate" draggable="false">
-      <p class="viewer360__hint" id="v360hint">Drag to rotate</p>
-    </div>
+<!-- click-to-enlarge lightbox -->
+<dialog class="lightbox" id="lightbox" aria-label="Enlarged image">
+  <div class="lightbox__inner">
+    <div class="lightbox__bar"><button class="lightbox__close" type="button" aria-label="Close">&times;</button></div>
+    <img class="lightbox__img" alt="">
+    <p class="lightbox__cap"></p>
   </div>
-</div>
+</dialog>
 
 <script>
-/* ---- drag-to-spin 360° viewer (25 pre-rendered frames in plane360/) ---- */
+/* ============================================================
+   MEDIA — pill tabs, placeholder slots for files not uploaded yet,
+   lazy muted videos, the 360° spinner, and the click-to-enlarge lightbox
+   ============================================================ */
 (function(){
-  var modal=document.getElementById('viewer360');
-  if(!modal) return;
-  var img=document.getElementById('v360img'),
-      stage=document.getElementById('v360stage'),
-      hint=document.getElementById('v360hint');
-  var N=25, frame=0, loaded=false, cache=[];
-  function url(i){ return 'plane360/frame'+String(i+1).padStart(2,'0')+'.webp'; }
-  function preload(){ if(loaded) return; for(var i=0;i<N;i++){ var im=new Image(); im.src=url(i); cache[i]=im; } loaded=true; }
-  function show(i){ frame=((i%N)+N)%N; img.src=url(frame); }
-  function open(){
-    preload(); show(frame);
-    modal.hidden=false;
-    document.documentElement.style.overflow='hidden';
-    if(hint) hint.style.opacity='1';
-  }
-  function close(){ modal.hidden=true; document.documentElement.style.overflow=''; }
-  document.addEventListener('click', function(e){
-    var o=e.target.closest && e.target.closest('[data-spin360]');
-    if(o){ e.preventDefault(); open(); return; }
-    if(!modal.hidden && e.target.closest && e.target.closest('[data-close]')) close();
-  });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.hidden) close(); });
-  var down=false, lastX=0, acc=0, STEP=13;
-  function press(x){ down=true; lastX=x; if(hint) hint.style.opacity='0'; }
-  function drag(x){
-    if(!down) return;
-    acc+=x-lastX; lastX=x;
-    while(Math.abs(acc)>=STEP){ if(acc>0){ show(frame-1); acc-=STEP; } else { show(frame+1); acc+=STEP; } }
-  }
-  function release(){ down=false; }
-  stage.addEventListener('mousedown', function(e){ e.preventDefault(); press(e.clientX); });
-  window.addEventListener('mousemove', function(e){ drag(e.clientX); });
-  window.addEventListener('mouseup', release);
-  stage.addEventListener('touchstart', function(e){ press(e.touches[0].clientX); }, {passive:true});
-  stage.addEventListener('touchmove', function(e){ drag(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
-  stage.addEventListener('touchend', release);
-})();
-</script>
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function $$(sel, root){ return [].slice.call((root || document).querySelectorAll(sel)); }
+  function panelOf(tab){ return document.getElementById(tab.getAttribute('aria-controls')); }
 
-<script>
-/* ---- render toggle: slide the pill to the clicked button, crossfade images ---- */
-function setPlaneView(btn, activeId){
-  var group = btn.closest('.toggle');
-  var pill  = group.querySelector('.toggle__pill');
-  group.querySelectorAll('button').forEach(function(b){ b.classList.toggle('is-on', b===btn); });
+  /* ---- pill tabs: the highlight slides to the selected pill, panels crossfade ---- */
+  $$('[data-media]').forEach(function(media){
+    var tabs = $$('[role="tab"]', media);
+    var track = media.querySelector('.pills');
+    var ind = track && track.querySelector('.pills__ind');
 
-  // measure so the pill fits/slides to THIS button, regardless of label length
-  pill.style.width = btn.offsetWidth + 'px';
-  pill.style.transform = 'translateX(' + (btn.offsetLeft - group.clientLeft - 4) + 'px)';
+    function place(){
+      var t = media.querySelector('[role="tab"][aria-selected="true"]');
+      if (!ind || !t) return;
+      ind.style.width = t.offsetWidth + 'px';
+      ind.style.height = t.offsetHeight + 'px';
+      ind.style.transform = 'translate(' + t.offsetLeft + 'px,' + t.offsetTop + 'px)';
+    }
+    function select(tab, focus){
+      tabs.forEach(function(t){
+        var on = t === tab, p = panelOf(t);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        p.classList.toggle('is-active', on);
+        if (on) p.removeAttribute('inert'); else p.setAttribute('inert', '');
+      });
+      if (focus) tab.focus();
+      place();
+      $$('video', media).forEach(syncVideo);
+      var spin = panelOf(tab).querySelector('.spin');
+      if (spin && spin._warm) spin._warm();
+    }
+    media._tabs = tabs;
+    media._select = select;
 
-  var stage = group.nextElementSibling; // .toggle-stage
-  stage.querySelectorAll('img').forEach(function(img){
-    img.classList.toggle('is-active', img.id===activeId);
-  });
-}
-/* size the pill correctly on first paint (before any click) */
-document.querySelectorAll('.toggle').forEach(function(group){
-  var on = group.querySelector('button.is-on') || group.querySelector('button');
-  if(on) setPlaneView(on, on.getAttribute('onclick').match(/'([^']+)'\)$/)[1]);
-});
-</script>
-
-<script>
-/* ---- pinned render drifts down + rotates with scroll, stops at next project ---- */
-(function(){
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(!matchMedia('(min-width: 821px)').matches) return;
-  /* only direct-child renders drift (e.g. Drivetrain); the toggle's
-     images live in .spec__media > .toggle-stage > img, so "> img"
-     leaves them out and they stay put while you switch views */
-  var imgs=[].slice.call(document.querySelectorAll('.spec__media > img'));
-  if(!imgs.length) return;
-  var DEG=12, DRIFT=30, ticking=false;
-  function update(){
-    ticking=false;
-    var vh=window.innerHeight;
-    imgs.forEach(function(img){
-      var sec=img.closest('.project'); if(!sec) return;
-      var r=sec.getBoundingClientRect();
-      var total=r.height-vh;                     // scrollable distance in this project
-      var p=total>0?Math.min(1,Math.max(0,(-r.top)/total)):0;
-      img.style.transform='translateY('+(p*DRIFT).toFixed(1)+'px) rotate('+(p*DEG).toFixed(2)+'deg) scale(.985)';
+    tabs.forEach(function(t, i){
+      if (t.getAttribute('aria-selected') !== 'true') panelOf(t).setAttribute('inert', '');
+      t.addEventListener('click', function(){ media._touched = true; select(t); });
+      t.addEventListener('keydown', function(e){
+        var n = tabs.length, j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % n;
+        else if (e.key === 'ArrowLeft') j = (i - 1 + n) % n;
+        else if (e.key === 'Home') j = 0;
+        else if (e.key === 'End') j = n - 1;
+        if (j !== null){ e.preventDefault(); media._touched = true; select(tabs[j], true); }
+      });
     });
+
+    if (ind){
+      ind.style.transition = 'none';     // land on the first pill without sliding in
+      place();
+      void ind.offsetWidth;
+      ind.style.transition = '';
+      track.classList.add('is-ready');
+      if ('ResizeObserver' in window) new ResizeObserver(function(){ place(); }).observe(track);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+    }
+  });
+
+  /* ---- placeholders: a file that isn't uploaded yet shows its slot ---- */
+  function missing(frame){
+    if (frame.classList.contains('is-missing')) return;
+    frame.classList.add('is-missing');
+    // if that was the default view and no pill has been picked yet, open the first view that has media
+    var panel = frame.closest('.panel'), media = frame.closest('[data-media]');
+    if (!media || media._touched || !panel || !panel.classList.contains('is-active')) return;
+    for (var i = 0; i < media._tabs.length; i++){
+      var p = panelOf(media._tabs[i]);
+      if (p !== panel && !p.querySelector('.frame.is-missing')){ media._select(media._tabs[i]); break; }
+    }
   }
-  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(update);} }
-  addEventListener('scroll',onScroll,{passive:true});
-  addEventListener('resize',onScroll);
-  update();
+  $$('.frame img').forEach(function(img){
+    var frame = img.closest('.frame');
+    img.addEventListener('error', function(){ missing(frame); });
+    if (img.complete && img.naturalWidth === 0 && img.currentSrc) missing(frame);   // failed before this ran
+  });
+
+  /* ---- videos: muted, lazy-loaded when on screen, paused when hidden, controls on tap ---- */
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var v = en.target.querySelector('video');
+      v._inView = en.isIntersecting;
+      syncVideo(v);
+    });
+  }, {rootMargin: '150px 0px'}) : null;
+
+  function syncVideo(v){
+    var panel = v.closest('.panel');
+    var shown = v._inView && (!panel || panel.classList.contains('is-active'));
+    if (shown){
+      if (!v.getAttribute('src') && v.dataset.src) v.src = v.dataset.src;
+      if (!reduce && !v.controls && v.paused){ var pr = v.play(); if (pr && pr.catch) pr.catch(function(){}); }
+    } else if (!v.paused){
+      v.pause();
+    }
+  }
+
+  $$('.frame video').forEach(function(v){
+    var frame = v.closest('.frame');
+    v.muted = true; v.defaultMuted = true;          // never autoplay with sound
+    if (reduce) v.removeAttribute('autoplay');
+    var poster = v.getAttribute('poster');
+    if (poster){
+      var probe = new Image();
+      probe.onerror = function(){ if (v.readyState < 2) missing(frame); };
+      probe.src = poster;
+    }
+    v.addEventListener('loadeddata', function(){ frame.classList.remove('is-missing'); });
+    v.addEventListener('error', function(){ missing(frame); });
+    function showControls(){ if (!v.controls) v.controls = true; }
+    v.addEventListener('click', showControls);
+    v.addEventListener('keydown', function(e){
+      if ((e.key === 'Enter' || e.key === ' ') && !v.controls){ e.preventDefault(); showControls(); }
+    });
+    if (io) io.observe(frame); else { v._inView = true; syncVideo(v); }
+  });
+
+  /* ---- 360° spinner: drag sideways (page still scrolls vertically on phones) or arrow keys ---- */
+  $$('.spin').forEach(function(el){
+    var img = el.querySelector('img');
+    var N = parseInt(el.getAttribute('data-frames'), 10) || 25;
+    var pattern = el.getAttribute('data-pattern');
+    var STEP = 12, frame = 0, warmed = false, pid = null, lastX = 0, acc = 0;
+    function url(i){ return pattern.replace('{n}', String(i + 1).padStart(2, '0')); }
+    function show(i){
+      frame = ((i % N) + N) % N;
+      img.src = url(frame);
+      var deg = Math.round(frame * 360 / N);
+      el.setAttribute('aria-valuenow', deg);
+      el.setAttribute('aria-valuetext', 'Rotated ' + deg + ' degrees');
+    }
+    el._warm = function(){                  // fetch the remaining frames once the 3D view is opened
+      if (warmed) return; warmed = true;
+      for (var i = 1; i < N; i++){ var pre = new Image(); pre.decoding = 'async'; pre.src = url(i); }
+    };
+    el.addEventListener('pointerdown', function(e){
+      if (e.button !== 0) return;
+      el._warm(); pid = e.pointerId; lastX = e.clientX; acc = 0;
+      el.classList.add('is-dragging', 'is-used');
+      try { el.setPointerCapture(pid); } catch (err) {}
+    });
+    el.addEventListener('pointermove', function(e){
+      if (e.pointerId !== pid) return;
+      acc += e.clientX - lastX; lastX = e.clientX;
+      while (Math.abs(acc) >= STEP){
+        if (acc > 0){ show(frame - 1); acc -= STEP; } else { show(frame + 1); acc += STEP; }
+      }
+    });
+    function stop(e){ if (e.pointerId === pid){ pid = null; el.classList.remove('is-dragging'); } }
+    el.addEventListener('pointerup', stop);
+    el.addEventListener('pointercancel', stop);
+    el.addEventListener('keydown', function(e){
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault(); el._warm(); el.classList.add('is-used'); show(frame + d);
+    });
+  });
+
+  /* ---- click an image to enlarge ---- */
+  var box = document.getElementById('lightbox');
+  if (box && typeof box.showModal === 'function'){
+    var big = box.querySelector('.lightbox__img'), cap = box.querySelector('.lightbox__cap'), opener = null;
+    document.addEventListener('click', function(e){
+      var z = e.target.closest && e.target.closest('a.zoom');
+      if (!z || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var img = z.querySelector('img');
+      e.preventDefault();
+      opener = z;
+      big.src = img.currentSrc || img.src;
+      big.alt = img.alt;
+      cap.textContent = img.alt;
+      document.documentElement.classList.add('has-lightbox');
+      box.showModal();
+    });
+    function cleanup(){                     // safe to run more than once
+      document.documentElement.classList.remove('has-lightbox');
+      big.removeAttribute('src');
+      if (opener){ var o = opener; opener = null; o.focus(); }
+    }
+    function closeBox(){ if (box.open) box.close(); cleanup(); }
+    box.addEventListener('click', function(e){ if (e.target !== big) closeBox(); });
+    box.addEventListener('cancel', function(){ document.documentElement.classList.remove('has-lightbox'); });  // Esc
+    box.addEventListener('close', cleanup);
+  }
 })();
 </script>
 
 <script>
-/* ---- the "+" cycles the colour theme (shared with home via localStorage) ---- */
-(function () {
-  var themes = ['void','paper','blueprint'];
-  var i = themes.indexOf(document.documentElement.getAttribute('data-theme'));
-  if (i < 0) i = 0;
-  var btn = document.getElementById('swatch');
-  if (btn) btn.addEventListener('click', function () {
-    i = (i + 1) % themes.length;
-    document.documentElement.setAttribute('data-theme', themes[i]);
-    try { localStorage.setItem('theme', themes[i]); } catch (e) {}
-  });
-})();
-
 /* ---- smooth crossfade between pages (dissolves through the bg colour) ---- */
 (function(){
   var c=document.getElementById('curtain');
