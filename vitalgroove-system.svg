@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 204 1400 692" width="1400" height="692" role="img" aria-label="VitalGroove system block diagram: camera to Jetson Nano over CSI-2 video, Jetson Nano to ESP32 over UART serial at 3.3 V TTL, ESP32 to servo gate with 50 Hz PWM; I2C sensors feed the ESP32; a 5 V 4 A barrel supply powers the Jetson and a 5 V 3 A rail powers the servo and ESP32.">
+  <!-- Recreated from the "Sheet 1 · Site theme" design (positions in the original artboard's px) -->
+  <defs>
+    <marker id="hw" orient="auto" markerWidth="5" markerHeight="5" refX="2" refY="2" overflow="visible"><path d="M0 0 L4 2 L0 4 Z" fill="#f5f5f5"/></marker>
+    <marker id="hg" orient="auto" markerWidth="5" markerHeight="5" refX="2" refY="2" overflow="visible"><path d="M0 0 L4 2 L0 4 Z" fill="#8f8f8f"/></marker>
+    <style>
+      text{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+      .box{fill:#0b0b0b;stroke:#5c5c5c;stroke-width:1.5}
+      .pwr{stroke-dasharray:6 4}
+      .name{font-size:22px;font-weight:700;letter-spacing:-.01em;fill:#f5f5f5}
+      .ref{font-size:10px;letter-spacing:.06em;fill:#8f8f8f}
+      .sub{font-size:15px;fill:#8f8f8f}
+      .lbl{font-size:14px;fill:#8f8f8f}
+      .key{font-size:14px;fill:#f5f5f5}
+      .solid{fill:none;stroke:#f5f5f5;stroke-width:2;stroke-linecap:round}
+      .dash{fill:none;stroke:#8f8f8f;stroke-width:2;stroke-linecap:round;stroke-dasharray:6 6}
+    </style>
+  </defs>
+  <rect x="40" y="204" width="1400" height="692" fill="#0b0b0b"/>
+
+  <!-- signal path -->
+  <path class="solid" d="M296 496 L427 496" marker-end="url(#hw)"/>
+  <path class="solid" d="M664 496 L795 496" marker-end="url(#hw)"/>
+  <path class="solid" d="M1032 496 L1163 496" marker-end="url(#hw)"/>
+  <!-- sensor data -->
+  <path class="solid" d="M916 336 L916 427" marker-end="url(#hw)"/>
+  <!-- 5 V power -->
+  <path class="dash" d="M548 656 L548 565" marker-end="url(#hg)"/>
+  <path class="dash" d="M1284 656 L1284 565" marker-end="url(#hg)"/>
+  <path class="dash" d="M1168 712 L916 712"/>
+  <path class="dash" d="M916 712 L916 565" marker-end="url(#hg)"/>
+
+  <!-- blocks -->
+  <rect class="box" x="64" y="432" width="232" height="128" rx="12"/>
+  <text x="180" y="485" text-anchor="middle"><tspan class="name">camera</tspan><tspan class="ref" dx="4" dy="-9">CAM1</tspan></text>
+  <text class="sub" x="180" y="517" text-anchor="middle">mipi csi-2 video</text>
+
+  <rect class="box" x="432" y="432" width="232" height="128" rx="12"/>
+  <text x="548" y="485" text-anchor="middle"><tspan class="name">jetson nano</tspan><tspan class="ref" dx="4" dy="-9">U1</tspan></text>
+  <text class="sub" x="548" y="517" text-anchor="middle">hug detection</text>
+
+  <rect class="box" x="800" y="432" width="232" height="128" rx="12"/>
+  <text x="916" y="485" text-anchor="middle"><tspan class="name">esp32</tspan><tspan class="ref" dx="4" dy="-9">U2</tspan></text>
+  <text class="sub" x="916" y="517" text-anchor="middle">reads sensors, drives servo</text>
+
+  <rect class="box" x="1168" y="432" width="232" height="128" rx="12"/>
+  <text x="1284" y="485" text-anchor="middle"><tspan class="name">servo gate</tspan><tspan class="ref" dx="4" dy="-9">M1</tspan></text>
+  <text class="sub" x="1284" y="517" text-anchor="middle">candy dispenser</text>
+
+  <rect class="box" x="800" y="224" width="232" height="112" rx="12"/>
+  <text x="916" y="269" text-anchor="middle"><tspan class="name">i2c sensors</tspan><tspan class="ref" dx="4" dy="-9">U3</tspan></text>
+  <text class="sub" x="916" y="301" text-anchor="middle">shared bus, 3.3 v</text>
+
+  <rect class="box pwr" x="432" y="656" width="232" height="112" rx="12"/>
+  <text x="548" y="701" text-anchor="middle"><tspan class="name">5 v ⎓ 4 a</tspan><tspan class="ref" dx="4" dy="-9">PS1</tspan></text>
+  <text class="sub" x="548" y="733" text-anchor="middle">jetson barrel jack</text>
+
+  <rect class="box pwr" x="1168" y="656" width="232" height="112" rx="12"/>
+  <text x="1284" y="701" text-anchor="middle"><tspan class="name">5 v ⎓ 3 a</tspan><tspan class="ref" dx="4" dy="-9">PS2</tspan></text>
+  <text class="sub" x="1284" y="733" text-anchor="middle">servo + esp32 rail</text>
+
+  <!-- connection labels -->
+  <text class="lbl" x="364" y="480" text-anchor="middle">csi-2 video</text>
+  <text class="lbl" x="732" y="480" text-anchor="middle">uart serial</text>
+  <text class="lbl" x="732" y="520" text-anchor="middle">3.3 v ttl</text>
+  <text class="lbl" x="1100" y="480" text-anchor="middle">pwm · 50 hz</text>
+  <text class="lbl" x="928" y="388">i2c · sda / scl</text>
+  <text class="lbl" x="560" y="612">5 v · 4 a barrel</text>
+  <text class="lbl" x="1296" y="612">5 v servo power</text>
+  <text class="lbl" x="928" y="640">5 v → vin</text>
+
+  <!-- legend -->
+  <path class="solid" d="M64 872 L96 872" style="stroke-linecap:butt"/>
+  <text class="key" x="108" y="877">trigger path</text>
+  <path class="solid" d="M280 872 L312 872" style="stroke-linecap:butt"/>
+  <text class="key" x="324" y="877">sensor data</text>
+  <path class="dash" d="M496 872 L528 872" style="stroke-linecap:butt"/>
+  <text class="key" x="540" y="877">5 v power</text>
+  <text class="lbl" x="712" y="877">all grounds tied together · logic is 3.3 v throughout</text>
+</svg>

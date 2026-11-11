@@ -195,15 +195,6 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
 }
 .spin.is-used .spin__hint{opacity:0}
 
-/* ---------- system diagram (VitalGroove "System" pill) ---------- */
-.sys{width:100%;height:100%;display:block}
-.sys text{font-family:var(--grotesk);fill:var(--fg)}
-.sys__name{font-size:30px;font-weight:600}
-.sys__sub{font-size:20px;fill:var(--dim)}
-.sys .sys__sub{fill:var(--dim)}
-.sys__box{fill:none;stroke:var(--dim);stroke-width:1.5}
-.sys__line{fill:none;stroke:var(--dim);stroke-width:2}
-.sys__head{fill:var(--dim)}
 
 /* ---------- Features list ---------- */
 .proj__label{
@@ -479,7 +470,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
       </header>
 
       <div class="proj__media" data-media>
-        <div class="stage" style="--ratio:4/3">
+        <div class="stage" style="--ratio:16/9">
           <div class="panel is-active" id="vg-p1" role="tabpanel" aria-labelledby="vg-t1">
             <div class="frame">
               <a class="zoom" href="vitalgroove-build.webp" aria-label="Enlarge: VitalGroove build">
@@ -489,36 +480,12 @@ main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--
             </div>
           </div>
           <div class="panel" id="vg-p2" role="tabpanel" aria-labelledby="vg-t2">
-            <svg class="sys" viewBox="0 0 640 480" role="img" aria-labelledby="vg-sys-title vg-sys-desc">
-              <title id="vg-sys-title">VitalGroove system diagram</title>
-              <desc id="vg-sys-desc">The camera feeds the Jetson Nano, which sends a serial signal to an ESP32 that drives the servo gate.</desc>
-              <g transform="translate(0 10)">
-                <rect class="sys__box" x="40" y="60" width="240" height="110" rx="10"/>
-                <text class="sys__name" x="160" y="115" text-anchor="middle" dominant-baseline="central">Camera</text>
-
-                <line class="sys__line" x1="280" y1="115" x2="348" y2="115"/>
-                <path class="sys__head" d="M360 115 l-13 -7.5 v15 z"/>
-
-                <rect class="sys__box" x="360" y="60" width="240" height="110" rx="10"/>
-                <text class="sys__name" x="480" y="100" text-anchor="middle" dominant-baseline="central">Jetson Nano</text>
-                <text class="sys__sub" x="480" y="136" text-anchor="middle" dominant-baseline="central">hug detection</text>
-
-                <line class="sys__line" x1="480" y1="170" x2="480" y2="277"/>
-                <path class="sys__head" d="M480 290 l-7.5 -13 h15 z"/>
-                <text class="sys__sub" x="496" y="230" dominant-baseline="central">serial</text>
-
-                <rect class="sys__box" x="360" y="290" width="240" height="110" rx="10"/>
-                <text class="sys__name" x="480" y="330" text-anchor="middle" dominant-baseline="central">ESP32</text>
-                <text class="sys__sub" x="480" y="366" text-anchor="middle" dominant-baseline="central">I2C sensors</text>
-
-                <line class="sys__line" x1="360" y1="345" x2="293" y2="345"/>
-                <path class="sys__head" d="M280 345 l13 -7.5 v15 z"/>
-
-                <rect class="sys__box" x="40" y="290" width="240" height="110" rx="10"/>
-                <text class="sys__name" x="160" y="330" text-anchor="middle" dominant-baseline="central">Servo gate</text>
-                <text class="sys__sub" x="160" y="366" text-anchor="middle" dominant-baseline="central">candy dispenser</text>
-              </g>
-            </svg>
+            <div class="frame">
+              <a class="zoom" href="vitalgroove-system.svg" aria-label="Enlarge: system diagram">
+                <img src="vitalgroove-system.svg" alt="VitalGroove system block diagram: camera to Jetson Nano (CSI-2 video), Jetson Nano to ESP32 (UART serial), ESP32 to servo gate (PWM), I2C sensors into the ESP32, and two 5 V supplies" loading="lazy" decoding="async">
+              </a>
+              <span class="slot"><span class="slot__kicker">Image coming soon</span><span class="slot__alt">VitalGroove system block diagram</span><span class="slot__file">vitalgroove-system.svg</span></span>
+            </div>
           </div>
         </div>
         <div class="pills" role="tablist" aria-label="VitalGroove views">
