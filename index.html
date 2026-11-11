@@ -269,13 +269,16 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
    stay inside their column instead of running into the bio */
 @media (min-width:761px){ html[lang="ta"] .menu__links a{font-size:clamp(2.5rem,4.6vw,4.5rem)} }
 
-/* footer: CHAY button left, clock right */
+/* footer: 88x31 buttons (mine, then friends') left, clock right */
 .menu__foot{
-  display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1rem;
   font-size:.9375rem;letter-spacing:-.01em;
 }
 .menu__foot p{margin:0}
-.menu__badge{display:block;width:88px;line-height:0}
+.menu__badges{display:flex;flex-wrap:wrap;gap:6px}
+.menu__badge{display:block;width:88px;height:31px;line-height:0;transition:opacity .2s}
+.menu__badge:hover,.menu__badge:focus-visible{opacity:.7}
+.menu__badge img{display:block;image-rendering:pixelated}
 .menu__time{white-space:nowrap}
 
 /* content rises in, staggered, once the panel is moving ("backwards" fill
@@ -383,10 +386,17 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
     </div>
 
     <div class="menu__foot">
-      <a class="menu__badge" href="https://chayanth.me" target="_blank" rel="noopener">
-        <img src="button.gif" width="88" height="31"
-             alt="CHAY" style="image-rendering: pixelated">
-      </a>
+      <!-- 88x31 buttons: mine first, then friends' (each hosted on their own site) -->
+      <div class="menu__badges">
+        <a class="menu__badge" href="https://chayanth.me" target="_blank" rel="noopener">
+          <img src="button.gif" width="88" height="31"
+               alt="CHAY" style="image-rendering: pixelated">
+        </a>
+        <a class="menu__badge" href="https://www.wcagas.com/" target="_blank" rel="noopener"><img src="https://www.wcagas.com/assets/buttons/button.gif" width="88" height="31" alt="William Cagas" loading="lazy"></a>
+        <a class="menu__badge" href="https://www.ethantran.ca" target="_blank" rel="noopener"><img src="https://www.ethantran.ca/button.gif" width="88" height="31" alt="Ethan Tran" loading="lazy"></a>
+        <a class="menu__badge" href="https://mikael.codes" target="_blank" rel="noopener"><img src="https://www.mikael.codes/button.gif" width="88" height="31" alt="Mikael Gomez" loading="lazy"></a>
+        <a class="menu__badge" href="https://www.oscarzhao.ca" target="_blank" rel="noopener"><img src="https://www.oscarzhao.ca/button.gif" width="88" height="31" alt="Oscar Zhao" loading="lazy"></a>
+      </div>
       <p class="menu__time">Toronto <time class="js-clock">—</time></p>
     </div>
   </div>
