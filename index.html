@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chayanth Suthahar</title>
 <meta name="description" content="Mechanical Engineering student. Hardware design, robotics, and embedded systems.">
+<link rel="stylesheet" href="site.css">
 
 <script>
 (function(){
@@ -81,13 +82,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .lang button:hover{color:var(--fg)}
 .lang button[aria-pressed="true"]{color:var(--fg)}
 
-.corner{display:flex;align-items:center;gap:1.5rem;font-size:.8125rem}
-.corner a{
-  color:var(--dim);padding-bottom:.15rem;
-  border-bottom:1px solid transparent;
-  transition:color .2s,border-color .2s;
-}
-.corner a:hover,.corner a:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
 
 .name{
   margin:.2em 0 0;
@@ -127,6 +121,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .sayhi > a{text-decoration:underline;text-underline-offset:.14em;text-decoration-thickness:.05em}
 .sayhi > a:hover{opacity:.55}
 .sayhi sup{font-size:.34em;letter-spacing:.06em;vertical-align:super;margin-left:.35em}
+/* email, under the Projects link */
+.sayhi .mail{
+  display:inline-block;margin-top:.9rem;
+  font-size:.8125rem;letter-spacing:0;line-height:1.3;color:var(--dim);
+  border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
+}
+.sayhi .mail:hover,.sayhi .mail:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
 .sayhi sup a{color:var(--dim)}
 .sayhi sup a:hover{color:var(--fg)}
 
@@ -204,12 +205,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   .topbar,.swatch,.meta{animation-delay:.7s}
 }
 
-/* phones: stack the top bar into two tidy rows — links, then language */
-@media (max-width:600px){
-  .topbar{flex-wrap:wrap;gap:.5rem 1rem}
-  .corner{order:1;width:100%;justify-content:flex-start;gap:1.4rem}
-  .lang{order:2;width:100%;justify-content:flex-start}
-}
+/* phones: the top bar stacks into links, then language (see site.css) */
 
 @media (prefers-reduced-motion:reduce){
   .stage{animation:none}
@@ -289,6 +285,7 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
 .menu.is-open .menu__links a:nth-child(1){animation-delay:.3s}
 .menu.is-open .menu__links a:nth-child(2){animation-delay:.38s}
 .menu.is-open .menu__links a:nth-child(3){animation-delay:.46s}
+.menu.is-open .menu__links a:nth-child(4){animation-delay:.54s}
 .menu.is-open .menu__bio{animation:menu-rise .8s cubic-bezier(.16,1,.3,1) .5s backwards}
 .menu.is-open .menu__foot{animation:menu-rise .6s cubic-bezier(.16,1,.3,1) .62s backwards}
 .menu__inner{transition:opacity .2s ease}
@@ -304,16 +301,6 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
   .menu.is-open .menu__top,.menu.is-open .menu__links a,
   .menu.is-open .menu__bio,.menu.is-open .menu__foot{animation:none}
 }
-
-/* ---------- page transition curtain ---------- */
-.curtain{
-  position:fixed;inset:0;z-index:9999;
-  background:var(--bg);
-  opacity:1;pointer-events:none;
-  transition:opacity .5s ease;
-}
-.curtain.clear{opacity:0}
-@media (prefers-reduced-motion:reduce){ .curtain{transition:none} }
 </style>
 </head>
 <body>
@@ -324,18 +311,14 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
   <main class="stage">
 
     <header>
-      <div class="topbar">
+      <div class="topbar sitebar">
         <nav class="lang" aria-label="Language">
           <button data-lang="en" aria-pressed="true">EN</button>
           <button data-lang="ta" aria-pressed="false">TA</button>
           <button data-lang="fr" aria-pressed="false">FR</button>
         </nav>
-        <nav class="corner" aria-label="Primary">
-          <!-- resume lives at "Chayanth_Suthahar_Resume.pdf" in this folder -->
-          <a class="js-resume" href="Chayanth_Suthahar_Resume.pdf" target="_blank" rel="noopener">Resume</a>
-          <a class="js-connect" href="https://www.linkedin.com/in/chayanth/" target="_blank" rel="noopener">connect</a>
-          <a class="js-gh" href="#" aria-label="GitHub">GH</a>
-        </nav>
+        <!-- shared nav (Home · Projects · Resume · Connect) is written by site.js -->
+        <script src="site.js" data-page="home"></script>
       </div>
 
       <h1 class="name"><span>Chayanth Suthahar</span></h1>
@@ -343,7 +326,8 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
 
     <section class="center">
       <p class="sayhi">
-        <a class="js-projects" href="projects.html">Projects</a>
+        <a class="js-projects" href="projects.html">Projects</a><br>
+        <a class="mail" href="mailto:chayanthsuthahar@gmail.com">chayanthsuthahar@gmail.com</a>
       </p>
 
       <p class="tagline">
@@ -381,6 +365,7 @@ html[lang="ta"] .menu__links a{letter-spacing:-.02em}
         <a href="projects.html"><span class="js-m-projects">projects</span><sup>04</sup></a>
         <a href="https://www.linkedin.com/in/chayanth/" target="_blank" rel="noopener"><span class="js-m-sayhi">say hi</span><sup>LNKD</sup></a>
         <a href="Chayanth_Suthahar_Resume.pdf" target="_blank" rel="noopener"><span class="js-m-resume">resume</span><sup>PDF</sup></a>
+        <a href="mailto:chayanthsuthahar@gmail.com"><span class="js-m-email">email</span><sup>MAIL</sup></a>
       </nav>
       <p class="menu__bio js-m-bio">i’m a mechanical engineering student building hardware, robotics and embedded systems. currently i’m in toronto studying at toronto metropolitan university and looking for a summer 2027 internship or <span style="white-space:nowrap">co-op</span>.</p>
     </div>
@@ -407,12 +392,13 @@ try{ sessionStorage.setItem('seen','1'); }catch(e){}
 
 /* ============================================================
    LANGUAGE
-   Proper nouns (name, FRC 2056, Sandbox, Hammer Hacks, GH) stay
+   Proper nouns (name, FRC 2056, Sandbox, Hammer Hacks) stay
    as-is. Everything else is swapped from this dictionary.
    ============================================================ */
 var I18N = {
   en: {
-    connect:'connect', projects:'Projects', resume:'Resume',
+    nav:{ home:'Home', projects:'Projects', resume:'Resume', connect:'Connect' },
+    projects:'Projects',
     lines:[
       'mechanical engineering student',
       'hardware, robotics &amp; embedded systems',
@@ -425,12 +411,13 @@ var I18N = {
     ],
     menu:{
       label:'Menu', open:'Open menu', close:'Close menu',
-      projects:'projects', sayhi:'say hi', resume:'resume',
+      projects:'projects', sayhi:'say hi', resume:'resume', email:'email',
       bio:'i’m a mechanical engineering student building hardware, robotics and embedded systems. currently i’m in toronto studying at toronto metropolitan university and looking for a summer 2027 internship or <span style="white-space:nowrap">co-op</span>.'
     }
   },
   ta: {
-    connect:'தொடர்பு', projects:'திட்டங்கள்', resume:'சுயவிவரம்',
+    nav:{ home:'முகப்பு', projects:'திட்டங்கள்', resume:'சுயவிவரம்', connect:'தொடர்பு' },
+    projects:'திட்டங்கள்',
     lines:[
       'இயந்திரப் பொறியியல் மாணவர்',
       'வன்பொருள், ரோபோட்டிக்ஸ் &amp; உட்பொதிந்த அமைப்புகள்',
@@ -443,12 +430,13 @@ var I18N = {
     ],
     menu:{
       label:'மெனு', open:'மெனுவைத் திற', close:'மெனுவை மூடு',
-      projects:'திட்டங்கள்', sayhi:'வணக்கம்', resume:'சுயவிவரம்',
+      projects:'திட்டங்கள்', sayhi:'வணக்கம்', resume:'சுயவிவரம்', email:'மின்னஞ்சல்',
       bio:'நான் ஒரு இயந்திரப் பொறியியல் மாணவர்; வன்பொருள், ரோபோட்டிக்ஸ் மற்றும் உட்பொதிந்த அமைப்புகளை உருவாக்குகிறேன். தற்போது டொராண்டோவில், டொராண்டோ மெட்ரோபொலிட்டன் பல்கலைக்கழகத்தில் படித்து வருகிறேன்; 2027 கோடைகால இன்டர்ன்ஷிப் அல்லது <span style="white-space:nowrap">கோ-ஆப்</span> வாய்ப்பைத் தேடுகிறேன்.'
     }
   },
   fr: {
-    connect:'contact', projects:'Projets', resume:'CV',
+    nav:{ home:'Accueil', projects:'Projets', resume:'CV', connect:'Contact' },
+    projects:'Projets',
     lines:[
       'étudiant en génie mécanique',
       'matériel, robotique et systèmes embarqués',
@@ -461,7 +449,7 @@ var I18N = {
     ],
     menu:{
       label:'Menu', open:'Ouvrir le menu', close:'Fermer le menu',
-      projects:'projets', sayhi:'salut', resume:'cv',
+      projects:'projets', sayhi:'salut', resume:'cv', email:'courriel',
       bio:'je suis étudiant en génie mécanique et je construis du matériel, de la robotique et des systèmes embarqués. en ce moment, j’étudie à toronto, à la toronto metropolitan university, et je cherche un stage ou un <span style="white-space:nowrap">co-op</span> pour l’été 2027.'
     }
   }
@@ -470,9 +458,8 @@ var I18N = {
 (function () {
   var lines   = document.querySelectorAll('.tagline .line > span');
   var credits = document.querySelectorAll('.credits > span');
-  var connect = document.querySelector('.js-connect');
+  var navLinks= document.querySelectorAll('.sitenav [data-nav]');
   var projects= document.querySelector('.js-projects');
-  var resume  = document.querySelector('.js-resume');
   var buttons = document.querySelectorAll('.lang button');
   var menu    = document.getElementById('menu');
   var menuBtn = document.getElementById('swatch');
@@ -484,14 +471,14 @@ var I18N = {
     menu.querySelector('.js-m-projects').textContent = m.projects;
     menu.querySelector('.js-m-sayhi').textContent = m.sayhi;
     menu.querySelector('.js-m-resume').textContent = m.resume;
+    menu.querySelector('.js-m-email').textContent = m.email;
     menu.querySelector('.js-m-bio').innerHTML = m.bio;
   }
 
   function paint(lang) {
     var t = I18N[lang] || I18N.en;
-    connect.textContent = t.connect;
+    navLinks.forEach(function (a) { var l = t.nav[a.dataset.nav]; if (l) a.textContent = l; });
     projects.textContent = t.projects;
-    resume.textContent = t.resume;
     lines.forEach(function (el, i)   { el.innerHTML = t.lines[i]; });
     credits.forEach(function (el, i) { el.innerHTML = t.credits[i]; });
     setMenu(t.menu);
@@ -575,35 +562,6 @@ var I18N = {
     els.forEach(function(el){ el.textContent = s; });
   }
   tick(); setInterval(tick, 20000);
-})();
-</script>
-<script>
-/* ---- smooth crossfade between pages (dissolves through the bg colour) ---- */
-(function(){
-  var c=document.getElementById('curtain');
-  if(!c) return;
-  var reveal=function(){ c.classList.add('clear'); };
-  requestAnimationFrame(function(){ requestAnimationFrame(reveal); });
-  window.addEventListener('pageshow', function(e){ if(e.persisted) reveal(); });
-
-  document.addEventListener('click', function(e){
-    if(e.defaultPrevented || e.button!==0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest('a') : null;
-    if(!a || a.target==='_blank') return;
-    var raw=a.getAttribute('href')||'';
-    if(!raw || raw.charAt(0)==='#' || raw.indexOf('mailto:')===0) return;
-    var url;
-    try{ url=new URL(a.href); }catch(err){ return; }
-    if(url.origin!==location.origin) return;
-    if(!/\.html$/.test(url.pathname)) return;
-    if(url.pathname===location.pathname){ return; }
-    e.preventDefault();
-    var target=a.href;
-    c.classList.remove('clear');                    // cover
-    var done=false, go=function(){ if(done)return; done=true; window.location.assign(target); };
-    c.addEventListener('transitionend', go, {once:true});
-    setTimeout(go, 600);                            // fallback
-  });
 })();
 </script>
 </body>
