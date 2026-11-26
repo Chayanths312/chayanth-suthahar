@@ -1,13 +1,24 @@
 # Chayanth Suthahar — Portfolio
 
-Two-page static site. No build step, no dependencies.
+Static site. No build step, no dependencies.
 
 ## Files
-- `index.html` — home (big name, connect, language switcher, `+` colour theme, intro zoom)
-- `projects.html` — projects page (per-project titled sections; Drivetrain filled in)
-- `drivebase.png` — the drivetrain render (transparent, already web-optimised)
+- `index.html` — home (big name, email, language switcher, `+` menu, intro zoom)
+- `projects.html` — project cards, "Currently building", closing contact block
+- `drivetrain.html`, `rc-aircraft.html` — case-study pages (8-section structure)
+- `site.js` — **the nav** (Home · Projects · Resume · Connect) and the page crossfade.
+  Every page includes `<script src="site.js" data-page="..."></script>` where the nav
+  goes; edit the link list once in `site.js`, not on each page.
+- `site.css` — shared nav, label colour (`--label`) and curtain styles
+- `case-study.css` — layout for the case-study pages
+- `portfolio/` — print source for the PDF portfolio; `node portfolio/build.js`
+  writes `portfolio/Chayanth_Suthahar_Portfolio_DRAFT.pdf`
+- `gallery.html` — leftover from an older version of the site; not linked anywhere
 
-Keep all three in the same folder.
+## Placeholders
+Search for `TODO(Chay)` to find every gap. Case-study pages also show a visible
+dashed "To come" box for each one, and an "Image coming soon" slot for any image
+file that isn't uploaded yet (upload with the exact filename and it appears).
 
 ## Run it locally
 Do **not** just double-click the files — some features (and, later, any 3D model)
@@ -29,15 +40,10 @@ loads as the home page.
 > leftover `index.html` from a previous version. Overwrite it with this one.
 
 ## Things to fill in
-- **Home** — real email (`say hi`/`connect` → mailto + LinkedIn is set), GitHub URL
-  (the `GH` link), and drop a `resume.pdf` beside the files for the Resume link.
-- **Projects** — projects `02` and `03` are templates. Duplicate a
-  `<section class="project">`, bump the number, set the title/tag/render/lede and
-  the Requirements + Details lists. Add `class="spec spec--flip"` to alternate the
-  render side.
-- **Renders** — export transparent PNGs, 16:9-ish. The page greyscales them for the
-  black-and-white look; delete the `filter:` line in the `.spec__media img` rule to
-  show colour.
+- **GitHub** — not in the nav until confirmed; uncomment the entry in `site.js`.
+- **Case studies / portfolio** — see `TODO(Chay)` comments.
+- **New project card** — duplicate a `<section class="proj">` on `projects.html`,
+  bump the number, and add it to the Contents list.
 
 ## Handy knobs
 - **Colour themes** — the `+` button cycles void / paper / blueprint; choice is saved

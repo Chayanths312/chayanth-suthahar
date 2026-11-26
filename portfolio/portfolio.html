@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!--
+  PORTFOLIO PDF — print source (NOT a page on the site).
+  Landscape US Letter, light background so it prints well.
+  Build the PDF with:   node portfolio/build.js
+  Output:               portfolio/Chayanth_Suthahar_Portfolio_DRAFT.pdf
+
+  Text is copied word-for-word from projects.html and the case-study pages.
+  If you change a fact there, change it here too (and vice versa).
+  Dashed boxes = TODO(Chay): material still to come. When none are left,
+  rename the output to Chayanth_Suthahar_Portfolio.pdf and add the
+  "Portfolio (PDF)" link (see the TODO on projects.html).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chayanth Suthahar — Portfolio</title>
+<style>
+@page{size:11in 8.5in;margin:0}
+:root{
+  --ink:#141312;--dim:#5E5A53;--hair:#D9D4C9;--paper:#FFFFFF;
+  --grotesk:'Helvetica Neue','Helvetica','Arial',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#888}
+body{font-family:var(--grotesk);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{
+  width:11in;height:8.5in;padding:.55in .6in .5in;background:var(--paper);
+  margin:0 auto .25in;overflow:hidden;position:relative;
+  display:grid;grid-template-rows:auto 1fr auto;row-gap:.25in;
+  page-break-after:always;break-after:page;
+}
+@media print{ html,body{background:none} .page{margin:0} }
+
+.run{display:flex;justify-content:space-between;font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--hair);padding-bottom:.08in}
+.foot{display:flex;justify-content:space-between;font-size:8pt;color:var(--dim)}
+
+.eyebrow{margin:0 0 .06in;font-size:8pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+h1{margin:0;font-weight:600;font-size:40pt;line-height:1;letter-spacing:-.03em}
+h2{margin:0;font-weight:600;font-size:30pt;line-height:1;letter-spacing:-.03em}
+h3{margin:0 0 .06in;font-weight:600;font-size:11.5pt;letter-spacing:-.01em}
+.tag{margin:.1in 0 0;font-size:12.5pt;line-height:1.4;max-width:40ch}
+p{margin:0 0 .08in;font-size:10pt;line-height:1.45}
+.label{margin:.16in 0 .06in;padding-bottom:.04in;border-bottom:1px solid var(--hair);font-size:7.5pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+
+.two{display:grid;grid-template-columns:1.25fr 1fr;column-gap:.4in;min-height:0}
+.two--even{grid-template-columns:1fr 1fr}
+.col{min-height:0;display:flex;flex-direction:column}
+.media{display:flex;align-items:center;justify-content:center;min-height:0;flex:1}
+.media img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.cap{margin:.06in 0 0;font-size:8pt;color:var(--dim)}
+
+dl.facts{margin:0;display:grid;gap:.06in}
+dl.facts > div{display:grid;grid-template-columns:.95in 1fr;column-gap:.12in}
+dl.facts dt{font-size:7.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding-top:.02in}
+dl.facts dd{margin:0;font-size:9.5pt;line-height:1.4}
+
+ul.feat{margin:0;padding-left:.16in;font-size:9.5pt;line-height:1.38}
+ul.feat > li{margin-top:.05in}
+ul.feat ul{margin:.02in 0 0;padding-left:.16in;color:var(--dim);list-style:"– "}
+
+.todo{
+  border:1.2px dashed #B9B2A4;border-radius:3px;padding:.08in .12in;margin:.06in 0;
+  font-size:8.5pt;line-height:1.4;color:var(--dim);
+}
+.todo b{display:block;font-size:7pt;letter-spacing:.18em;text-transform:uppercase;color:#8A6D1F}
+.todo--box{flex:1;display:grid;place-content:center;text-align:center;min-height:1.3in}
+
+/* cover */
+.cover{grid-template-rows:1fr auto}
+.cover h1{font-size:64pt;letter-spacing:-.04em}
+.cover .summary{margin:.25in 0 0;font-size:17pt;line-height:1.3;max-width:30ch;letter-spacing:-.01em}
+.cover .contact{display:flex;flex-wrap:wrap;gap:.08in .4in;font-size:11pt}
+.cover .contact span{color:var(--dim);font-size:7.5pt;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:.03in}
+.cover .toc{margin:.45in 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;column-gap:.45in;font-size:10pt}
+.cover .toc b{display:block;font-size:7.5pt;letter-spacing:.16em;color:var(--dim);font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. COVER ============ -->
+<section class="page cover">
+  <div>
+    <p class="eyebrow">Portfolio · 2026</p>
+    <h1>Chayanth Suthahar</h1>
+    <p class="summary">Mechanical engineering student at Toronto Metropolitan University, building hardware, robotics and embedded systems. Looking for a Summer 2027 internship or co-op.</p>
+    <ol class="toc">
+      <li><b>01</b>Drivetrain</li>
+      <li><b>02</b>RC Aircraft</li>
+      <li><b>03</b>VitalGroove</li>
+      <li><b>04</b>EdgeWave</li>
+    </ol>
+  </div>
+  <div class="contact">
+    <div><span>Email</span>chayanthsuthahar@gmail.com</div>
+    <div><span>LinkedIn</span>linkedin.com/in/chayanth</div>
+    <div><span>Web</span>chayanth.me</div>
+  </div>
+</section>
+
+<!-- ============ 2. DRIVETRAIN (1/2) ============ -->
+<section class="page">
+  <div class="run"><span>01 · Drivetrain</span><span>FRC 2056 · Mechanical</span></div>
+  <div class="two">
+    <div class="col">
+      <div class="media"><img src="../drivebase.png" alt=""></div>
+      <p class="cap">CAD render of the drive base with electronics</p>
+    </div>
+    <div class="col">
+      <p class="eyebrow">FRC 2056 · Mechanical · 01</p>
+      <h2>Drivetrain.</h2>
+      <p class="tag">A 32" × 28" swerve base for the 2025 robot ranked 1st in the world by EPA, geared for 15&nbsp;ft/s</p>
+      <p class="label">Overview</p>
+      <p>The swerve drive base for FRC 2056's 2025 robot: a 32"&nbsp;×&nbsp;28" frame on a 135&nbsp;lb robot, geared for 15&nbsp;ft/s. The robot was ranked 1st in the world by EPA in 2025 (Statbotics). The design went from concept to 2D manufacturing drawings.</p>
+      <p class="label">Requirements</p>
+      <dl class="facts">
+        <div><dt>Frame</dt><dd>32" × 28"</dd></div>
+        <div><dt>Weight</dt><dd>135&nbsp;lb, kept under the weight limit</dd></div>
+        <div><dt>Top speed</dt><dd>15&nbsp;ft/s (SDS MK4i at the L2 ratio)</dd></div>
+      </dl>
+      <p class="label">Result</p>
+      <dl class="facts">
+        <div><dt>Result</dt><dd>1st in the world by EPA in 2025 (Statbotics); team 1st in Canada 2022–2025</dd></div>
+        <div><dt>My role</dt><dd>Designed the drive base, gearboxes and mounts; machined baseplates, gearbox plates, shafts and motor mounts on mill, lathe and CNC</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="foot"><span>Chayanth Suthahar</span><span>2</span></div>
+</section>
+
+<!-- ============ 3. DRIVETRAIN (2/2) ============ -->
+<section class="page">
+  <div class="run"><span>01 · Drivetrain</span><span>Decisions · Build · Testing</span></div>
+  <div class="two two--even">
+    <div class="col">
+      <p class="label" style="margin-top:0">Key decisions</p>
+      <ul class="feat">
+        <li>3" × 1" × 1/8" aluminum box tube as main structure
+          <ul><li>Stiff, low chassis to keep the centre of mass down</li></ul></li>
+        <li>1/16" solid aluminum baseplate
+          <ul><li>Doubles as shear plate and electronics tray</li></ul></li>
+        <li>SDS MK4i modules with Kraken X60 drive at the L2 ratio for 15&nbsp;ft/s
+          <ul><li>Balances speed and acceleration for the game's short cycles</li></ul></li>
+        <li>Custom shifted adapter plate for Kraken X44 steering with a 12-tooth pinion
+          <ul><li>Saved nearly 2&nbsp;lb, keeping the 135&nbsp;lb robot under the weight limit</li></ul></li>
+        <li>Baseplate fastened directly to the elevator gearbox</li>
+      </ul>
+      <!-- TODO(Chay): why the baseplate-to-gearbox mount matters -->
+      <div class="todo"><b>TODO(Chay)</b>Why fastening the baseplate to the elevator gearbox matters.</div>
+      <p class="label">Testing, failures and fixes</p>
+      <dl class="facts">
+        <div><dt>Sag</dt><dd>The baseplate sagged near the battery. Fixed with a riveted aluminum angle; the corners were bolted to back up the rivets.</dd></div>
+        <div><dt>Intake</dt><dd>2025: impacts in practice bent a polycarbonate intake plate. Fixed with a ram bar made from 1/2" round tube.</dd></div>
+      </dl>
+    </div>
+    <div class="col">
+      <div class="media" style="max-height:3.3in"><img src="../machining.jpg" alt=""></div>
+      <p class="cap">Machining: a CNC mill cutting an aluminum part</p>
+      <!-- TODO(Chay): one 2D manufacturing drawing (gearbox plate or baseplate) -->
+      <div class="todo todo--box"><b>TODO(Chay)</b>2D manufacturing drawing (e.g. a gearbox plate or baseplate)</div>
+    </div>
+  </div>
+  <div class="foot"><span>Chayanth Suthahar</span><span>3</span></div>
+</section>
+
+<!-- ============ 4. RC AIRCRAFT (1/2) ============ -->
+<section class="page">
+  <div class="run"><span>02 · RC Aircraft</span><span>RC3 Competition · Aerospace</span></div>
+  <div class="two">
+    <div class="col">
+      <div class="media"><img src="../plane-covered.png" alt=""></div>
+      <p class="cap">The finished aircraft with its covered airframe</p>
+    </div>
+    <div class="col">
+      <p class="eyebrow">RC3 Competition · Aerospace · 02</p>
+      <h2>RC Aircraft.</h2>
+      <p class="tag">A 5.5&nbsp;ft tail-dragger that won the RC3 competition with a 3&nbsp;min 40&nbsp;s flight</p>
+      <p class="label">Overview</p>
+      <p>The design was iterated through several prototypes over a few months.</p>
+      <p class="label">Result</p>
+      <dl class="facts">
+        <div><dt>Result</dt><dd>1st place on longest flight time (3:40, flown until the battery drained); judges' Best Handling aircraft</dd></div>
+        <div><dt>My role</dt><dd>Co-founder and design member; designed the wing, tail and booms, and worked on the fuselage and the horizontal and vertical stabilizers; ran the landing-gear FEA and tests, integrated the flight controller and radio, helped wire the vision payload (built by a teammate)</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="foot"><span>Chayanth Suthahar</span><span>4</span></div>
+</section>
+
+<!-- ============ 5. RC AIRCRAFT (2/2) ============ -->
+<section class="page">
+  <div class="run"><span>02 · RC Aircraft</span><span>Decisions · Analysis · Testing</span></div>
+  <div class="two two--even">
+    <div class="col">
+      <p class="label" style="margin-top:0">Key decisions</p>
+      <ul class="feat">
+        <li>5.5&nbsp;ft tapered wing on aluminum spars
+          <ul><li>Ribs pocketed to cut weight without losing stiffness</li></ul></li>
+        <li>3D-printed fuselage with three carbon fibre tail booms</li>
+        <li>Aluminum tail-dragger landing gear validated with static FEA
+          <ul><li>Geometry iterated against touchdown-impact results</li></ul></li>
+        <li>SpeedyBee F405 Wing flight controller running iNav, ELRS radio link</li>
+        <li>Onboard Pi Zero vision payload
+          <ul><li>Scored the 100-point computer vision objective</li></ul></li>
+      </ul>
+      <p class="label">Analysis and testing</p>
+      <p>FEA was run on the wing, the tail and the landing gear. The landing-gear redesign was confirmed over 5 impacts: three 1&nbsp;m drop tests and two real landings.</p>
+      <!-- TODO(Chay): what failed on the first landing gear, and what changed -->
+      <div class="todo"><b>TODO(Chay)</b>What failed on the first landing gear, why, and what changed.</div>
+    </div>
+    <div class="col">
+      <div class="media" style="max-height:2.6in"><img src="../plane-uncovered.png" alt=""></div>
+      <p class="cap">The structure with the covering removed, showing the ribs and spars</p>
+      <!-- TODO(Chay): FEA stress plot(s) with load case; drop-test photo -->
+      <div class="todo todo--box"><b>TODO(Chay)</b>FEA stress plot with loads and boundary conditions labelled</div>
+      <div class="todo todo--box" style="min-height:.9in"><b>TODO(Chay)</b>Drop-test photo</div>
+    </div>
+  </div>
+  <div class="foot"><span>Chayanth Suthahar</span><span>5</span></div>
+</section>
+
+<!-- ============ 6. VITALGROOVE + EDGEWAVE ============ -->
+<section class="page">
+  <div class="run"><span>03 · 04</span><span>Hackathon projects</span></div>
+  <div class="two two--even">
+    <div class="col">
+      <div class="media" style="max-height:2.4in"><img src="../vitalgroove-build.webp" alt=""></div>
+      <p class="eyebrow" style="margin-top:.15in">MakeUofT 2026 · Robotics · 03</p>
+      <h3 style="font-size:20pt">VitalGroove.</h3>
+      <p>A vision-triggered candy dispenser built and demoed in 24 hours</p>
+      <ul class="feat">
+        <li>Jetson Nano vision pipeline detects a hug in real time</li>
+        <li>Serial link from the Jetson to an ESP32; a detection fires the dispenser instantly</li>
+        <li>Servo-actuated gate dispenser</li>
+        <li>ESP32 with I2C sensors, wiring and power brought up from scratch</li>
+      </ul>
+      <p class="label">Result · My role</p>
+      <p>Working live demo inside the 24-hour limit. Designed and built the dispenser and led hardware integration.</p>
+    </div>
+    <div class="col">
+      <div class="media" style="max-height:2.4in"><img src="../edgewave-poster.jpg" alt=""></div>
+      <p class="eyebrow" style="margin-top:.15in">Gibberish Hackathon · Software · 04</p>
+      <h3 style="font-size:20pt">EdgeWave.</h3>
+      <p>A browser instrument you play with hand gestures — built in 2 hours, 1st place</p>
+      <ul class="feat">
+        <li>MediaPipe Hands tracks both hands through the webcam</li>
+        <li>Right hand plays chords; palm position sweeps a low-pass filter from 300&nbsp;Hz to 8&nbsp;kHz</li>
+        <li>Left hand is a 4-piece drum kit, one finger per instrument</li>
+        <li>Timestamp-based looper for layering a performance hands-free</li>
+      </ul>
+      <p class="label">Result · My role</p>
+      <p>1st place, Gibberish hackathon, built in 2 hours. Built the majority of the app on a team of 3 (JavaScript, MediaPipe).</p>
+    </div>
+  </div>
+  <div class="foot"><span>Chayanth Suthahar</span><span>6</span></div>
+</section>
+
+<!-- TODO(Chay): optional page for the gearboxes and the intake ram bar once that material exists -->
+
+</body>
+</html>

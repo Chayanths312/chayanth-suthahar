@@ -1,0 +1,96 @@
+/* ============================================================
+   CASE-STUDY PAGES (drivetrain.html, rc-aircraft.html)
+   Same tokens and type as projects.html; a single reading column.
+
+   Placeholders:
+     .todo   — a visible dashed box for a section Chay hasn't written yet.
+               Each one has a <!-- TODO(Chay): ... --> comment next to it
+               saying what's needed. Delete the box once it's filled.
+     .fig.is-missing — an image that isn't uploaded yet (same idea as the
+               "Image coming soon" slots on projects.html).
+   ============================================================ */
+:root,
+[data-theme="void"]{ --bg:#0B0B0C; --fg:#F4F4F2; --dim:#8C8C8E; --hair:#242427; --accent:#F4F4F2; }
+:root{
+  --grotesk:'Helvetica Neue','Helvetica','Arial',sans-serif;
+  --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  --pad:clamp(1.15rem,3vw,2.75rem);
+  --maxw:820px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--grotesk);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%}
+::selection{background:var(--fg);color:var(--bg)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+main{max-width:var(--maxw);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--pad) 6rem}
+
+.back{display:inline-block;font-size:.8125rem;color:var(--label);margin-bottom:2rem;transition:color .2s}
+.back:hover,.back:focus-visible{color:var(--fg)}
+
+/* ---------- head ---------- */
+.cs__eyebrow{margin:0 0 .85rem;font-size:.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--label)}
+.cs__title{margin:0;font-weight:600;font-size:clamp(2.6rem,7vw,4.75rem);line-height:1;letter-spacing:-.035em}
+.cs__lede{margin:1.1rem 0 0;font-size:clamp(1.05rem,1.7vw,1.25rem);line-height:1.5;max-width:46ch}
+
+/* ---------- contents strip ---------- */
+.toc{margin:2.5rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.4rem 1.25rem;font-size:.8125rem}
+.toc a{color:var(--label);border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.toc a:hover,.toc a:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
+
+/* ---------- sections ---------- */
+.cs__sec{margin-top:clamp(3rem,7vw,4.5rem);padding-top:1.5rem;border-top:1px solid var(--hair);scroll-margin-top:1rem}
+.cs__num{margin:0 0 .5rem;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--label)}
+.cs__sec h2{margin:0 0 1.25rem;font-weight:600;font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.1;letter-spacing:-.025em}
+.cs__sec h3{margin:2rem 0 .75rem;font-weight:600;font-size:1.125rem;letter-spacing:-.01em}
+.cs__sec p{margin:0 0 1rem;font-size:1rem;line-height:1.6;max-width:62ch}
+.cs__sec ul{margin:0 0 1rem;padding-left:1.1rem;line-height:1.6}
+.cs__sec li{margin-top:.35rem}
+.cs__sec li::marker{color:var(--dim)}
+
+/* key decisions / requirements: label + value rows */
+.rows{margin:0;display:grid;gap:0;border-top:1px solid var(--hair)}
+.rows > div{display:grid;grid-template-columns:11rem minmax(0,1fr);column-gap:1.25rem;padding:.85rem 0;border-bottom:1px solid var(--hair)}
+.rows dt{font-size:.6875rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--label);padding-top:.2rem}
+.rows dd{margin:0;font-size:1rem;line-height:1.5}
+@media (max-width:560px){ .rows > div{grid-template-columns:minmax(0,1fr);row-gap:.3rem} }
+
+.decision{margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--hair)}
+.decision:first-of-type{margin-top:0;border-top:0;padding-top:0}
+.decision h3{margin:0 0 .6rem}
+.decision dl{margin:0;display:grid;gap:.5rem}
+.decision dl > div{display:grid;grid-template-columns:6.5rem minmax(0,1fr);column-gap:1rem}
+.decision dt{font-size:.6875rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--label);padding-top:.2rem}
+.decision dd{margin:0;line-height:1.5}
+@media (max-width:560px){ .decision dl > div{grid-template-columns:minmax(0,1fr);row-gap:.2rem} }
+
+/* ---------- figures ---------- */
+.fig{position:relative;margin:1.5rem 0}
+.fig img,.fig video{display:block;width:100%;height:auto}
+.fig figcaption{margin-top:.6rem;font-size:.8125rem;line-height:1.45;color:var(--label)}
+.fig--hero{margin-top:2.5rem}
+.fig__slot{
+  display:none;aspect-ratio:16/9;place-content:center;justify-items:center;gap:.45rem;padding:1.25rem;text-align:center;
+  border:1px dashed var(--hair);color:var(--dim);font-size:.875rem;line-height:1.45;
+}
+.fig.is-missing img{display:none}
+.fig.is-missing .fig__slot{display:grid}
+.fig__kicker{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.fig__file{font-family:var(--mono);font-size:.75rem}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:1rem}
+.figs .fig{margin:0}
+
+/* ---------- placeholder for unwritten sections ---------- */
+.todo{
+  margin:1rem 0;padding:1rem 1.15rem;border:1px dashed #3a3a3e;border-radius:4px;
+  color:var(--dim);font-size:.875rem;line-height:1.5;
+}
+.todo b{display:block;margin-bottom:.2rem;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--label)}
+
+/* ---------- foot ---------- */
+.cs__foot{margin-top:clamp(4rem,9vw,6rem);padding-top:1.5rem;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem 2rem;font-size:.9375rem}
+.cs__foot a{border-bottom:1px solid var(--dim);padding-bottom:.1rem}
+.cs__foot a:hover,.cs__foot a:focus-visible{border-bottom-color:var(--fg)}

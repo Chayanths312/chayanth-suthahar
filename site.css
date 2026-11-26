@@ -1,0 +1,46 @@
+/* ============================================================
+   SHARED STYLES — loaded by every page (index, projects, case studies)
+   Keep the nav and label colours here so the pages can't drift apart.
+   ============================================================ */
+
+:root{
+  /* small uppercase labels (eyebrows, FEATURES, RESULT, contents tags).
+     A touch dimmer than body text (--fg) so they still read as labels,
+     but far easier to read than --dim on a phone in bright light. */
+  --label:#C4C4C1;
+
+  /* nav inset: identical on every page */
+  --nav-pad:clamp(1.15rem,2.8vw,2.5rem);
+}
+
+/* ---------- site nav (markup written by site.js) ---------- */
+.sitebar{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+}
+.sitenav{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;margin-left:auto;font-size:.8125rem;line-height:1.2}
+.sitenav a{
+  color:var(--dim);padding-bottom:.15rem;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.sitenav a:hover,.sitenav a:focus-visible{color:var(--fg);border-bottom-color:var(--fg)}
+.sitenav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--fg)}
+
+/* pages other than home: the bar sits in its own header with the same inset */
+.topbar--page{padding:var(--nav-pad) var(--nav-pad) 0}
+
+@media (max-width:600px){
+  .sitebar{flex-wrap:wrap;gap:.5rem 1rem}
+  .sitenav{order:1;width:100%;margin-left:0;justify-content:flex-start;gap:.5rem 1.4rem}
+  .sitebar .lang{order:2;width:100%;justify-content:flex-start}
+}
+
+/* ---------- page transition curtain ---------- */
+.curtain{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  opacity:1;pointer-events:none;
+  transition:opacity .5s ease;
+}
+.curtain.clear{opacity:0}
+@media (prefers-reduced-motion:reduce){ .curtain{transition:none} }

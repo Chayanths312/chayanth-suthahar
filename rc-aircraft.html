@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!--
+  RC AIRCRAFT CASE STUDY
+  Only facts Chay has confirmed are written here. Every gap is a visible
+  .todo box plus a TODO(Chay) comment saying what's needed. Keep the text in
+  step with the RC Aircraft card on projects.html and with the PDF portfolio.
+-->
+<html lang="en" data-theme="void">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RC Aircraft — Chayanth Suthahar</title>
+<meta name="description" content="Case study: a 5.5 ft tail-dragger that won the RC3 competition with a 3 min 40 s flight.">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+
+<div class="curtain" id="curtain"></div>
+
+<header class="topbar topbar--page sitebar">
+  <script src="site.js" data-page="rc-aircraft"></script>
+</header>
+
+<main>
+  <a class="back" href="projects.html#rc-aircraft">&larr; All projects</a>
+
+  <header>
+    <p class="cs__eyebrow">RC3 Competition · Aerospace · Case study</p>
+    <h1 class="cs__title">RC Aircraft.</h1>
+    <p class="cs__lede">A 5.5&nbsp;ft tail-dragger that won the RC3 competition with a 3&nbsp;min 40&nbsp;s flight</p>
+  </header>
+
+  <figure class="fig fig--hero">
+    <img src="plane-covered.png" alt="Finished RC aircraft with its covered airframe" decoding="async">
+    <span class="fig__slot"><span class="fig__kicker">Image coming soon</span><span class="fig__file">plane-covered.png</span></span>
+    <figcaption>The finished aircraft with its covered airframe</figcaption>
+  </figure>
+
+  <ol class="toc" aria-label="Sections">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#decisions">Key decisions</a></li>
+    <li><a href="#analysis">Analysis</a></li>
+    <li><a href="#build">Build</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#differently">Differently</a></li>
+  </ol>
+
+  <!-- ===== 01 OVERVIEW ===== -->
+  <section class="cs__sec" id="overview">
+    <p class="cs__num">01</p>
+    <h2>Overview</h2>
+    <p>A 5.5&nbsp;ft tail-dragger that won the RC3 competition with a 3&nbsp;min 40&nbsp;s flight. The design was iterated through several prototypes over a few months.</p>
+    <dl class="rows">
+      <div><dt>My role</dt><dd>Co-founder and design member; designed the wing, tail and booms, and worked on the fuselage and the horizontal and vertical stabilizers; ran the landing-gear FEA and tests, integrated the flight controller and radio, helped wire the vision payload (built by a teammate)</dd></div>
+    </dl>
+  </section>
+
+  <!-- ===== 02 REQUIREMENTS ===== -->
+  <section class="cs__sec" id="requirements">
+    <p class="cs__num">02</p>
+    <h2>Requirements and constraints</h2>
+    <dl class="rows">
+      <div><dt>Objectives</dt><dd>Longest flight time; a 100-point computer vision objective</dd></div>
+    </dl>
+    <!-- TODO(Chay): the RC3 rules and limits, with numbers: max wingspan, weight, battery/motor
+         limits, payload, takeoff/landing rules, any other scored objectives. -->
+    <p class="todo"><b>To come</b>The competition rules and limits, with numbers.</p>
+  </section>
+
+  <!-- ===== 03 KEY DECISIONS ===== -->
+  <section class="cs__sec" id="decisions">
+    <p class="cs__num">03</p>
+    <h2>Key decisions</h2>
+
+    <div class="decision">
+      <h3>Wing</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>5.5&nbsp;ft tapered wing on aluminum spars</dd></div>
+        <div><dt>Why</dt><dd>Ribs pocketed to cut weight without losing stiffness</dd></div>
+        <!-- TODO(Chay): why tapered, why aluminum spars; what else was considered? -->
+        <div><dt>Options</dt><dd class="todo"><b>To come</b>Options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Fuselage and tail</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>3D-printed fuselage with three carbon fibre tail booms</dd></div>
+        <!-- TODO(Chay): why three booms, why 3D-printed; options considered? -->
+        <div><dt>Why</dt><dd class="todo"><b>To come</b>Why, and options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Landing gear</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>Aluminum tail-dragger landing gear validated with static FEA</dd></div>
+        <div><dt>Why</dt><dd>Geometry iterated against touchdown-impact results</dd></div>
+        <!-- TODO(Chay): why a tail-dragger and aluminum; options considered? -->
+        <div><dt>Options</dt><dd class="todo"><b>To come</b>Options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Flight controller and radio</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>SpeedyBee F405 Wing flight controller running iNav, ELRS radio link</dd></div>
+        <!-- TODO(Chay): why this controller / firmware / link? -->
+        <div><dt>Why</dt><dd class="todo"><b>To come</b>Why this setup</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Vision payload</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>Onboard Pi Zero vision payload (built by a teammate; I helped wire it)</dd></div>
+        <div><dt>Result</dt><dd>Scored the 100-point computer vision objective</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ===== 04 ANALYSIS ===== -->
+  <section class="cs__sec" id="analysis">
+    <p class="cs__num">04</p>
+    <h2>Analysis</h2>
+    <p>FEA was run on the wing, the tail and the landing gear. The landing gear was validated with static FEA, and its geometry was iterated against the touchdown-impact results.</p>
+    <!-- TODO(Chay): upload the stress plots with loads and boundary conditions labelled.
+         Each one appears automatically once uploaded with these exact names; then add the
+         load case to its caption. -->
+    <div class="figs">
+      <figure class="fig">
+        <img src="plane-fea-wing.png" alt="FEA stress plot of the wing" decoding="async">
+        <span class="fig__slot"><span class="fig__kicker">Plot coming soon</span><span>Wing FEA</span><span class="fig__file">plane-fea-wing.png</span></span>
+      </figure>
+      <figure class="fig">
+        <img src="plane-fea-tail.png" alt="FEA stress plot of the tail" decoding="async">
+        <span class="fig__slot"><span class="fig__kicker">Plot coming soon</span><span>Tail FEA</span><span class="fig__file">plane-fea-tail.png</span></span>
+      </figure>
+      <figure class="fig">
+        <img src="plane-fea-gear.png" alt="FEA stress plot of the landing gear" decoding="async">
+        <span class="fig__slot"><span class="fig__kicker">Plot coming soon</span><span>Landing gear FEA</span><span class="fig__file">plane-fea-gear.png</span></span>
+      </figure>
+    </div>
+    <p class="todo"><b>To come</b>The load case for each plot, and any hand calculations.</p>
+  </section>
+
+  <!-- ===== 05 BUILD ===== -->
+  <section class="cs__sec" id="build">
+    <p class="cs__num">05</p>
+    <h2>Build</h2>
+    <figure class="fig">
+      <img src="plane-uncovered.png" alt="RC aircraft with the covering removed, showing the ribs and spars" decoding="async">
+      <span class="fig__slot"><span class="fig__kicker">Image coming soon</span><span class="fig__file">plane-uncovered.png</span></span>
+      <figcaption>The structure with the covering removed, showing the ribs and spars</figcaption>
+    </figure>
+    <!-- TODO(Chay): build photos (printing, spars, covering) and the prototypes along the way. -->
+    <p class="todo"><b>To come</b>Build photos and the earlier prototypes.</p>
+  </section>
+
+  <!-- ===== 06 TESTING ===== -->
+  <section class="cs__sec" id="testing">
+    <p class="cs__num">06</p>
+    <h2>Testing, failures and fixes</h2>
+    <h3>Landing gear redesign</h3>
+    <dl class="rows">
+      <div><dt>Problem</dt><dd class="todo"><b>To come</b>What failed on the first gear, and why</dd></div>
+      <div><dt>Fix</dt><dd class="todo"><b>To come</b>What changed in the redesign</dd></div>
+      <div><dt>Confirmed</dt><dd>Over 5 impacts: three 1&nbsp;m drop tests and two real landings</dd></div>
+    </dl>
+    <!-- TODO(Chay): what broke on the first landing gear, why, and what changed.
+         Upload a drop-test photo as plane-drop-test.jpg (appears automatically). -->
+    <figure class="fig">
+      <img src="plane-drop-test.jpg" alt="Landing gear drop test" decoding="async">
+      <span class="fig__slot"><span class="fig__kicker">Photo coming soon</span><span>Drop test</span><span class="fig__file">plane-drop-test.jpg</span></span>
+    </figure>
+  </section>
+
+  <!-- ===== 07 RESULTS ===== -->
+  <section class="cs__sec" id="results">
+    <p class="cs__num">07</p>
+    <h2>Results</h2>
+    <dl class="rows">
+      <div><dt>Flight time</dt><dd>1st place on longest flight time (3:40, flown until the battery drained)</dd></div>
+      <div><dt>Handling</dt><dd>Judges' Best Handling aircraft</dd></div>
+      <div><dt>Vision</dt><dd>Scored the 100-point computer vision objective</dd></div>
+    </dl>
+  </section>
+
+  <!-- ===== 08 DIFFERENTLY ===== -->
+  <section class="cs__sec" id="differently">
+    <p class="cs__num">08</p>
+    <h2>What I'd do differently</h2>
+    <!-- TODO(Chay): one or two lines. -->
+    <p class="todo"><b>To come</b>One or two lines.</p>
+  </section>
+
+  <footer class="cs__foot">
+    <a href="projects.html#rc-aircraft">&larr; All projects</a>
+    <a href="drivetrain.html">Drivetrain write-up &rarr;</a>
+  </footer>
+</main>
+
+</body>
+</html>

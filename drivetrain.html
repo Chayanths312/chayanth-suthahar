@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--
+  DRIVETRAIN CASE STUDY
+  Only facts Chay has confirmed are written here. Every gap is a visible
+  .todo box plus a TODO(Chay) comment saying what's needed. Keep the text in
+  step with the Drivetrain card on projects.html and with the PDF portfolio.
+-->
+<html lang="en" data-theme="void">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drivetrain — Chayanth Suthahar</title>
+<meta name="description" content="Case study: the swerve drive base for FRC 2056's 2025 robot, ranked 1st in the world by EPA.">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="case-study.css">
+</head>
+<body>
+
+<div class="curtain" id="curtain"></div>
+
+<header class="topbar topbar--page sitebar">
+  <script src="site.js" data-page="drivetrain"></script>
+</header>
+
+<main>
+  <a class="back" href="projects.html#drivetrain">&larr; All projects</a>
+
+  <header>
+    <p class="cs__eyebrow">FRC 2056 · Mechanical · Case study</p>
+    <h1 class="cs__title">Drivetrain.</h1>
+    <p class="cs__lede">A 32" &times; 28" swerve base for the 2025 robot ranked 1st in the world by EPA, geared for 15&nbsp;ft/s</p>
+  </header>
+
+  <figure class="fig fig--hero">
+    <img src="drivebase.png" alt="CAD render of the 2056 swerve drive base with electronics" decoding="async">
+    <span class="fig__slot"><span class="fig__kicker">Image coming soon</span><span class="fig__file">drivebase.png</span></span>
+    <figcaption>CAD render of the drive base with electronics</figcaption>
+  </figure>
+
+  <ol class="toc" aria-label="Sections">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#decisions">Key decisions</a></li>
+    <li><a href="#analysis">Analysis</a></li>
+    <li><a href="#build">Build</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#differently">Differently</a></li>
+  </ol>
+
+  <!-- ===== 01 OVERVIEW ===== -->
+  <section class="cs__sec" id="overview">
+    <p class="cs__num">01</p>
+    <h2>Overview</h2>
+    <p>The swerve drive base for FRC 2056's 2025 robot: a 32"&nbsp;&times;&nbsp;28" frame on a 135&nbsp;lb robot, geared for 15&nbsp;ft/s. The robot was ranked 1st in the world by EPA in 2025 (Statbotics). The design went from concept to 2D manufacturing drawings.</p>
+    <dl class="rows">
+      <div><dt>My role</dt><dd>Designed the drive base, gearboxes and mounts; machined baseplates, gearbox plates, shafts and motor mounts on mill, lathe and CNC</dd></div>
+    </dl>
+  </section>
+
+  <!-- ===== 02 REQUIREMENTS ===== -->
+  <section class="cs__sec" id="requirements">
+    <p class="cs__num">02</p>
+    <h2>Requirements and constraints</h2>
+    <dl class="rows">
+      <div><dt>Frame</dt><dd>32" &times; 28"</dd></div>
+      <div><dt>Robot weight</dt><dd>135&nbsp;lb, kept under the weight limit</dd></div>
+      <div><dt>Top speed</dt><dd>15&nbsp;ft/s (SDS MK4i at the L2 ratio)</dd></div>
+    </dl>
+    <!-- TODO(Chay): what did the drive base have to do, with numbers? e.g. the weight limit,
+         the game's requirements (cycle distance, defense, climbing), bumper/frame-perimeter rules,
+         ground clearance, budget, build time. -->
+    <p class="todo"><b>To come</b>The game's requirements and the remaining constraints, with numbers.</p>
+  </section>
+
+  <!-- ===== 03 KEY DECISIONS ===== -->
+  <section class="cs__sec" id="decisions">
+    <p class="cs__num">03</p>
+    <h2>Key decisions</h2>
+
+    <div class="decision">
+      <h3>Main structure</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>3" &times; 1" &times; 1/8" aluminum box tube</dd></div>
+        <div><dt>Why</dt><dd>Stiff, low chassis to keep the centre of mass down</dd></div>
+        <!-- TODO(Chay): which other options did you consider (e.g. 2x1 tube, thinner wall) and why not? -->
+        <div><dt>Options</dt><dd class="todo"><b>To come</b>Options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Baseplate</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>1/16" solid aluminum baseplate</dd></div>
+        <div><dt>Why</dt><dd>Doubles as shear plate and electronics tray</dd></div>
+        <!-- TODO(Chay): options considered (e.g. polycarbonate, pocketed plate) and why not? -->
+        <div><dt>Options</dt><dd class="todo"><b>To come</b>Options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Swerve modules and gearing</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>SDS MK4i modules with Kraken X60 drive at the L2 ratio for 15&nbsp;ft/s</dd></div>
+        <div><dt>Why</dt><dd>Balances speed and acceleration for the game's short cycles</dd></div>
+        <!-- TODO(Chay): other ratios / modules considered and why not? -->
+        <div><dt>Options</dt><dd class="todo"><b>To come</b>Options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Steering motor adapter</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>Custom shifted adapter plate for Kraken X44 steering with a 12-tooth pinion</dd></div>
+        <div><dt>Why</dt><dd>Saved nearly 2&nbsp;lb, keeping the 135&nbsp;lb robot under the weight limit</dd></div>
+        <!-- TODO(Chay): what was the alternative, and where did the weight saving come from? -->
+        <div><dt>Options</dt><dd class="todo"><b>To come</b>Options considered</dd></div>
+      </dl>
+    </div>
+
+    <div class="decision">
+      <h3>Baseplate to elevator gearbox</h3>
+      <dl>
+        <div><dt>Choice</dt><dd>Baseplate fastened directly to the elevator gearbox</dd></div>
+        <!-- TODO(Chay): why does this matter? (stiffness, packaging, fewer parts?) -->
+        <div><dt>Why</dt><dd class="todo"><b>To come</b>Why this mattered</dd></div>
+      </dl>
+    </div>
+
+    <h3>Gearboxes</h3>
+    <p>I designed the robot's gearboxes and their mounts.</p>
+    <!-- TODO(Chay): which gearboxes, their ratios, and CAD images (e.g. gearbox-cad.png). -->
+    <p class="todo"><b>To come</b>Which gearboxes, ratios and CAD images.</p>
+  </section>
+
+  <!-- ===== 04 ANALYSIS ===== -->
+  <section class="cs__sec" id="analysis">
+    <p class="cs__num">04</p>
+    <h2>Analysis</h2>
+    <!-- TODO(Chay): FEA plots with loads and boundary conditions labelled, and any hand
+         calculations (e.g. gear ratio / top speed, baseplate deflection, weight budget). -->
+    <p class="todo"><b>To come</b>FEA plots with loads and boundary conditions labelled, and any hand calculations.</p>
+  </section>
+
+  <!-- ===== 05 BUILD ===== -->
+  <section class="cs__sec" id="build">
+    <p class="cs__num">05</p>
+    <h2>Build</h2>
+    <p>I machined baseplates, gearbox plates, shafts and motor mounts on the mill, lathe and CNC, and made 2D manufacturing drawings for the parts I designed.</p>
+    <div class="figs">
+      <figure class="fig">
+        <img src="machining.jpg" alt="A CNC mill cutting an aluminum part" decoding="async">
+        <span class="fig__slot"><span class="fig__kicker">Image coming soon</span><span class="fig__file">machining.jpg</span></span>
+        <figcaption>A CNC mill cutting an aluminum part</figcaption>
+      </figure>
+      <!-- TODO(Chay): upload one 2D manufacturing drawing (e.g. a gearbox plate or baseplate)
+           as drivetrain-drawing.png. It appears here automatically; then write its caption. -->
+      <figure class="fig">
+        <img src="drivetrain-drawing.png" alt="2D manufacturing drawing" decoding="async">
+        <span class="fig__slot"><span class="fig__kicker">Drawing coming soon</span><span>2D manufacturing drawing</span><span class="fig__file">drivetrain-drawing.png</span></span>
+      </figure>
+    </div>
+    <!-- TODO(Chay): assembly photos. -->
+    <p class="todo"><b>To come</b>Assembly photos.</p>
+  </section>
+
+  <!-- ===== 06 TESTING ===== -->
+  <section class="cs__sec" id="testing">
+    <p class="cs__num">06</p>
+    <h2>Testing, failures and fixes</h2>
+
+    <h3>Baseplate sag near the battery</h3>
+    <dl class="rows">
+      <div><dt>Problem</dt><dd>The baseplate sagged near the battery</dd></div>
+      <div><dt>Fix</dt><dd>A riveted aluminum angle; the corners were bolted to back up the rivets</dd></div>
+    </dl>
+    <!-- TODO(Chay): how was the sag found, and why did it happen there? -->
+    <p class="todo"><b>To come</b>How it was found and why it happened.</p>
+
+    <h3>Intake plate bent in practice (2025)</h3>
+    <dl class="rows">
+      <div><dt>Problem</dt><dd>Impacts in practice bent a polycarbonate intake plate</dd></div>
+      <div><dt>Fix</dt><dd>A ram bar made from 1/2" round tube</dd></div>
+    </dl>
+    <!-- TODO(Chay): photos, CAD, and how you found the root cause. -->
+    <p class="todo"><b>To come</b>Photos, CAD and the root-cause process.</p>
+  </section>
+
+  <!-- ===== 07 RESULTS ===== -->
+  <section class="cs__sec" id="results">
+    <p class="cs__num">07</p>
+    <h2>Results</h2>
+    <!-- Do not add "World Champion": ranked 1st statistically, did not win Einstein.
+         TODO(Chay): if the team won its 2025 Championship division, confirm the wording and add it here. -->
+    <dl class="rows">
+      <div><dt>World</dt><dd>1st in the world by EPA in 2025 (Statbotics)</dd></div>
+      <div><dt>Canada</dt><dd>Team 1st in Canada 2022&ndash;2025</dd></div>
+    </dl>
+  </section>
+
+  <!-- ===== 08 DIFFERENTLY ===== -->
+  <section class="cs__sec" id="differently">
+    <p class="cs__num">08</p>
+    <h2>What I'd do differently</h2>
+    <!-- TODO(Chay): one or two lines. -->
+    <p class="todo"><b>To come</b>One or two lines.</p>
+  </section>
+
+  <footer class="cs__foot">
+    <a href="projects.html#drivetrain">&larr; All projects</a>
+    <a href="rc-aircraft.html">RC Aircraft write-up &rarr;</a>
+  </footer>
+</main>
+
+</body>
+</html>
